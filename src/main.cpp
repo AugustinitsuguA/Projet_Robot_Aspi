@@ -275,6 +275,7 @@ void loop() {
           }
 
 
+          
 
           // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
           // ------- copier l'output et le coller dans un txt
