@@ -198,8 +198,6 @@ void loop() {
   int nb_tr_gauche = 0;
   int nb_tr_droite = 0;
   int nb_marche = 0;
-  int etat = 1; 
-  int taille_esc = 14;
 
   while(1){
 
@@ -221,31 +219,7 @@ void loop() {
 
           // juste pour tester un bouton du gui et que l'icm marche
           if (msg == "info_etat") {
-            icm.getEvent(&accel, &gyro, &temp, &mag);
-            accel_x = accel.acceleration.x ;
-            accel_y = accel.acceleration.y ;
-            accel_z = accel.acceleration.z ;
-            mag_x = mag.magnetic.x ;
-            mag_y = mag.magnetic.y ;
-            mag_z = mag.magnetic.z ;
-            gyro_x = gyro.gyro.x ;
-            gyro_y = gyro.gyro.y ;
-            gyro_z = gyro.gyro.z ;
-            client.print(accel_x);client.print(";");
-            client.print(accel_y);client.print(";");
-            client.print(accel_z);client.print(";");
-            client.print(mag_x);client.print(";");
-            client.print(mag_y);client.print(";");
-            client.print(mag_z);client.print(";");
-            client.print(gyro_x);client.print(";");
-            client.print(gyro_y);client.print(";");
-            client.print(gyro_z);client.println(";");
-          }
-
-          // repasser dans l'état 0 qui correspond à l'état de fonctionnement de base du robot
-          if (msg == "etat_base") {
-            Serial.println("etat de base");
-            etat = 0;
+            info_etat(client, accel, gyro, temp, mag);
           }
 
           // réinitialiser les valeurs de comptage 
@@ -257,16 +231,17 @@ void loop() {
   
           }
 
-
           // monte les escaliers
           //118
           if (msg.substring(0,5) == "monte") { 
             int pos1 = msg.indexOf(";");
             //Serial.println(pos1);
             int pos2 = msg.indexOf(";",pos1+1);
+            int pos3 = msg.indexOf(";",pos2+1);
             String chaine1 = msg.substring(0,pos1);
             String chaine2 = msg.substring(pos1+1,pos2);
-            monte(taille_esc, nb_marche, chaine2.toInt(), accel , gyro , temp , mag);
+            int taille_esc = msg.substring(pos2+1,pos3).toInt();
+            monte(taille_esc, chaine2.toInt(), accel , gyro , temp , mag);
           }
 
           // monte les escaliers
@@ -274,55 +249,10 @@ void loop() {
             tourne(accel , gyro , temp , mag);
           }
 
-
-          
-
           // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
           // ------- copier l'output et le coller dans un txt
           if (msg == "afficher_icm") {
-            client.stop();
-            while (1) {
-              icm.getEvent(&accel, &gyro, &temp, &mag);
-              accel_x = accel.acceleration.x ;
-              accel_y = accel.acceleration.y ;
-              accel_z = accel.acceleration.z ;
-              mag_x = mag.magnetic.x ;
-              mag_y = mag.magnetic.y ;
-              mag_z = mag.magnetic.z ;
-              gyro_x = gyro.gyro.x ;
-              gyro_y = gyro.gyro.y ;
-              gyro_z = gyro.gyro.z ;
-
-              filter.update(
-                gyro.gyro.x, gyro.gyro.y, gyro.gyro.z,
-                accel.acceleration.x, accel.acceleration.y, accel.acceleration.z,
-                mag.magnetic.x, mag.magnetic.y, mag.magnetic.z
-              );
-
-              Serial.print(accel_x);Serial.print(";");
-              Serial.print(accel_y);Serial.print(";");
-              Serial.print(accel_z);Serial.print(";");
-              Serial.print(mag_x);Serial.print(";");
-              Serial.print(mag_y);Serial.print(";");
-              Serial.print(mag_z);Serial.print(";");
-              Serial.print(gyro_x);Serial.print(";");
-              Serial.print(gyro_y);Serial.print(";");
-              Serial.print(gyro_z);Serial.print(";");
-              Serial.print(filter.getRoll());Serial.print(";");
-              Serial.print(filter.getPitch());Serial.print(";");
-              Serial.print(filter.getYaw());Serial.println(";");
-              delay(50);
-
-              // si le gui envoie le mot stop, on arrête l'acquisition des données
-            
-              client = server.available();
-              if (client) {
-                Serial.println("stop");
-                break;
-              }
-              delay(50);
-
-            }
+            afficher_icm(client, accel , gyro , temp , mag);
           }
 
           
@@ -361,7 +291,28 @@ void loop() {
             moteur(chaine12.toInt(), chaine22.toInt()); // fait tourner les moteurs
 
           }
+          // message sous la forme m1:64;m2:82;
+            int pos1 = msg.indexOf(";");
+            //Serial.println(pos1);
+            int pos2 = msg.indexOf(";",pos1+1);
+            String chaine1 = msg.substring(0,pos1);
+            String chaine2 = msg.substring(pos1+1,pos2);
+            int pos11 = chaine1.indexOf(":");
+            String chaine11 = chaine1.substring(0,pos11);
+            String chaine12 = chaine1.substring(pos11+1,-1);
+            int pos22 = chaine2.indexOf(":");
+            String chaine21 = chaine2.substring(0,pos22);
+            String chaine22 = chaine2.substring(pos22+1,-1);
+            
+            Serial.print(chaine11);
+            Serial.print(" a pour valeur : ");
+            Serial.print(chaine12);
+            Serial.print(" /// ");
+            Serial.print(chaine21);
+            Serial.print(" a pour valeur : ");
+            Serial.println(chaine22);
 
+            moteur(chaine12.toInt(), chaine22.toInt()); // fait tourner les moteurs
         }
         delay(10);
       }
@@ -370,20 +321,6 @@ void loop() {
       Serial.println("Client deconnecte");
     }
 
-    
-    /* Envoyer en quasi continu l'état du robot (nb marche montées etc)
-    */
-    if (etat == 0) {
-      // ------ comptage du nombre de tours de roue --------------
-      //Serial.print( "nb_tr_avance  av ");
-      //Serial.println(nb_tr_avance);
-      nb_avance (nb_tr_gauche, nb_tr_droite, nb_tr_avance, etat, client, accel , gyro , temp , mag);
-      //Serial.print( "nb_tr_avance  ap ");
-      //Serial.println(nb_tr_avance);
-      delay(10);
-      //nb_gauche (accel , gyro , temp , mag);
-      //nb_droite (accel , gyro , temp , mag);
-    }
 
     delay(5);
 

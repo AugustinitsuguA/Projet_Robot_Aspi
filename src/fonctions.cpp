@@ -31,7 +31,7 @@ void moteur(int pwm1 , int pwm2){
 
 
 // monter les marches et arrêter le robot au bon endroit
-void monte(int taille_esc, int &nb_marche, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   float gyro_y;
   float gy;
   float gya4;
@@ -53,7 +53,7 @@ void monte(int taille_esc, int &nb_marche, int vitesse, sensors_event_t &accel, 
   gya2 = -0.2;
   gya1 = -0.2;
   moteur(vitesse , vitesse);
-  nb_marche = 0;
+  int nb_marche = 0;
   // fait les premières marches sans utiliser l imu
   delay(2000);
   moteur(0,0),
@@ -140,6 +140,68 @@ void tourne(sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,
   moteur(0,0);
 }
 
+
+void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+  icm.getEvent(&accel, &gyro, &temp, &mag);
+  float accel_x = accel.acceleration.x ;
+  float accel_y = accel.acceleration.y ;
+  float accel_z = accel.acceleration.z ;
+  float mag_x = mag.magnetic.x ;
+  float mag_y = mag.magnetic.y ;
+  float mag_z = mag.magnetic.z ;
+  float gyro_x = gyro.gyro.x ;
+  float gyro_y = gyro.gyro.y ;
+  float gyro_z = gyro.gyro.z ;
+  client.print(accel_x);client.print(";");
+  client.print(accel_y);client.print(";");
+  client.print(accel_z);client.print(";");
+  client.print(mag_x);client.print(";");
+  client.print(mag_y);client.print(";");
+  client.print(mag_z);client.print(";");
+  client.print(gyro_x);client.print(";");
+  client.print(gyro_y);client.print(";");
+  client.print(gyro_z);client.println(";");
+
+}
+
+
+void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+  client.stop();
+  while (1) {
+    icm.getEvent(&accel, &gyro, &temp, &mag);
+    float accel_x = accel.acceleration.x ;
+    float accel_y = accel.acceleration.y ;
+    float accel_z = accel.acceleration.z ;
+    float mag_x = mag.magnetic.x ;
+    float mag_y = mag.magnetic.y ;
+    float mag_z = mag.magnetic.z ;
+    float gyro_x = gyro.gyro.x ;
+    float gyro_y = gyro.gyro.y ;
+    float gyro_z = gyro.gyro.z ;
+
+    Serial.print(accel_x);Serial.print(";");
+    Serial.print(accel_y);Serial.print(";");
+    Serial.print(accel_z);Serial.print(";");
+    Serial.print(mag_x);Serial.print(";");
+    Serial.print(mag_y);Serial.print(";");
+    Serial.print(mag_z);Serial.print(";");
+    Serial.print(gyro_x);Serial.print(";");
+    Serial.print(gyro_y);Serial.print(";");
+    Serial.print(gyro_z);Serial.print(";");
+    
+    delay(50);
+
+    // si le gui envoie le mot stop, on arrête l'acquisition des données
+  
+    client = server.available();
+    if (client) {
+      Serial.println("stop");
+      break;
+    }
+    delay(50);
+
+  }
+}
 
 
 // compter les nombre de tours de roue quand avance ---------------------------------------------------------------------
