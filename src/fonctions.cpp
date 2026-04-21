@@ -120,22 +120,45 @@ void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t 
 
 
 void tourne(sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+  Serial.println("dedans");
   int i = 0;
   int nb = 0;
+  int x_up;
+  int x_up_p = 0;
   float gx;
   icm.getEvent(&accel, &gyro, &temp, &mag);
   gx = gyro.gyro.x ;
   moteur(0,118);
 
   while(nb<2){
+    //Serial.println("oui");
     icm.getEvent(&accel, &gyro, &temp, &mag);
     gx = gyro.gyro.x ;
-    if (gx<0.5){
+
+    if ((gx) < -0.7){
+      x_up = 1;
+    }
+    if ((gx) > -0.7){
+      x_up = 0;
+    }
+
+
+
+    Serial.print("x up ");Serial.println(x_up);
+    Serial.print("gx");Serial.println(gx);
+    //Serial.print("y up ");Serial.println(y_up);
+
+    if (((x_up == 0) && (x_up_p == 1))) {
+      Serial.println("nb_tour + 1 _______");
       nb = nb+1;
       moteur(0,0);
       delay(500);
       moteur(0,118);
+      
     }
+
+    x_up_p = x_up;
+    delay(100);
   }
   moteur(0,0);
 }
@@ -337,3 +360,5 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
   }
 
 }
+
+

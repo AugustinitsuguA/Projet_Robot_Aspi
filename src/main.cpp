@@ -53,8 +53,8 @@ différents états du robot :
 */
 
 void setup() {
-    Serial.begin(115200);
-  
+  Serial.begin(115200);
+  Serial.println("demarrage du robot");
   delay(1000);
  
   Serial.println("robot test");
@@ -246,6 +246,7 @@ void loop() {
 
           // monte les escaliers
           if (msg == "change") { 
+            Serial.println("tourne");
             tourne(accel , gyro , temp , mag);
           }
 

@@ -88,7 +88,7 @@ class MainWindow(QMainWindow):
         """)        
 
         self.setWindowTitle("Interface Graphique")
-        self.setGeometry(100, 100, 1000, 700)
+        self.setGeometry(200, 200, 800, 600)
 
         # Widget central
         central_widget = QWidget()
