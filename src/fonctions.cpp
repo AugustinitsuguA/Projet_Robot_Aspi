@@ -61,15 +61,27 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   nb_marche = nb_marche+1;
   delay(1000);
 
+  // nouveau ---------------
   if (stop(client)) {
+    moteur(0,0);
     return;
   }
+  //envoie_donnees(client, 0, 0);
+  // ----------------------
   
   moteur(vitesse , vitesse);
   delay(2000);
   moteur(0,0),
   nb_marche = nb_marche+1;
   delay(1000);
+
+  // nouveau ----------------
+  if (stop(client)) {
+    moteur(0,0);
+    return;
+  }
+  //envoie_donnees(client, 0, 0);
+  // ----------------------
 
   moteur(vitesse , vitesse);
 
@@ -102,6 +114,14 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       moteur(0 ,0);
       delay(2000);
     }
+
+    // nouveau  ----------------
+    if (stop(client)) {
+      moteur(0,0);
+      return;
+    }
+    //envoie_donnees(client, 0, 0);
+    // ----------------------
 
     delay(50);
   }
@@ -227,6 +247,14 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
 }
 
 
+void envoie_donnees(WiFiClient &client, int etat, int marche){
+  client.print(etat);client.print(";");
+  client.print(marche);client.println(";");
+}
+
+void monte_plateforme(){
+  
+}
 // compter les nombre de tours de roue quand avance ---------------------------------------------------------------------
 void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &etat, WiFiClient client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
 

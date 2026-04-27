@@ -4,10 +4,13 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 #include <WiFi.h>
+#include <Servo.h>
 #include "../include/fonctions.h"
 
 
 Madgwick filter;
+Servo servo_platforme;
+
 
 const char* ssid = "ESP32_ROBOT";
 const char* password = "12345678";
@@ -16,6 +19,9 @@ WiFiServer server(1234);   // serveur TCP
 
 #define SCL 6
 #define SDA 5
+
+// pin servo plateforme
+//#define PLATFORME 0
 
 Adafruit_ICM20948 icm;
 uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
@@ -35,20 +41,6 @@ uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
 /*
 différents états du robot : 
 
--1 --> état de base : permet de communiquer avec le GUI, faire les tests des différents actionneurs, capteurs
-          - on lance l'affichage des données de l'IMU dans un format qui permet d'être copié dans un txt pour afficher sur MATLAB
-          - controle des moteurs
-          - remettre les variables à zéro
-          (- mouvement de la plateforme)
-
-0 --> état test en vue du développement de l'état 1
-          - affiche les données de position
-          (- controle des moteurs)
-      
-1 --> état autonome, qui sera l'état final  du système
-          - affiche les données de position
-          - mouvement, arrêts, déploiement de robot aspi : autonome
-          
 
 */
 
@@ -65,6 +57,8 @@ void setup() {
   pinMode(MOTOR_G_IN1, OUTPUT);
   pinMode(MOTOR_G_IN2, OUTPUT);
 
+  servo_platforme.attach(0);  // Attache le servo à la broche 0
+  servo_platforme.write(90); // Positionne le servo à 90 degrés (position neutre)
 
   Wire.begin(SDA, SCL);  // Definition pin d'information
 
@@ -241,7 +235,7 @@ void loop() {
             String chaine1 = msg.substring(0,pos1);
             String chaine2 = msg.substring(pos1+1,pos2);
             int taille_esc = msg.substring(pos2+1,pos3).toInt();
-            monte(taille_esc, chaine2.toInt(), accel , gyro , temp , mag);
+            monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag);
           }
 
 
@@ -251,8 +245,17 @@ void loop() {
             int pos2 = msg.indexOf(";",pos1+1);
             
             int chaine1 = msg.substring(pos1+1,pos2).toInt();
-            tourne(chaine1, accel , gyro , temp , mag);
+            tourne( chaine1, accel , gyro , temp , mag);
           }
+
+          if (msg.substring(0,15) == "monter_platforme") {
+            int pos1 = msg.indexOf(";"); 
+            int pos2 = msg.indexOf(";",pos1+1);
+            int angle = msg.substring(pos1+1,pos2).toInt();
+            Serial.print("Monter la plateforme");
+            Serial.print(angle);
+            servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
+          } 
 
           // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
           // ------- copier l'output et le coller dans un txt

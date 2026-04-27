@@ -71,6 +71,32 @@ class Popup_tourne(QWidget):
         s.sendall(f"tourne;{nbTour};".encode())  # envoie commande
         s.close()
 
+class Popup_plateforme(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Plateforme")
+        layout = QVBoxLayout()
+        self.txtdonee = QLabel("temps montée :")
+        self.donnee = QLineEdit()  
+        self.txtdonee2 = QLabel("vitesse :")
+        self.donnee2 = QLineEdit() 
+        self.button = QPushButton("Valider")
+        self.button.clicked.connect(self.lancer)
+        layout.addWidget(self.txtdonee)
+        layout.addWidget(self.donnee)
+        layout.addWidget(self.txtdonee2)
+        layout.addWidget(self.donnee2)
+        layout.addWidget(self.button)
+        self.setLayout(layout)
+
+    def lancer(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        nbTemps = self.donnee.text()
+        vitesse = self.donnee2.text()
+        s.sendall(f"monter_platforme;{nbTemps};{vitesse};".encode())  # envoie commande
+        s.close()
 
 
 class MainWindow(QMainWindow):
@@ -129,6 +155,8 @@ class MainWindow(QMainWindow):
 
 
         # boutons 
+        self.b_monter_platforme = QPushButton("monter plateforme")
+        self.b_descendre_platforme = QPushButton("descendre plateforme")
         self.b_tourne = QPushButton("tourne")
         self.b_info_etat = QPushButton("info etat")
         self.b_afficher_icm = QPushButton("afficher icm")
@@ -145,6 +173,8 @@ class MainWindow(QMainWindow):
         left_layout.addWidget(self.b_afficher_icm)
         left_layout.addWidget(self.b_stop)
         left_layout.addWidget(self.b_monte)
+        left_layout.addWidget(self.b_monter_platforme)
+        left_layout.addWidget(self.b_descendre_platforme)
         left_layout.addWidget(self.b_tourne)
         left_layout.addWidget(self.b_envoyer)
         left_layout.addWidget(self.b_stop_moteurs)
@@ -208,6 +238,8 @@ class MainWindow(QMainWindow):
 
 
         # affecte une fonction à un bouton
+        self.b_monter_platforme.clicked.connect(self.monter_platforme)
+        #self.b_descendre_platforme.clicked.connect(self.descendre_platforme)
         self.b_info_etat.clicked.connect(self.info_etat)
         self.b_afficher_icm.clicked.connect(self.afficher_icm)
         self.b_stop.clicked.connect(self.stop_icm)
@@ -251,6 +283,12 @@ class MainWindow(QMainWindow):
             self.s_curseur1.setValue(self.s_curseur1.value())
             self.s_curseur2.setValue(self.s_curseur1.value())
             
+
+    def monter_platforme(self) :
+        self.popup = Popup_plateforme()
+        self.popup.show()
+
+        
 
     def update_tours(self):
         try:
