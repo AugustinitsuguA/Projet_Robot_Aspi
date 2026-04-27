@@ -244,10 +244,14 @@ void loop() {
             monte(taille_esc, chaine2.toInt(), accel , gyro , temp , mag);
           }
 
-          // monte les escaliers
-          if (msg == "change") { 
-            Serial.println("tourne");
-            tourne(accel , gyro , temp , mag);
+
+          if (msg.substring(0,5) == "tourne") { 
+            int pos1 = msg.indexOf(";");
+            //Serial.println(pos1);
+            int pos2 = msg.indexOf(";",pos1+1);
+            
+            int chaine1 = msg.substring(pos1+1,pos2).toInt();
+            tourne(chaine1, accel , gyro , temp , mag);
           }
 
           // ------- afficher les données de l'ICM dans le but de les enregistrer en txt

@@ -65,6 +65,7 @@ void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t 
   moteur(0,0),
   nb_marche = nb_marche+1;
   delay(1000);
+
   moteur(vitesse , vitesse);
 
   while (nb_marche<taille_esc-1){
@@ -100,26 +101,15 @@ void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t 
     delay(50);
   }
 
-  moteur(vitesse , vitesse);
-  while(gy<0.35){
-    icm.getEvent(&accel, &gyro, &temp, &mag);
-    gy = gyro.gyro.y ;
-    delay(50);
-  }
-  moteur(0,0);
-  delay(500);
-  moteur(vitesse , vitesse);
-  while(gy<0.35){
-    icm.getEvent(&accel, &gyro, &temp, &mag);
-    gy = gyro.gyro.y ;
-    delay(50);
-  }
+  delay(4000);
+  tourne(accel, gyro, temp, mag);
+  
   moteur(0,0);
 }
 
 
 
-void tourne(sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+void tourne(int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   Serial.println("dedans");
   int i = 0;
   int nb = 0;
@@ -130,7 +120,7 @@ void tourne(sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,
   gx = gyro.gyro.x ;
   moteur(0,118);
 
-  while(nb<2){
+  while(nb<nb_tours){
     //Serial.println("oui");
     icm.getEvent(&accel, &gyro, &temp, &mag);
     gx = gyro.gyro.x ;

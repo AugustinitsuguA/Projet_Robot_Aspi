@@ -27,11 +27,15 @@ class Popup_donnees(QWidget):
         super().__init__()
         self.setWindowTitle("Donnees de l'ecalier")
         layout = QVBoxLayout()
+        self.txtdonee = QLabel("nombre de marches :")
         self.donnee = QLineEdit() 
+        self.txtvitesse = QLabel("vitesse de montée :")
         self.vitesse = QLineEdit() 
         self.button = QPushButton("Valider")
         self.button.clicked.connect(self.lancer)
+        layout.addWidget(self.txtdonee)
         layout.addWidget(self.donnee)
+        layout.addWidget(self.txtvitesse)
         layout.addWidget(self.vitesse)
         layout.addWidget(self.button)
         self.setLayout(layout)
@@ -45,7 +49,27 @@ class Popup_donnees(QWidget):
         s.sendall(f"monte;{mot1};{taille_esc};".encode())  # envoie commande
         s.close()
 
+class Popup_tourne(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Tourner")
+        layout = QVBoxLayout()
+        self.txtdonee = QLabel("nombre de tours de roue :")
+        self.donnee = QLineEdit()  
+        self.button = QPushButton("Valider")
+        self.button.clicked.connect(self.lancer)
+        layout.addWidget(self.txtdonee)
+        layout.addWidget(self.donnee)
+        layout.addWidget(self.button)
+        self.setLayout(layout)
 
+    def lancer(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        nbTour = self.donnee.text()
+        s.sendall(f"tourne;{nbTour};".encode())  # envoie commande
+        s.close()
 
 
 
@@ -276,11 +300,8 @@ class MainWindow(QMainWindow):
         s.close()
 
     def tourne (self) :  
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        s.sendall(f"change".encode())  # envoie commande
-        s.close()
+        self.popup = Popup_tourne()
+        self.popup.show()
 
     # envoyer un message à l'esp32 ---------------------------
     def envoyer_msg (self) :
