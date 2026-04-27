@@ -31,7 +31,7 @@ void moteur(int pwm1 , int pwm2){
 
 
 // monter les marches et arrêter le robot au bon endroit
-void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   float gyro_y;
   float gy;
   float gya4;
@@ -54,11 +54,16 @@ void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t 
   gya1 = -0.2;
   moteur(vitesse , vitesse);
   int nb_marche = 0;
+
   // fait les premières marches sans utiliser l imu
   delay(2000);
   moteur(0,0),
   nb_marche = nb_marche+1;
   delay(1000);
+
+  if (stop(client)) {
+    return;
+  }
   
   moteur(vitesse , vitesse);
   delay(2000);
@@ -102,12 +107,17 @@ void monte(int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t 
   }
 
   delay(4000);
-  tourne(accel, gyro, temp, mag);
+  tourne(2, accel, gyro, temp, mag);
   
   moteur(0,0);
 }
 
-
+int stop(WiFiClient &client){
+  client = server.available();
+    if (client) {
+      return 1;
+    }
+}
 
 void tourne(int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   Serial.println("dedans");
@@ -343,6 +353,8 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
       else  { // sinon stopper la boucle
         Serial.println("stop");
         etat = -1;
+
+
         break;
       }  
     }
