@@ -54,7 +54,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   gya1 = -0.2;
   moteur(vitesse , vitesse);
   int nb_marche = 0;
-
+  /*
   // fait les premières marches sans utiliser l imu
   delay(2000);
   moteur(0,0),
@@ -62,7 +62,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   delay(1000);
 
   // nouveau ---------------
-  if (stop(client)) {
+  if (arret(client)) {
     moteur(0,0);
     return;
   }
@@ -76,12 +76,13 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   delay(1000);
 
   // nouveau ----------------
-  if (stop(client)) {
+  if (arret(client)) {
     moteur(0,0);
     return;
   }
   //envoie_donnees(client, 0, 0);
   // ----------------------
+  */
 
   moteur(vitesse , vitesse);
 
@@ -101,7 +102,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
     gya1 = gy;
 
     // si on était dans la zone 1 et que l'on retombe dans la zone 0
-    if (zone==1 && gy <0){
+    if (zone==1 && gy <0) {
       Serial.print("stop");Serial.println(gy);
       zone = 0;
       moteur(0 ,0);
@@ -109,14 +110,16 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       
       moteur(vitesse ,vitesse);
       nb_marche = nb_marche+1;
+      //envoie_donnees(client, 0, 0);
+
       // avance jusqu'à être au niveau de la marche pour déployer le drone
       delay(2500);
       moteur(0 ,0);
-      delay(2000);
+      delay(3000);
     }
 
     // nouveau  ----------------
-    if (stop(client)) {
+    if (arret(client)) {
       moteur(0,0);
       return;
     }
@@ -125,21 +128,24 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
 
     delay(50);
   }
-
+  /*
   delay(4000);
-  tourne(2, accel, gyro, temp, mag);
-  
+  tourne(client, 2, accel, gyro, temp, mag);
+  */
   moteur(0,0);
 }
 
-int stop(WiFiClient &client){
+
+int arret(WiFiClient &client){
   client = server.available();
     if (client) {
       return 1;
     }
+    return 0;
 }
 
-void tourne(int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+
+void tourne(WiFiClient &client, int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   Serial.println("dedans");
   int i = 0;
   int nb = 0;
@@ -155,14 +161,18 @@ void tourne(int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_
     icm.getEvent(&accel, &gyro, &temp, &mag);
     gx = gyro.gyro.x ;
 
-    if ((gx) < -0.7){
+    if ((gx) > 0.7){
       x_up = 1;
     }
-    if ((gx) > -0.7){
+    if ((gx) < 0.7){
       x_up = 0;
     }
 
-
+    // nouveau ---------------
+    if (arret(client)) {
+      moteur(0,0);
+      return;
+    }
 
     Serial.print("x up ");Serial.println(x_up);
     Serial.print("gx");Serial.println(gx);
@@ -183,6 +193,69 @@ void tourne(int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_
   moteur(0,0);
 }
 
+
+void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vitesse_1D, int vitesse_2D, int temps_1, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag)
+{
+  float gyro_x;
+  float gyro_y;
+  int x_up = 0;
+  int x_up_p = 0;
+
+
+    while (1){
+      icm.getEvent(&accel, &gyro, &temp, &mag);
+      gyro_y = gyro.gyro.y ;
+
+      if (arret(client)) {
+        moteur(0,0);
+        return;
+      }
+
+      moteur(vitesse_1,vitesse_1D);
+      delay(temps_1);
+
+      moteur(vitesse_2,vitesse_2D);
+      
+      if (gyro_y > 0.2){ // tester plusieurs valeurs
+        while (1){
+
+          icm.getEvent(&accel, &gyro, &temp, &mag);
+          gyro_x = gyro.gyro.x ;
+
+          if (gyro_x > 0.42){
+            x_up = 1;
+          }
+          if (gyro_x < 0.38){
+            x_up = 0;
+          }
+
+          if ((x_up == 0) && (x_up_p == 1)) {
+            Serial.println("nb_tour + 1 _______");
+            delay(20);
+            break;
+          }
+
+          if (arret(client)) {
+            moteur(0,0);
+            return;
+          }
+
+          x_up_p = x_up;
+
+          delay(50);
+        }
+        delay(2000);
+        moteur(0,0);
+
+        if (arret(client)) {
+          moteur(0,0);
+          return;
+        }
+        delay(2000);
+        break;
+      }
+    }
+}
 
 void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   icm.getEvent(&accel, &gyro, &temp, &mag);
@@ -230,7 +303,7 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     Serial.print(mag_z);Serial.print(";");
     Serial.print(gyro_x);Serial.print(";");
     Serial.print(gyro_y);Serial.print(";");
-    Serial.print(gyro_z);Serial.print(";");
+    Serial.print(gyro_z);Serial.println(";");
     
     delay(50);
 

@@ -4,7 +4,7 @@
 #include <Adafruit_Sensor.h>
 #include <Wire.h>
 #include <WiFi.h>
-#include <Servo.h>
+#include <ESP32Servo.h>
 #include "../include/fonctions.h"
 
 
@@ -57,7 +57,7 @@ void setup() {
   pinMode(MOTOR_G_IN1, OUTPUT);
   pinMode(MOTOR_G_IN2, OUTPUT);
 
-  servo_platforme.attach(0);  // Attache le servo à la broche 0
+  servo_platforme.attach(37);  // Attache le servo à la broche 0
   servo_platforme.write(90); // Positionne le servo à 90 degrés (position neutre)
 
   Wire.begin(SDA, SCL);  // Definition pin d'information
@@ -239,23 +239,42 @@ void loop() {
           }
 
 
-          if (msg.substring(0,5) == "tourne") { 
+          if (msg.substring(0,6) == "tourne") { 
             int pos1 = msg.indexOf(";");
             //Serial.println(pos1);
             int pos2 = msg.indexOf(";",pos1+1);
             
             int chaine1 = msg.substring(pos1+1,pos2).toInt();
-            tourne( chaine1, accel , gyro , temp , mag);
+            tourne(client, chaine1, accel , gyro , temp , mag);
           }
 
-          if (msg.substring(0,15) == "monter_platforme") {
+          if (msg.substring(0,16) == "platforme_monter") {
             int pos1 = msg.indexOf(";"); 
             int pos2 = msg.indexOf(";",pos1+1);
             int angle = msg.substring(pos1+1,pos2).toInt();
-            Serial.print("Monter la plateforme");
+            Serial.println("Monter la plateforme");
+            Serial.print(angle);Serial.println("°");
+
             Serial.print(angle);
             servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
           } 
+
+          if (msg.substring(0,16) == "avance_controlee") {
+            int pos1 = msg.indexOf(";"); 
+            int pos2 = msg.indexOf(";",pos1+1);
+            int pos3 = msg.indexOf(";",pos2+1);
+            int pos4 = msg.indexOf(";",pos3+1);
+            int pos5 = msg.indexOf(";",pos4+1);
+            int vitesse1 = msg.substring(pos1+1,pos2).toInt();
+            int vitesse2 = msg.substring(pos2+1,pos3).toInt();
+            int vitesse1D = msg.substring(pos3+1,pos4).toInt();
+            int vitesse2D = msg.substring(pos4+1,pos5).toInt();
+            int temps = msg.substring(pos5+1,-1).toInt();
+            Serial.println("Avance contrôlée");
+            avance_controlee(client, vitesse1, vitesse2, vitesse1D, vitesse2D, temps, accel , gyro , temp , mag);
+          } 
+
+           
 
           // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
           // ------- copier l'output et le coller dans un txt
@@ -299,6 +318,7 @@ void loop() {
             moteur(chaine12.toInt(), chaine22.toInt()); // fait tourner les moteurs
 
           }
+          /*
           // message sous la forme m1:64;m2:82;
             int pos1 = msg.indexOf(";");
             //Serial.println(pos1);
@@ -321,7 +341,8 @@ void loop() {
             Serial.println(chaine22);
 
             moteur(chaine12.toInt(), chaine22.toInt()); // fait tourner les moteurs
-        }
+            */
+            }
         delay(10);
       }
 

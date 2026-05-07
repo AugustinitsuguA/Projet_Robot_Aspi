@@ -57,13 +57,13 @@ class Popup_tourne(QWidget):
         self.txtdonee = QLabel("nombre de tours de roue :")
         self.donnee = QLineEdit()  
         self.button = QPushButton("Valider")
-        self.button.clicked.connect(self.lancer)
+        self.button.clicked.connect(self.lancer_tourne)
         layout.addWidget(self.txtdonee)
         layout.addWidget(self.donnee)
         layout.addWidget(self.button)
         self.setLayout(layout)
 
-    def lancer(self):
+    def lancer_tourne(self):
         global PORT,ESP32_IP
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
@@ -71,31 +71,72 @@ class Popup_tourne(QWidget):
         s.sendall(f"tourne;{nbTour};".encode())  # envoie commande
         s.close()
 
+class Popup_avance_controlee(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Avance Contrôlée")
+        layout = QVBoxLayout()
+        self.txtdonee = QLabel("vitesse 1 G :")
+        self.donnee = QLineEdit()  
+        self.txtdonee2 = QLabel("vitesse 2 G :")
+        self.donnee2 = QLineEdit() 
+        self.txtdoneeD = QLabel("vitesse 1 D :")
+        self.donneeD = QLineEdit()  
+        self.txtdonee2D = QLabel("vitesse 2 D :")
+        self.donnee2D = QLineEdit() 
+        self.txtdonee3 = QLabel("temps :")
+        self.donnee3 = QLineEdit()
+        self.button = QPushButton("Valider")
+        self.button.clicked.connect(self.lancer_avance_controlee)
+        layout.addWidget(self.txtdonee)
+        layout.addWidget(self.donnee)
+        layout.addWidget(self.txtdonee2)
+        layout.addWidget(self.donnee2)
+        layout.addWidget(self.txtdoneeD)
+        layout.addWidget(self.donneeD)
+        layout.addWidget(self.txtdonee2D)
+        layout.addWidget(self.donnee2D)
+        layout.addWidget(self.txtdonee3)
+        layout.addWidget(self.donnee3)
+
+        layout.addWidget(self.button)
+        self.setLayout(layout)
+        # ajouter temps de l avance contrôlée
+
+    def lancer_avance_controlee(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        vitesse1 = self.donnee.text()
+        vitesse2 = self.donnee2.text()
+        vitesse1D = self.donneeD.text()
+        vitesse2D = self.donnee2D.text()
+        temps = self.donnee3.text()  
+        s.sendall(f"avance_controlee;{vitesse1};{vitesse2};{vitesse1D};{vitesse2D};{temps};".encode())  # envoie commande
+        s.close()
+
 class Popup_plateforme(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Plateforme")
         layout = QVBoxLayout()
-        self.txtdonee = QLabel("temps montée :")
+        self.txtdonee = QLabel("angle (<90 monte! ; >90 descend) :")
         self.donnee = QLineEdit()  
-        self.txtdonee2 = QLabel("vitesse :")
-        self.donnee2 = QLineEdit() 
         self.button = QPushButton("Valider")
-        self.button.clicked.connect(self.lancer)
+        self.button.clicked.connect(self.lancer_plat)
         layout.addWidget(self.txtdonee)
         layout.addWidget(self.donnee)
-        layout.addWidget(self.txtdonee2)
-        layout.addWidget(self.donnee2)
+    
         layout.addWidget(self.button)
         self.setLayout(layout)
 
-    def lancer(self):
+    def lancer_plat(self):
         global PORT,ESP32_IP
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
-        nbTemps = self.donnee.text()
-        vitesse = self.donnee2.text()
-        s.sendall(f"monter_platforme;{nbTemps};{vitesse};".encode())  # envoie commande
+        angle = self.donnee.text()
+     
+        s.sendall(f"platforme_monter;{angle};\n".encode())  # envoie commande
         s.close()
 
 
@@ -163,6 +204,7 @@ class MainWindow(QMainWindow):
         self.b_stop = QPushButton("stopper affichage ICM")
         self.b_init = QPushButton("reinit. les valeurs")
         self.b_envoyer = QPushButton("envoyer valeur")
+        self.b_avance_controlee = QPushButton("avance contrôlée")
         self.b_monte = QPushButton("monter")
         self.b_stop_moteurs = QPushButton("stop moteurs")
         self.b_sync = QPushButton("synchro")
@@ -173,6 +215,7 @@ class MainWindow(QMainWindow):
         left_layout.addWidget(self.b_afficher_icm)
         left_layout.addWidget(self.b_stop)
         left_layout.addWidget(self.b_monte)
+        left_layout.addWidget(self.b_avance_controlee)
         left_layout.addWidget(self.b_monter_platforme)
         left_layout.addWidget(self.b_descendre_platforme)
         left_layout.addWidget(self.b_tourne)
@@ -239,6 +282,7 @@ class MainWindow(QMainWindow):
 
         # affecte une fonction à un bouton
         self.b_monter_platforme.clicked.connect(self.monter_platforme)
+        self.b_avance_controlee.clicked.connect(self.popup_avance_controlee)
         #self.b_descendre_platforme.clicked.connect(self.descendre_platforme)
         self.b_info_etat.clicked.connect(self.info_etat)
         self.b_afficher_icm.clicked.connect(self.afficher_icm)
@@ -355,6 +399,10 @@ class MainWindow(QMainWindow):
     # faire monter le robot en lui envoyant la taille de l'escalier et la vitesse de montée
     def monte (self) :
         self.popup = Popup_donnees()
+        self.popup.show()
+
+    def popup_avance_controlee (self) :
+        self.popup = Popup_avance_controlee()
         self.popup.show()
 
     def stop_moteurs (self) :
