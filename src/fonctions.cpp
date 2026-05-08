@@ -303,7 +303,20 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     Serial.print(gyro_x);Serial.print(";");
     Serial.print(gyro_y);Serial.print(";");
     Serial.print(gyro_z);Serial.println(";");
-    
+
+    // A tester
+    /*
+    client.print(accel_x);client.print(";");
+    client.print(accel_y);client.print(";");
+    client.print(accel_z);client.print(";");
+    client.print(mag_x);client.print(";");
+    client.print(mag_y);client.print(";");
+    client.print(mag_z);client.print(";");
+    client.print(gyro_x);client.print(";");
+    client.print(gyro_y);client.print(";");
+    client.print(gyro_z);client.println(";");
+    */
+   
     delay(50);
 
     // si le gui envoie le mot stop, on arrête l'acquisition des données

@@ -227,7 +227,7 @@ void loop() {
 
           // monte les escaliers
           //118
-          if (msg.substring(0,5) == "monte") { 
+          if (msg.substring(0,14) == "monte_escalier") { //modif
             int pos1 = msg.indexOf(";");
             //Serial.println(pos1);
             int pos2 = msg.indexOf(";",pos1+1);

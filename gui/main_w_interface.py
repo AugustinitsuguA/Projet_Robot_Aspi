@@ -42,6 +42,7 @@ class MainWindow(QMainWindow):
 
         # création des layout
         left_layout = QVBoxLayout()
+        layout_centre = QVBoxLayout()
         right_layout = QVBoxLayout()
         bottom_layout = QGridLayout()
         curseur_layout = QGridLayout()
@@ -66,6 +67,8 @@ class MainWindow(QMainWindow):
         #self.text1 = QLineEdit()
         #self.text2 = QLineEdit()
 
+        self.b_drone = QPushButton("partie DRONE")
+
         left_layout.addWidget(self.b_info_etat)
         left_layout.addWidget(self.b_afficher_icm)
         left_layout.addWidget(self.b_stop)
@@ -77,6 +80,8 @@ class MainWindow(QMainWindow):
         left_layout.addWidget(self.b_envoyer)
         left_layout.addWidget(self.b_stop_moteurs)
         #left_layout.addWidget(self.b_init)
+
+        right_layout.addWidget(self.b_drone)
 
         #left_layout.addWidget(self.text1)
         #left_layout.addWidget(self.text2)
@@ -108,14 +113,16 @@ class MainWindow(QMainWindow):
         self.scene = QGraphicsScene()
         self.view = QGraphicsView(self.scene)
 
-        right_layout.addWidget(self.view, 4)
+        layout_centre.addWidget(self.view, 4)
 
 
         # placement des layout
         main_layout.addLayout(left_layout, 2)
-        main_layout.addLayout(right_layout, 2)
-        right_layout.addLayout(bottom_layout, 1)
+        main_layout.addLayout(layout_centre, 4)
+        main_layout.addLayout(right_layout, 1)
+        layout_centre.addLayout(bottom_layout, 1)
         left_layout.addLayout(curseur_layout, 1)
+        
 
     
 
@@ -153,11 +160,10 @@ class MainWindow(QMainWindow):
         # si on est dans le mode normal, toutes les secondes on récupère les valeurs de tour de roue
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_tours)
-        print("testestest")
-        if (mode == "standard"):
-            print("oui")
-            
-            self.timer.start(4000)  # 1000 ms = 1 seconde
+        print("démarrage")
+        
+        # a tester
+        # self.timer.start(4000)  # 1000 ms = 1 seconde
 
     def sync(self) :
         global etat_sync

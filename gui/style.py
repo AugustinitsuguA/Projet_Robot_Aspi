@@ -43,4 +43,9 @@ STYLE = ("""
         QSlider::handle:vertical:hover {
             background: #2ecc71;
         }  
+         
+        QGraphicsView {
+            background-color: #36020F;
+        }
+         
         """) 
