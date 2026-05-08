@@ -193,14 +193,13 @@ void tourne(WiFiClient &client, int nb_tours, sensors_event_t &accel, sensors_ev
   moteur(0,0);
 }
 
-
+// Avance contolee, but : ralentir avant que la pale de la roue touche, pour éviter les chocs.
 void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vitesse_1D, int vitesse_2D, int temps_1, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag)
 {
   float gyro_x;
   float gyro_y;
   int x_up = 0;
   int x_up_p = 0;
-
 
     while (1){
       icm.getEvent(&accel, &gyro, &temp, &mag);
@@ -214,9 +213,9 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
       moteur(vitesse_1,vitesse_1D);
       delay(temps_1);
 
-      moteur(vitesse_2,vitesse_2D);
-      
-      if (gyro_y > 0.2){ // tester plusieurs valeurs
+      if (gyro_y < - 0.2){ // tester plusieurs valeurs
+        moteur(vitesse_2,vitesse_2D);
+
         while (1){
 
           icm.getEvent(&accel, &gyro, &temp, &mag);
@@ -280,7 +279,7 @@ void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro
 
 }
 
-
+// Affiche les données de l'imu sur le moniteur série
 void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   client.stop();
   while (1) {
@@ -310,9 +309,9 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     // si le gui envoie le mot stop, on arrête l'acquisition des données
   
     client = server.available();
-    if (client) {
-      Serial.println("stop");
-      break;
+    if (arret(client)) {
+      moteur(0,0);
+      return;
     }
     delay(50);
 
