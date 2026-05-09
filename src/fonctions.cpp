@@ -2,6 +2,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_ICM20948.h>
 #include <WiFi.h>
+#include <ESP32Servo.h>
 
 // pins du driver
 #define MOTOR_D_IN1 10
@@ -84,11 +85,14 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   // ----------------------
   */
 
-  moteur(vitesse , vitesse);
+  
 
-  while (nb_marche<taille_esc-1){
+  while (nb_marche < taille_esc-1){
+    
+    moteur(vitesse , vitesse);
+
     icm.getEvent(&accel, &gyro, &temp, &mag);
-    gy = gyro.gyro.y ;
+    gy = - gyro.gyro.y ; // - parce que les valeurs se sont inversées : raison inconnue
     // si on se trouve dans la zone 1
     if (gya2>0 && (gy-gya2)<0.1 &&  gya2<=gya1 && gya2<=gy && gya2<=gya1 && gya1<=gy){
       zone = 1;
@@ -118,16 +122,14 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       delay(3000);
     }
 
-    // nouveau  ----------------
     if (arret(client)) {
       moteur(0,0);
       return;
     }
-    //envoie_donnees(client, 0, 0);
-    // ----------------------
 
     delay(50);
   }
+
   /*
   delay(4000);
   tourne(client, 2, accel, gyro, temp, mag);
@@ -135,6 +137,20 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   moteur(0,0);
 }
 
+void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps){
+  Serial.println("plateforme");
+  Serial.print(vitesse);
+  for (int i = 0; i<temps/50; i++){
+    if (arret(client)) {
+      moteur(0,0);
+      return;
+    }
+    servo_platforme.write(vitesse);
+    delay(50);
+  }
+  // arret de la plateforme
+  servo_platforme.write(90);
+}
 
 int arret(WiFiClient &client){
   client = server.available();
@@ -213,9 +229,11 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
       moteur(vitesse_1,vitesse_1D);
       delay(temps_1);
 
+      // si le robot commence à pencher vers l'avant, on ralentit pour éviter le choc
       if (gyro_y < - 0.2){ // tester plusieurs valeurs
         moteur(vitesse_2,vitesse_2D);
 
+        // tant qu'il n'y a pas eu le choc
         while (1){
 
           icm.getEvent(&accel, &gyro, &temp, &mag);
@@ -243,6 +261,8 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
 
           delay(50);
         }
+
+        // on attend pour que le robot se remette en place
         delay(2000);
         moteur(0,0);
 
@@ -250,6 +270,7 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
           moteur(0,0);
           return;
         }
+        
         delay(2000);
         break;
       }
@@ -316,7 +337,7 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     client.print(gyro_y);client.print(";");
     client.print(gyro_z);client.println(";");
     */
-   
+
     delay(50);
 
     // si le gui envoie le mot stop, on arrête l'acquisition des données
