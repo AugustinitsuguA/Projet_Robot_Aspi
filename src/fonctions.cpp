@@ -89,6 +89,8 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
 
   while (nb_marche < taille_esc-1){
     
+    int delay_freq = 50; //ms
+
     moteur(vitesse , vitesse);
 
     icm.getEvent(&accel, &gyro, &temp, &mag);
@@ -127,7 +129,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       return;
     }
 
-    delay(50);
+    delay(delay_freq); //nouveau
   }
 
   /*
@@ -327,15 +329,7 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
 
     // A tester
     /*
-    client.print(accel_x);client.print(";");
-    client.print(accel_y);client.print(";");
-    client.print(accel_z);client.print(";");
-    client.print(mag_x);client.print(";");
-    client.print(mag_y);client.print(";");
-    client.print(mag_z);client.print(";");
-    client.print(gyro_x);client.print(";");
-    client.print(gyro_y);client.print(";");
-    client.print(gyro_z);client.println(";");
+    envoie_donnees(client, 0, 0, accel, gyro, temp, mag);
     */
 
     delay(50);
@@ -353,7 +347,11 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
 }
 
 
-void envoie_donnees(WiFiClient &client, int etat, int marche){
+void envoie_donnees(WiFiClient &client,  int etat, int marche, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+  
+  icm.getEvent(&accel, &gyro, &temp, &mag);
+  float gyro_y = gyro.gyro.y ;
+  client.print(gyro_y);client.print(";");
   client.print(etat);client.print(";");
   client.print(marche);client.println(";");
 }
@@ -361,7 +359,7 @@ void envoie_donnees(WiFiClient &client, int etat, int marche){
 void monte_plateforme(){
   
 }
-// compter les nombre de tours de roue quand avance ---------------------------------------------------------------------
+// compter les nombre de tours de roue quand avance 
 void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &etat, WiFiClient client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
 
   int x_up;

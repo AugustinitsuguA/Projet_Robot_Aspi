@@ -7,6 +7,9 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import (Qt,QTimer)
 from PyQt6.QtGui import QBrush, QPen
 from PyQt6.QtGui import QColor
+from PyQt6.QtNetwork import QTcpSocket, QHostAddress
+import pyqtgraph as pg
+
 
 from style import STYLE
 from popup import Popup_donnees, Popup_tourne, Popup_avance_controlee, Popup_plateforme
@@ -27,6 +30,11 @@ etat_sync = 0     # 0 su les roues sont désynchronisée et 1 si elles sont sync
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        # initialisation des listes de données pour le graphique
+        self.donne_x = [0,1,2,3,4,5,6,7,8,9]
+        self.donne_y = [5,4,9,4,2,8,-2,3,1,6]
+        self.max_points = 100
 
         self.setStyleSheet(STYLE)       
 
@@ -87,6 +95,7 @@ class MainWindow(QMainWindow):
         #left_layout.addWidget(self.text2)
 
         left_layout.addStretch()
+        right_layout.addStretch()
 
         # ajout des curseurs
         self.s_curseur1 = QSlider(Qt.Orientation.Vertical)
@@ -103,7 +112,7 @@ class MainWindow(QMainWindow):
         curseur_layout.addWidget(self.s_curseur2,0,1)
         curseur_layout.addWidget(self.l_curs1,1,0)
         curseur_layout.addWidget(self.l_curs2,1,1)
-        curseur_layout.addWidget(self.b_sync,2,0)
+        
 
         self.s_curseur1.valueChanged.connect(self.valeurChange)
         self.s_curseur2.valueChanged.connect(self.valeurChange)
@@ -117,11 +126,15 @@ class MainWindow(QMainWindow):
 
 
         # placement des layout
-        main_layout.addLayout(left_layout, 2)
-        main_layout.addLayout(layout_centre, 4)
+        main_layout.addLayout(left_layout, 1)
+        main_layout.addLayout(layout_centre, 5)
         main_layout.addLayout(right_layout, 1)
         layout_centre.addLayout(bottom_layout, 1)
         left_layout.addLayout(curseur_layout, 1)
+        left_layout.addWidget(self.b_sync)
+        main_layout.setSpacing(10)
+        main_layout.setContentsMargins(10, 10, 10, 10)
+        layout_centre.setContentsMargins(50, 10, 50, 10)
         
 
     
@@ -157,13 +170,45 @@ class MainWindow(QMainWindow):
         
         self.b_sync.clicked.connect(self.sync)
 
-        # si on est dans le mode normal, toutes les secondes on récupère les valeurs de tour de roue
+        #graphique
+        self.plot_widget = pg.PlotWidget()
+        self.curve = self.plot_widget.plot()
+        layout_centre.addWidget(self.plot_widget)
+        self.curve.setData(self.donne_x, self.donne_y)
+
+        """
         self.timer = QTimer()
         self.timer.timeout.connect(self.update_tours)
         print("démarrage")
         
         # a tester
         # self.timer.start(4000)  # 1000 ms = 1 seconde
+        """
+
+        self.socket = QTcpSocket()
+        self.socket.readyRead.connect(self.recevoir_donnees)
+        self.socket.connectToHost(ESP32_IP, PORT)
+
+    
+    def recevoir_donnees(self):
+        while self.socket.bytesAvailable():
+            data = self.socket.readLine().data().decode().strip()
+            liste_data = data.split(";")
+
+            if len(liste_data) >= 3:
+                self.maj_graphique(float(liste_data[0]))
+    
+    def maj_graphique(self, x):
+        self.donne_x.append(x)
+        self.donne_y.append(self.donne_y[-1]+1)
+
+        if len(self.donnee_x) > self.max_points :
+            self.donnee_x = self.donnee_x[-self.max_points:]
+            self.donnee_y = self.donnee_y[-self.max_points:]       
+
+        self.curve.setData(self.donne_x, self.donne_y)
+
+
 
     def sync(self) :
         global etat_sync

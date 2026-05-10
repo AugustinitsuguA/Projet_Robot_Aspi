@@ -1,40 +1,42 @@
 STYLE = ("""
         QPushButton {
-            background-color: #6E651F;
+            background-color: #4798A1;
             color: white;
             border-radius: 8px;
             padding: 8px;
+            color: #000000;
+            font-size: 14px;
         }
         QPushButton:hover {
             background-color: #64825A;
         }
         QPushButton#affichage {
-            background-color: #281CA3;
+            background-color: #85FF99;
         }
         QPushButton#affichage:hover {
             background-color: #5D5B8A;
         }
         QPushButton#test {
-            background-color: #360244;
+            background-color: #D885FF;
         }
         QPushButton#test:hover {
             background-color: #360244;
         }
          
         QMainWindow {
-            background-color: #36020F;
+            background-color: #300000;
         }
         QLabel {
-            background-color: #0F614B;
+            background-color: #000800;
             color: #FCEED2
         }
         QSlider::groove:vertical {
-            background: #2c3e50;
+            background: #FFD580;
             width: 8px;
             border-radius: 4px;               
         }     
         QSlider::handle:vertical {
-            background: #27ae60;
+            background: #ffffff;
             height: 20px;
             margin: -5px;
             border-radius: 10px;
@@ -45,7 +47,7 @@ STYLE = ("""
         }  
          
         QGraphicsView {
-            background-color: #36020F;
+            background-color: #000000;
         }
          
         """) 
