@@ -12,7 +12,7 @@ import pyqtgraph as pg
 
 
 from style import STYLE
-from popup import Popup_donnees, Popup_tourne, Popup_avance_controlee, Popup_plateforme
+from popup import Popup_donnees, Popup_tourne, Popup_avance_controlee, Popup_plateforme, Popup_direction_aspi
 
 import socket
 import time
@@ -167,8 +167,9 @@ class MainWindow(QMainWindow):
         self.b_envoyer.clicked.connect(self.envoyer_msg)
         self.b_stop_moteurs.clicked.connect(self.stop_moteurs)
         self.b_init.clicked.connect(self.init_valeurs)
-        
         self.b_sync.clicked.connect(self.sync)
+
+        self.b_drone.clicked.connect(self.popup_drone)
 
         #graphique
         self.plot_widget = pg.PlotWidget()
@@ -208,7 +209,7 @@ class MainWindow(QMainWindow):
 
         self.curve.setData(self.donne_x, self.donne_y)
 
-
+    
 
     def sync(self) :
         global etat_sync
@@ -237,6 +238,11 @@ class MainWindow(QMainWindow):
     def monter_platforme(self) :
         self.popup = Popup_plateforme()
         self.popup.show()
+    
+    def popup_drone(self) :
+        self.popup = Popup_direction_aspi()
+        self.popup.show()
+
 
         
 

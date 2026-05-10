@@ -10,7 +10,7 @@
 #define MOTOR_G_IN1 12
 #define MOTOR_G_IN2 13
 
-
+ 
 void moteur(int pwm1 , int pwm2){
   if (pwm1 >= 0) {
       analogWrite(MOTOR_G_IN1 , 0);
@@ -29,7 +29,6 @@ void moteur(int pwm1 , int pwm2){
       analogWrite(MOTOR_D_IN2 , 0);
   }
 }
-
 
 // monter les marches et arrêter le robot au bon endroit
 void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){

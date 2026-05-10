@@ -5,10 +5,12 @@ from PyQt6.QtWidgets import (
 )
 import socket
 
+import style
+
 class Popup_donnees(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Donnees de l'ecalier")
+        self.setWindowTitle("Monter")
         layout = QVBoxLayout()
         self.txtdonee = QLabel("nombre de marches :")
         self.donnee = QLineEdit() 
@@ -120,4 +122,69 @@ class Popup_plateforme(QWidget):
         angle = self.donnee.text()
      
         s.sendall(f"platforme_monter;{angle};\n".encode())  # envoie commande
+        s.close()
+
+
+
+
+# popup Robot Aspi -----------------------------------------------------------------------------
+
+class Popup_direction_aspi(QWidget):
+    def __init__(self) :
+        super().__init__()
+        self.setStyleSheet(style.STYLE)
+        self.setWindowTitle("Diriger le robot aspirateur")
+        layout = QVBoxLayout()
+        grid = QGridLayout()
+        self.b_gauche = QPushButton("Gauche")
+        self.b_gauche.clicked.connect(self.gauche)
+        self.b_droite = QPushButton("Droite")
+        self.b_droite.clicked.connect(self.droite)
+        self.b_avancer = QPushButton("Avancer")
+        self.b_avancer.clicked.connect(self.avancer)
+        self.b_reculer = QPushButton("Reculer")
+        self.b_reculer.clicked.connect(self.reculer)
+        self.b_stop = QPushButton("Stop")
+        self.b_stop.clicked.connect(self.stop)
+        grid.addWidget(self.b_gauche, 1, 0)
+        grid.addWidget(self.b_droite, 1, 2)
+        grid.addWidget(self.b_avancer, 0, 1)
+        grid.addWidget(self.b_reculer, 2, 1)
+        grid.addWidget(self.b_stop, 1, 1)
+        layout.addLayout(grid)
+        self.setLayout(layout)
+
+    def gauche(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        s.sendall(f"aspi_gauche;\n".encode())  # envoie commande
+        s.close()
+
+    def droite(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        s.sendall(f"aspi_droite;\n".encode())  # envoie commande
+        s.close()
+
+    def avancer(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        s.sendall(f"aspi_avancer;\n".encode())  # envoie commande
+        s.close()
+
+    def reculer(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        s.sendall(f"aspi_reculer;\n".encode())  # envoie commande
+        s.close()
+
+    def stop(self):
+        global PORT,ESP32_IP
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((ESP32_IP, PORT))
+        s.sendall(f"aspi_stop;\n".encode())  # envoie commande
         s.close()
