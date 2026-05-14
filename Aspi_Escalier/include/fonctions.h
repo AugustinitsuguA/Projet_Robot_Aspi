@@ -18,7 +18,7 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_avance, int &etat, WiFiClient clie
 void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vitesse_1D, int vitesse_2D, int temps_1, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 int arret(WiFiClient &client);
-void envoie_donnees(WiFiClient &client);
+void envoie_donnees(WiFiClient &client, int etat, int marche, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps);
 
 #endif

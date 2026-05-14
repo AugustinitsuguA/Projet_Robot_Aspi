@@ -175,6 +175,7 @@ void loop() {
   sensors_event_t mag;
   sensors_event_t temp;
  
+  Serial.println("debut loop");
   
   //int nb_tr_droite;
   float accel_x;
@@ -252,11 +253,12 @@ void loop() {
             int pos1 = msg.indexOf(";"); 
             int pos2 = msg.indexOf(";",pos1+1);
             int angle = msg.substring(pos1+1,pos2).toInt();
+            int duree = msg.substring(pos2+1,-1).toInt();
             Serial.println("Monter la plateforme");
             Serial.print(angle);Serial.println("°");
-
-            Serial.print(angle);
-            servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
+            plateforme(client, servo_platforme, angle, duree);
+            //Serial.print(angle);
+            //servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
           } 
 
           if (msg.substring(0,16) == "avance_controlee") {

@@ -118,7 +118,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       //envoie_donnees(client, 0, 0);
 
       // avance jusqu'à être au niveau de la marche pour déployer le drone
-      delay(2500);
+      delay(2800);
       moteur(0 ,0);
       delay(3000);
     }
@@ -153,12 +153,23 @@ void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int tem
   servo_platforme.write(90);
 }
 
+
+// fonction pour stopper les fonctions
 int arret(WiFiClient &client){
-  client = server.available();
-    if (client) {
+
+  // s'il y a une nouvelle requette du gui, ca stop les fonctions.
+  // c'est pour ca que ca ne stop pas la socket persistante car 
+  // la requete a deja été acceptée 
+  WiFiClient requestClient = server.available();
+  if (requestClient) {
+    String msg = requestClient.readStringUntil('\n');
+    msg.trim();
+    requestClient.stop();
+    if (msg == "stop") {
       return 1;
     }
-    return 0;
+  }
+  return 0;
 }
 
 
@@ -299,11 +310,13 @@ void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro
   client.print(gyro_y);client.print(";");
   client.print(gyro_z);client.println(";");
 
+  envoie_donnees(client, 0, 0, accel, gyro, temp, mag);
+
 }
 
 // Affiche les données de l'imu sur le moniteur série
 void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
-  client.stop();
+  
   while (1) {
     icm.getEvent(&accel, &gyro, &temp, &mag);
     float accel_x = accel.acceleration.x ;
@@ -327,20 +340,15 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     Serial.print(gyro_z);Serial.println(";");
 
     // A tester
-    /*
-    envoie_donnees(client, 0, 0, accel, gyro, temp, mag);
-    */
-
+    
+    client.print(gyro_y);client.print(";");
+    client.print(accel_x);client.print(";");
+    client.print(mag_x);client.println(";");
+    
     delay(50);
 
-    // si le gui envoie le mot stop, on arrête l'acquisition des données
-  
-    client = server.available();
-    if (arret(client)) {
-      moteur(0,0);
-      return;
-    }
-    delay(50);
+    if (arret(client)) { moteur(0,0); return;}
+   
 
   }
 }
