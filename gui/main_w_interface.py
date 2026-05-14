@@ -7,7 +7,7 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import (Qt,QTimer)
 from PyQt6.QtGui import QBrush, QPen
 from PyQt6.QtGui import QColor
-from PyQt6.QtNetwork import QTcpSocket, QHostAddress
+from PyQt6.QtNetwork import QTcpSocket, QHostAddress, QAbstractSocket
 import pyqtgraph as pg
 
 
@@ -22,6 +22,7 @@ ESP32_IP = "192.168.4.1"  # l'IP ESP32
 PORT = 1234
 
 mode = "test"
+nb_marche = 0
 nb_tour_av = 0
 nb_tour_d = 0
 nb_tour_g = 0
@@ -29,11 +30,13 @@ etat_sync = 0     # 0 su les roues sont désynchronisée et 1 si elles sont sync
 
 class MainWindow(QMainWindow):
     def __init__(self):
+
+        
         super().__init__()
 
         # initialisation des listes de données pour le graphique
-        self.donne_x = [0,1,2,3,4,5,6,7,8,9]
-        self.donne_y = [5,4,9,4,2,8,-2,3,1,6]
+        self.donnee_x = [0,1]
+        self.donnee_y = [0,0]
         self.max_points = 100
 
         self.setStyleSheet(STYLE)       
@@ -75,7 +78,8 @@ class MainWindow(QMainWindow):
         #self.text1 = QLineEdit()
         #self.text2 = QLineEdit()
 
-        self.b_drone = QPushButton("partie DRONE")
+        self.b_drone = QPushButton("mouvement DRONE")
+        self.b_aspi_drone = QPushButton("aspiration")
 
         left_layout.addWidget(self.b_info_etat)
         left_layout.addWidget(self.b_afficher_icm)
@@ -90,6 +94,7 @@ class MainWindow(QMainWindow):
         #left_layout.addWidget(self.b_init)
 
         right_layout.addWidget(self.b_drone)
+        right_layout.addWidget(self.b_aspi_drone)
 
         #left_layout.addWidget(self.text1)
         #left_layout.addWidget(self.text2)
@@ -141,12 +146,12 @@ class MainWindow(QMainWindow):
 
         # zone de plot 
       
-        self.b_nb_tour = QLabel("tours de roue av")
-        self.b_nb_tour_val = QLabel(str(nb_tour_av))
-        self.b_nb_tour_d = QLabel("tours de roue droite")
-        self.b_nb_tour_d_val = QLabel(str(nb_tour_d))
-        self.b_nb_tour_g = QLabel("tours de roue gauche")
-        self.b_nb_tour_g_val = QLabel(str(nb_tour_g))
+        self.b_nb_tour = QLabel("nombre de marches montées")
+        self.b_nb_tour_val = QLabel(str(nb_marche))
+        self.b_nb_tour_d = QLabel("action en cours")
+        self.b_nb_tour_d_val = QLabel("")
+        self.b_nb_tour_g = QLabel("connection")
+        self.b_nb_tour_g_val = QLabel("")
         bottom_layout.addWidget(self.b_nb_tour,0,0)
         bottom_layout.addWidget(self.b_nb_tour_val,0,1)
         bottom_layout.addWidget(self.b_nb_tour_d,1,0)
@@ -175,7 +180,22 @@ class MainWindow(QMainWindow):
         self.plot_widget = pg.PlotWidget()
         self.curve = self.plot_widget.plot()
         layout_centre.addWidget(self.plot_widget)
-        self.curve.setData(self.donne_x, self.donne_y)
+        self.curve.setData(self.donnee_x, self.donnee_y)
+
+        # socket persistante pour recevoir le flux ICM en continu
+
+        #création d'un socket persisant
+        self.icm_socket = QTcpSocket(self)  
+           
+        # quand le on est connecté à l'esp32, la fonction on_icm_socket_connected est appelée
+        # la fonction on_icm_socket_connected envoie la commande "afficher_icm" à l'esp32 pour lui dire de commencer à envoyer les données ICM
+        self.icm_socket.connected.connect(lambda: self.b_nb_tour_g_val.setText("ICM connected"))
+        self.icm_socket.connected.connect(self.socket_connectee)
+        #quand le gui revoit des données, il les lit avec la fonction recevoir_donnees
+        self.icm_socket.readyRead.connect(self.recevoir_donnees) 
+        self.icm_socket.disconnected.connect(lambda: self.b_nb_tour_g_val.setText("ICM disconnected"))
+        self.icm_socket.errorOccurred.connect(self.on_icm_error)
+        self.pending_icm_command = False
 
         """
         self.timer = QTimer()
@@ -186,28 +206,38 @@ class MainWindow(QMainWindow):
         # self.timer.start(4000)  # 1000 ms = 1 seconde
         """
 
-        self.socket = QTcpSocket()
-        self.socket.readyRead.connect(self.recevoir_donnees)
-        self.socket.connectToHost(ESP32_IP, PORT)
-
     
     def recevoir_donnees(self):
-        while self.socket.bytesAvailable():
-            data = self.socket.readLine().data().decode().strip()
-            liste_data = data.split(";")
+        while self.icm_socket.canReadLine():
+            data = self.icm_socket.readLine().data().decode(errors="ignore").strip()
+            if not data:
+                continue
+            print("LINE:", data)
 
-            if len(liste_data) >= 3:
-                self.maj_graphique(float(liste_data[0]))
+            liste_data = data.split(";")
+            if len(liste_data) >= 1:
+                try:
+                    self.maj_graphique(float(liste_data[0]))
+                except ValueError:
+                    pass
+
+    def socket_connectee(self):
+        if self.pending_icm_command:
+            self.icm_socket.write(b"afficher_icm\n")
+            self.pending_icm_command = False
     
+    def on_icm_error(self, socket_error):
+        print("ICM socket error:", socket_error)
+
     def maj_graphique(self, x):
-        self.donne_x.append(x)
-        self.donne_y.append(self.donne_y[-1]+1)
+        self.donnee_x.append(x)
+        self.donnee_y.append(self.donnee_y[-1]+1)
 
         if len(self.donnee_x) > self.max_points :
             self.donnee_x = self.donnee_x[-self.max_points:]
             self.donnee_y = self.donnee_y[-self.max_points:]       
 
-        self.curve.setData(self.donne_x, self.donne_y)
+        self.curve.setData(self.donnee_y, self.donnee_x)
 
     
 
@@ -236,6 +266,7 @@ class MainWindow(QMainWindow):
             
 
     def monter_platforme(self) :
+        
         self.popup = Popup_plateforme()
         self.popup.show()
     
@@ -333,8 +364,7 @@ class MainWindow(QMainWindow):
         global PORT,ESP32_IP
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
-        s.sendall(f"info_etat".encode())  # envoie commande
-        time.sleep(1.5)
+        s.sendall(f"info_etat\n".encode())  # envoie commande
         data = s.recv(1024)
         print("ESP32:", data.decode().strip())
 
@@ -346,10 +376,12 @@ class MainWindow(QMainWindow):
 
     def afficher_icm (self) :  
         global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        s.sendall(f"afficher_icm".encode())  # envoie commande
-        s.close()
+        if self.icm_socket.state() != QAbstractSocket.SocketState.ConnectedState:
+            self.pending_icm_command = True
+            self.icm_socket.abort()
+            self.icm_socket.connectToHost(ESP32_IP, PORT)
+        else:
+            self.icm_socket.write(b"afficher_icm\n")
 
 
     # stopper les valeurs icm ------------------------------------------- 
@@ -358,8 +390,15 @@ class MainWindow(QMainWindow):
         global PORT,ESP32_IP
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
-        s.sendall(f"stop".encode())  # envoie commande
+        s.sendall(f"stop\n".encode())  # envoie commande
         s.close()
+        if self.icm_socket.state() == QAbstractSocket.SocketState.ConnectedState:
+            self.icm_socket.disconnectFromHost()
+
+    def socket_connectee(self):
+        if self.pending_icm_command:
+            self.icm_socket.write(b"afficher_icm\n")
+            self.pending_icm_command = False
 
 
 app = QApplication(sys.argv)

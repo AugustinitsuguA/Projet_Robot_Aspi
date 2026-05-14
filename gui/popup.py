@@ -7,6 +7,9 @@ import socket
 
 import style
 
+ESP32_IP = "192.168.4.1"
+PORT = 1234
+
 class Popup_donnees(QWidget):
     def __init__(self):
         super().__init__()
@@ -107,10 +110,14 @@ class Popup_plateforme(QWidget):
         layout = QVBoxLayout()
         self.txtdonee = QLabel("angle (<90 monte! ; >90 descend) :")
         self.donnee = QLineEdit()  
+        self.txtdonee2 = QLabel("duree :")
+        self.donnee2 = QLineEdit()  
         self.button = QPushButton("Valider")
         self.button.clicked.connect(self.lancer_plat)
         layout.addWidget(self.txtdonee)
         layout.addWidget(self.donnee)
+        layout.addWidget(self.txtdonee2)
+        layout.addWidget(self.donnee2)
     
         layout.addWidget(self.button)
         self.setLayout(layout)
@@ -120,8 +127,9 @@ class Popup_plateforme(QWidget):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
         angle = self.donnee.text()
+        duree = self.donnee2.text()
      
-        s.sendall(f"platforme_monter;{angle};\n".encode())  # envoie commande
+        s.sendall(f"platforme_monter;{angle};{duree};\n".encode())  # envoie commande
         s.close()
 
 

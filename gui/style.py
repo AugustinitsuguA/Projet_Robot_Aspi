@@ -24,7 +24,7 @@ STYLE = ("""
         }
          
         QMainWindow {
-            background-color: #300000;
+            background-color: #703D18;
         }
         QLabel {
             background-color: #000800;
