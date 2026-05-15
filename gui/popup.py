@@ -100,7 +100,7 @@ class Popup_avance_controlee(QWidget):
         vitesse1D = self.donneeD.text()
         vitesse2D = self.donnee2D.text()
         temps = self.donnee3.text()  
-        s.sendall(f"avance_controlee;{vitesse1};{vitesse2};{vitesse1D};{vitesse2D};{temps};".encode())  # envoie commande
+        s.sendall(f"avance_controlee;{vitesse1};{vitesse2};{vitesse1D};{vitesse2D};{temps};\n".encode())  # envoie commande
         s.close()
 
 class Popup_plateforme(QWidget):

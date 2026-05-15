@@ -19,7 +19,8 @@ import time
 
 
 ESP32_IP = "192.168.4.1"  # l'IP ESP32
-PORT = 1234
+PORT = 1235     # port pour les commandes
+PORT_ICM = 1234     # port pour les donnees ICM
 
 mode = "test"
 nb_marche = 0
@@ -186,6 +187,7 @@ class MainWindow(QMainWindow):
 
         #création d'un socket persisant
         self.icm_socket = QTcpSocket(self)  
+        self.icm_socket_fonction = QTcpSocket(self) 
            
         # quand le on est connecté à l'esp32, la fonction on_icm_socket_connected est appelée
         # la fonction on_icm_socket_connected envoie la commande "afficher_icm" à l'esp32 pour lui dire de commencer à envoyer les données ICM
@@ -196,6 +198,10 @@ class MainWindow(QMainWindow):
         self.icm_socket.disconnected.connect(lambda: self.b_nb_tour_g_val.setText("ICM disconnected"))
         self.icm_socket.errorOccurred.connect(self.on_icm_error)
         self.pending_icm_command = False
+
+        self.icm_socket.connectToHost(ESP32_IP, PORT_ICM)
+
+        
 
         """
         self.timer = QTimer()
@@ -212,7 +218,7 @@ class MainWindow(QMainWindow):
             data = self.icm_socket.readLine().data().decode(errors="ignore").strip()
             if not data:
                 continue
-            print("LINE:", data)
+            #print("LINE:", data)
 
             liste_data = data.split(";")
             if len(liste_data) >= 1:
@@ -345,6 +351,12 @@ class MainWindow(QMainWindow):
         self.popup.show()
 
     def popup_avance_controlee (self) :
+        """
+        global PORT,ESP32_IP
+        if self.icm_socket.state() != QAbstractSocket.SocketState.ConnectedState:
+            self.icm_socket.abort()
+            self.icm_socket.connectToHost(ESP32_IP, PORT)
+        """
         self.popup = Popup_avance_controlee()
         self.popup.show()
 
@@ -392,8 +404,9 @@ class MainWindow(QMainWindow):
         s.connect((ESP32_IP, PORT))
         s.sendall(f"stop\n".encode())  # envoie commande
         s.close()
-        if self.icm_socket.state() == QAbstractSocket.SocketState.ConnectedState:
-            self.icm_socket.disconnectFromHost()
+
+        # partie à retirer pour avoir toujours ce socket ouvert et recevoir toutes les données ICM en continu
+               
 
     def socket_connectee(self):
         if self.pending_icm_command:
