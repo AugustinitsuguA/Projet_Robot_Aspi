@@ -199,7 +199,6 @@ class MainWindow(QMainWindow):
         self.icm_socket.errorOccurred.connect(self.on_icm_error)
         self.pending_icm_command = False
 
-        self.icm_socket.connectToHost(ESP32_IP, PORT_ICM)
 
         
 
