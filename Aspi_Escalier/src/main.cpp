@@ -15,8 +15,8 @@ Servo servo_platforme;
 const char* ssid = "ESP32_ROBOT";
 const char* password = "12345678";
 
-WiFiServer server(1235);   // serveur TCP
-WiFiServer server_icm(1234);
+WiFiServer server(1234);   // serveur TCP
+// WiFiServer server_icm(1234);
 
 #define SCL 6
 #define SDA 5
@@ -86,7 +86,7 @@ void setup() {
   Serial.println(WiFi.softAPIP());
 
   server.begin();
-  server_icm.begin();
+  //server_icm.begin();
   Serial.println("Serveur TCP lance");
 
 

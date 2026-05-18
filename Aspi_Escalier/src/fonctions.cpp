@@ -32,6 +32,11 @@ void moteur(int pwm1 , int pwm2){
 
 // monter les marches et arrêter le robot au bon endroit
 void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+  int delai_monter = 7500;
+  int delai_descente = 7000;
+  int vitesse_monter = 130;
+  int vitesse_descente = 50;
+
   float gyro_y;
   float gy;
   float gya4;
@@ -119,7 +124,10 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
 
       // avance jusqu'à être au niveau de la marche pour déployer le drone
       delay(2800);
-      moteur(0 ,0);
+      moteur(30 ,30);
+      plateforme(client, servo_platforme,vitesse_monter,delai_descente);
+      delay(2000);
+      plateforme(client, servo_platforme,vitesse_descente,delai_monter);
       delay(3000);
     }
 
@@ -222,7 +230,7 @@ void tourne(WiFiClient &client, int nb_tours, sensors_event_t &accel, sensors_ev
 }
 
 // Avance contolee, but : ralentir avant que la pale de la roue touche, pour éviter les chocs.
-void avance_controlee(WiFiClient &client, WiFiClient &client_icm, int vitesse_1, int vitesse_2, int vitesse_1D, int vitesse_2D, int temps_1, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag)
+void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vitesse_1D, int vitesse_2D, int temps_1, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag)
 {
   float gyro_x;
   float gyro_y;
@@ -233,11 +241,11 @@ void avance_controlee(WiFiClient &client, WiFiClient &client_icm, int vitesse_1,
       icm.getEvent(&accel, &gyro, &temp, &mag);
       gyro_y = gyro.gyro.y ;
 
-      Serial.print(gyro_y);client_icm.println(";");
+      Serial.print(gyro_y);client.println(";");
 
-      client_icm.print(gyro_y);client_icm.print(";");
-      client_icm.print(0);client_icm.print(";");
-      client_icm.print(0);client_icm.println(";");
+      client.print(gyro_y);client.print(";");
+      client.print(0);client.print(";");
+      client.print(0);client.println(";");
 
       if (arret(client)) {
         moteur(0,0);
