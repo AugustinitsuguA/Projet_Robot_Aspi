@@ -19,8 +19,8 @@ import time
 
 
 ESP32_IP = "192.168.4.1"  # l'IP ESP32
-PORT = 1235     # port pour les commandes
-PORT_ICM = 1234     # port pour les donnees ICM
+PORT = 1234     # port pour les commandes
+PORT_ICM = 1235     # port pour les donnees ICM
 
 mode = "test"
 nb_marche = 0
@@ -404,8 +404,8 @@ class MainWindow(QMainWindow):
         s.sendall(f"stop\n".encode())  # envoie commande
         s.close()
 
-        # partie à retirer pour avoir toujours ce socket ouvert et recevoir toutes les données ICM en continu
-               
+        # fermer aussi la socket ICM persistante
+        self.icm_socket.disconnectFromHost()
 
     def socket_connectee(self):
         if self.pending_icm_command:
