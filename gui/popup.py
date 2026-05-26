@@ -53,7 +53,11 @@ class Popup_donnees(QWidget):
         s.connect((ESP32_IP, PORT))
         mot1 = self.vitesse.text()
         taille_esc = self.donnee.text()
-        s.sendall(f"monte_escalier;{mot1};{taille_esc};".encode())  # envoie commande
+        delai_monter = self.temps_monter.text()
+        delai_descente = self.temps_descente.text()
+        vitesse_monter = self.plat_monter.text()
+        vitesse_descente = self.plat_descente.text()
+        s.sendall(f"monte_escalier;{mot1};{taille_esc};{delai_monter};{delai_descente};{vitesse_monter};{vitesse_descente}".encode())  # envoie commande
         s.close()
 
 class Popup_tourne(QWidget):

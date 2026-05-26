@@ -21,6 +21,8 @@ WiFiServer server(1234);   // serveur TCP
 #define SCL 6
 #define SDA 5
 
+#define PIN_COURANT 15
+
 // pin servo plateforme
 //#define PLATFORME 0
 
@@ -57,6 +59,9 @@ void setup() {
   pinMode(MOTOR_D_IN2, OUTPUT);
   pinMode(MOTOR_G_IN1, OUTPUT);
   pinMode(MOTOR_G_IN2, OUTPUT);
+
+  // pin courant
+  pinMode(PIN_COURANT, INPUT);
 
   servo_platforme.attach(37);  // Attache le servo à la broche 0
   servo_platforme.write(90); // Positionne le servo à 90 degrés (position neutre)
@@ -235,10 +240,24 @@ void loop() {
             //Serial.println(pos1);
             int pos2 = msg.indexOf(";",pos1+1);
             int pos3 = msg.indexOf(";",pos2+1);
+            int pos4 = msg.indexOf(";",pos3+1);
+            int pos5 = msg.indexOf(";",pos4+1);
+            int pos6 = msg.indexOf(";",pos5+1);
+            int pos7 = msg.indexOf(";",pos6+1);
+
             String chaine1 = msg.substring(0,pos1);
             String chaine2 = msg.substring(pos1+1,pos2);
+            String chaine3 = msg.substring(pos2+1,pos3);
+            String chaine4 = msg.substring(pos3+1,pos4);
+            String chaine5 = msg.substring(pos4+1,pos5);
+            String chaine6 = msg.substring(pos5+1,pos6);
+            String chaine7 = msg.substring(pos6+1,pos7);
             int taille_esc = msg.substring(pos2+1,pos3).toInt();
-            monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag);
+            int delai_monter = chaine4.toInt();
+            int delai_descente = chaine5.toInt();
+            int vitesse_monter = chaine6.toInt();
+            int vitesse_descente = chaine7.toInt();
+            monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag, delai_monter, delai_descente, vitesse_monter, vitesse_descente);
           }
 
 

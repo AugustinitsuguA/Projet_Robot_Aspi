@@ -31,11 +31,14 @@ void moteur(int pwm1 , int pwm2){
 }
 
 // monter les marches et arrêter le robot au bon endroit
-void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
+void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag,
+  int delai_monter, int delai_descente, int vitesse_monter, int vitesse_descente){
+  /*
   int delai_monter = 7500;
   int delai_descente = 7000;
   int vitesse_monter = 130;
   int vitesse_descente = 50;
+  */ 
 
   float gyro_y;
   float gy;
@@ -125,9 +128,10 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       // avance jusqu'à être au niveau de la marche pour déployer le drone
       delay(2800);
       moteur(30 ,30);
-      plateforme(client, servo_platforme,vitesse_monter,delai_descente);
+      plateforme(client, servo_platforme,vitesse_descente,delai_descente);
       delay(2000);
-      plateforme(client, servo_platforme,vitesse_descente,delai_monter);
+      // attendre ordre drone
+      plateforme(client, servo_platforme,vitesse_monter,delai_monter);
       delay(3000);
     }
 
@@ -314,6 +318,7 @@ void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro
   float gyro_x = gyro.gyro.x ;
   float gyro_y = gyro.gyro.y ;
   float gyro_z = gyro.gyro.z ;
+  //float courant = analogRead(16);
   client.print(accel_x);client.print(";");
   client.print(accel_y);client.print(";");
   client.print(accel_z);client.print(";");
@@ -342,6 +347,7 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     float gyro_x = gyro.gyro.x ;
     float gyro_y = gyro.gyro.y ;
     float gyro_z = gyro.gyro.z ;
+    float courant = analogRead(15);
 
     Serial.print(accel_x);Serial.print(";");
     Serial.print(accel_y);Serial.print(";");
@@ -352,6 +358,7 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
     Serial.print(gyro_x);Serial.print(";");
     Serial.print(gyro_y);Serial.print(";");
     Serial.print(gyro_z);Serial.println(";");
+    Serial.print(courant);Serial.println(";");
 
     // A tester
     

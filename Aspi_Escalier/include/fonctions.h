@@ -11,7 +11,7 @@ extern Servo servo_platforme;
 
 
 void moteur(int pwm1 , int pwm2);
-void monte(WiFiClient &client, int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
+void monte(WiFiClient &client, int taille_esc, int vitesse, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag, int delai_monter, int delai_descente, int vitesse_monter, int vitesse_descente);
 void tourne(WiFiClient &client, int nb_tours, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void nb_avance (int &nb_tr_gauche, int &nb_tr_avance, int &etat, WiFiClient client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
