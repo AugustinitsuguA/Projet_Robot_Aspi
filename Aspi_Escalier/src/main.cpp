@@ -21,13 +21,7 @@ WiFiServer server(1234);   // serveur TCP
 #define SCL 6
 #define SDA 5
 
-<<<<<<< HEAD
-#define PIN_COURANT 15
-
-// pin servo plateforme
-=======
 // pin servo plateformee
->>>>>>> 5a0a8c3406104d2f8cecc2d758665e341fe83bb2
 //#define PLATFORME 0
 
 Adafruit_ICM20948 icm;
