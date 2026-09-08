@@ -24,6 +24,8 @@ WiFiServer server(1234);   // serveur TCP
 // pin servo plateformee
 //#define PLATFORME 0
 
+// test pour pour savoir 
+
 Adafruit_ICM20948 icm;
 uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
 // For SPI mode, we need a CS pin
