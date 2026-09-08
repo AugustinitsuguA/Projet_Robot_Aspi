@@ -126,17 +126,17 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       //envoie_donnees(client, 0, 0);
 
       // avance jusqu'à être au niveau de la marche pour déployer le drone
-      delay(2800);
+      delay(2700);
       moteur(30 ,30);
       plateforme(client, servo_platforme,vitesse_descente,delai_descente);
-      delay(2000);
+      delay(30000);
       // attendre ordre drone
       plateforme(client, servo_platforme,vitesse_monter,delai_monter);
       delay(3000);
     }
 
     if (arret(client)) {
-      moteur(0,0);
+      moteur(40,40);
       return;
     }
 
@@ -147,7 +147,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   delay(4000);
   tourne(client, 2, accel, gyro, temp, mag);
   */
-  moteur(0,0);
+  moteur(40,40);
 }
 
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps){

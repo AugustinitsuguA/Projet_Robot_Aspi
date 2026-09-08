@@ -9,6 +9,8 @@ import style
 
 ESP32_IP = "192.168.4.1"
 PORT = 1234
+ESP32_IP_DRONE = "192.168.4.2"
+PORT_DRONE = 1234
 
 class Popup_donnees(QWidget):
     def __init__(self):
