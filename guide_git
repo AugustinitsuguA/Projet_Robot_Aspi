@@ -1,0 +1,25 @@
+## avant de coder
+tu récupères en local les dernières modifs du main  
+git switch main  
+git pull  
+(git branch nom_de_la_branche // pour créer une branche)  
+git switch nom_de_la_branche  
+ 
+
+## pendant les modifications du code
+git status // pour voir l'état des codes  
+git add . // ajouter les modifications dans la "zone de préparation"  
+git commit -m " modif " // enregistre les modifications en local  
+git push // Envoyer les commits dans GitHub  
+
+Pour mettre à jour ta branche avec le main potentiellement modifié  
+git switch main  
+git pull  
+git switch nom_de_la_branche   
+git merge main  
+
+
+## qaund la modification est terminée
+git switch main  
+git pull  
+git merge // quand on est sûrs de ses modifs et qu'on veut les envoyer sur main  
