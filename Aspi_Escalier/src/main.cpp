@@ -177,7 +177,111 @@ void setup() {
   Serial.println();
 }
 
-void loop() {
+void traiter_commande(WiFiClient &client, String msg) {
+  // juste pour tester un bouton du gui et que l'icm marche
+  if (msg == "info_etat") {
+    info_etat(client, accel, gyro, temp, mag);
+  }
+
+  // réinitialiser les valeurs de comptage 
+  if (msg == "init_valeurs") {
+    Serial.println("valeurs reinitialisées");
+    nb_tr_avance = 0;
+    nb_tr_gauche = 0;
+    nb_tr_droite = 0;
+
+  }
+
+  // monte les escaliers
+  //118
+  if (msg.substring(0,14) == "monte_escalier") { //modif
+    int pos1 = msg.indexOf(";");
+    //Serial.println(pos1);
+    int pos2 = msg.indexOf(";",pos1+1);
+    int pos3 = msg.indexOf(";",pos2+1);
+    int pos4 = msg.indexOf(";",pos3+1);
+    int pos5 = msg.indexOf(";",pos4+1);
+    int pos6 = msg.indexOf(";",pos5+1);
+    int pos7 = msg.indexOf(";",pos6+1);
+
+    String chaine1 = msg.substring(0,pos1);
+    String chaine2 = msg.substring(pos1+1,pos2);
+    String chaine3 = msg.substring(pos2+1,pos3);
+    String chaine4 = msg.substring(pos3+1,pos4);
+    String chaine5 = msg.substring(pos4+1,pos5);
+    String chaine6 = msg.substring(pos5+1,pos6);
+    String chaine7 = msg.substring(pos6+1,pos7);
+    int taille_esc = msg.substring(pos2+1,pos3).toInt();
+    int delai_monter = chaine4.toInt();
+    int delai_descente = chaine5.toInt();
+    int vitesse_monter = chaine6.toInt();
+    int vitesse_descente = chaine7.toInt();
+    monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag, delai_monter, delai_descente, vitesse_monter, vitesse_descente);
+  }
+
+
+  if (msg.substring(0,6) == "tourne") { 
+    int pos1 = msg.indexOf(";");
+    //Serial.println(pos1);
+    int pos2 = msg.indexOf(";",pos1+1);
+    
+    int chaine1 = msg.substring(pos1+1,pos2).toInt();
+    tourne(client, chaine1, accel , gyro , temp , mag);
+  }
+
+  if (msg.substring(0,16) == "platforme_monter") {
+    int pos1 = msg.indexOf(";"); 
+    int pos2 = msg.indexOf(";",pos1+1);
+    int angle = msg.substring(pos1+1,pos2).toInt();
+    int duree = msg.substring(pos2+1,-1).toInt();
+    Serial.println("Monter la plateforme");
+    Serial.print(angle);Serial.println("°");
+    plateforme(client, servo_platforme, angle, duree);
+    //Serial.print(angle);
+    //servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
+  } 
+
+  if (msg.substring(0,16) == "avance_controlee") {
+    int pos1 = msg.indexOf(";"); 
+    int pos2 = msg.indexOf(";",pos1+1);
+    int pos3 = msg.indexOf(";",pos2+1);
+    int pos4 = msg.indexOf(";",pos3+1);
+    int pos5 = msg.indexOf(";",pos4+1);
+    int vitesse1 = msg.substring(pos1+1,pos2).toInt();
+    int vitesse2 = msg.substring(pos2+1,pos3).toInt();
+    int vitesse1D = msg.substring(pos3+1,pos4).toInt();
+    int vitesse2D = msg.substring(pos4+1,pos5).toInt();
+    int temps = msg.substring(pos5+1,-1).toInt();
+    Serial.println("Avance contrôlée");
+    avance_controlee(client, vitesse1, vitesse2, vitesse1D, vitesse2D, temps, accel , gyro , temp , mag);
+
+  } 
+
+    
+
+  // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
+  // ------- copier l'output et le coller dans un txt
+  if (msg == "afficher_icm") {
+    afficher_icm(client, accel , gyro , temp , mag);
+  }
+
+  
+
+// sert à envoyer les données pour controler les moteurs
+if (msg.substring(0,6) == "moteur") { // découpe la chaine de caractere envoyée par le gui de python
+    int pos1 = msg.indexOf(";");
+    int pos2 = msg.indexOf(";", pos1+1);
+    int pwm1 = msg.substring(pos1+1, pos2).toInt();
+    int pwm2 = msg.substring(pos2+1).toInt();
+    moteur(pwm1, pwm2);
+    Serial.print("Moteurs controlés : ");
+    Serial.print(pwm1);
+    Serial.print(", ");
+    Serial.println(pwm2);
+
+  }
+}
+
     //  /* Get a new normalized sensor event */
   sensors_event_t accel;
   sensors_event_t gyro;
@@ -203,181 +307,29 @@ void loop() {
   int nb_tr_droite = 0;
   int nb_marche = 0;
 
-  while(1){
 
-    // l'interface py envoit des valeurs à l'esp32 via WIFI
-    // en fonction du premier mot reçu, l'esp effectue une action ou donne des infos au gui
-    WiFiClient client = server.available();
+  // l'interface py envoit des valeurs à l'esp32 via WIFI
+  // en fonction du premier mot reçu, l'esp effectue une action ou donne des infos au gui
+  WiFiClient client;
+  unsigned long dernier_envoi = 0;
 
-    if (client) {
-      Serial.println("Client connecte");
-
-      while (client.connected()) {
-        if (client.available()) {
-
-          String msg = client.readStringUntil('\n');
-          msg.trim(); 
-          Serial.print("Recu : ");
-          Serial.println(msg);
-
-
-          // juste pour tester un bouton du gui et que l'icm marche
-          if (msg == "info_etat") {
-            info_etat(client, accel, gyro, temp, mag);
-          }
-
-          // réinitialiser les valeurs de comptage 
-          if (msg == "init_valeurs") {
-            Serial.println("valeurs reinitialisées");
-            nb_tr_avance = 0;
-            nb_tr_gauche = 0;
-            nb_tr_droite = 0;
-  
-          }
-
-          // monte les escaliers
-          //118
-          if (msg.substring(0,14) == "monte_escalier") { //modif
-            int pos1 = msg.indexOf(";");
-            //Serial.println(pos1);
-            int pos2 = msg.indexOf(";",pos1+1);
-            int pos3 = msg.indexOf(";",pos2+1);
-            int pos4 = msg.indexOf(";",pos3+1);
-            int pos5 = msg.indexOf(";",pos4+1);
-            int pos6 = msg.indexOf(";",pos5+1);
-            int pos7 = msg.indexOf(";",pos6+1);
-
-            String chaine1 = msg.substring(0,pos1);
-            String chaine2 = msg.substring(pos1+1,pos2);
-            String chaine3 = msg.substring(pos2+1,pos3);
-            String chaine4 = msg.substring(pos3+1,pos4);
-            String chaine5 = msg.substring(pos4+1,pos5);
-            String chaine6 = msg.substring(pos5+1,pos6);
-            String chaine7 = msg.substring(pos6+1,pos7);
-            int taille_esc = msg.substring(pos2+1,pos3).toInt();
-            int delai_monter = chaine4.toInt();
-            int delai_descente = chaine5.toInt();
-            int vitesse_monter = chaine6.toInt();
-            int vitesse_descente = chaine7.toInt();
-            monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag, delai_monter, delai_descente, vitesse_monter, vitesse_descente);
-          }
-
-
-          if (msg.substring(0,6) == "tourne") { 
-            int pos1 = msg.indexOf(";");
-            //Serial.println(pos1);
-            int pos2 = msg.indexOf(";",pos1+1);
-            
-            int chaine1 = msg.substring(pos1+1,pos2).toInt();
-            tourne(client, chaine1, accel , gyro , temp , mag);
-          }
-
-          if (msg.substring(0,16) == "platforme_monter") {
-            int pos1 = msg.indexOf(";"); 
-            int pos2 = msg.indexOf(";",pos1+1);
-            int angle = msg.substring(pos1+1,pos2).toInt();
-            int duree = msg.substring(pos2+1,-1).toInt();
-            Serial.println("Monter la plateforme");
-            Serial.print(angle);Serial.println("°");
-            plateforme(client, servo_platforme, angle, duree);
-            //Serial.print(angle);
-            //servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
-          } 
-
-          if (msg.substring(0,16) == "avance_controlee") {
-            int pos1 = msg.indexOf(";"); 
-            int pos2 = msg.indexOf(";",pos1+1);
-            int pos3 = msg.indexOf(";",pos2+1);
-            int pos4 = msg.indexOf(";",pos3+1);
-            int pos5 = msg.indexOf(";",pos4+1);
-            int vitesse1 = msg.substring(pos1+1,pos2).toInt();
-            int vitesse2 = msg.substring(pos2+1,pos3).toInt();
-            int vitesse1D = msg.substring(pos3+1,pos4).toInt();
-            int vitesse2D = msg.substring(pos4+1,pos5).toInt();
-            int temps = msg.substring(pos5+1,-1).toInt();
-            Serial.println("Avance contrôlée");
-            avance_controlee(client, vitesse1, vitesse2, vitesse1D, vitesse2D, temps, accel , gyro , temp , mag);
-  
-          } 
-
-           
-
-          // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
-          // ------- copier l'output et le coller dans un txt
-          if (msg == "afficher_icm") {
-            afficher_icm(client, accel , gyro , temp , mag);
-          }
-
-          
-
-        // sert à envoyer les données pour controler les moteurs
-        if (msg.substring(0,2) == "m1") { // découpe la chaine de caractere envoyée par le gui de python
-              // message sous la forme m1:64;m2:82;
-            int pos1 = msg.indexOf(";");
-            //Serial.println(pos1);
-            int pos2 = msg.indexOf(";",pos1+1);
-            String chaine1 = msg.substring(0,pos1);
-            String chaine2 = msg.substring(pos1+1,pos2);
-            //Serial.println(pos2);
-            //Serial.println(chaine1);
-            //Serial.println(chaine2);
-
-            int pos11 = chaine1.indexOf(":");
-            String chaine11 = chaine1.substring(0,pos11);
-            String chaine12 = chaine1.substring(pos11+1,-1);
-            
-            //Serial.println(chaine11);
-            //Serial.println(chaine12);
-
-            int pos22 = chaine2.indexOf(":");
-            String chaine21 = chaine2.substring(0,pos22);
-            String chaine22 = chaine2.substring(pos22+1,-1);
-            
-            Serial.print(chaine11);
-            Serial.print(" a pour valeur : ");
-            Serial.print(chaine12);
-            Serial.print(" /// ");
-            Serial.print(chaine21);
-            Serial.print(" a pour valeur : ");
-            Serial.println(chaine22);
-
-            moteur(chaine12.toInt(), chaine22.toInt()); // fait tourner les moteurs
-
-          }
-          /*
-          // message sous la forme m1:64;m2:82;
-            int pos1 = msg.indexOf(";");
-            //Serial.println(pos1);
-            int pos2 = msg.indexOf(";",pos1+1);
-            String chaine1 = msg.substring(0,pos1);
-            String chaine2 = msg.substring(pos1+1,pos2);
-            int pos11 = chaine1.indexOf(":");
-            String chaine11 = chaine1.substring(0,pos11);
-            String chaine12 = chaine1.substring(pos11+1,-1);
-            int pos22 = chaine2.indexOf(":");
-            String chaine21 = chaine2.substring(0,pos22);
-            String chaine22 = chaine2.substring(pos22+1,-1);
-            
-            Serial.print(chaine11);
-            Serial.print(" a pour valeur : ");
-            Serial.print(chaine12);
-            Serial.print(" /// ");
-            Serial.print(chaine21);
-            Serial.print(" a pour valeur : ");
-            Serial.println(chaine22);
-
-            moteur(chaine12.toInt(), chaine22.toInt()); // fait tourner les moteurs
-            */
-            }
-        delay(10);
-      }
-
-      client.stop();
-      Serial.println("Client deconnecte");
+  void loop() {
+    if (!client || !client.connected()) {
+      client = server.available();   
+      return;
+    }
+    if (client.available()) {
+      String msg = client.readStringUntil('\n');
+      msg.trim();
+      traiter_commande(client, msg);   
     }
 
+    if (millis() - dernier_envoi > 50) {
+      envoyer_icm(client);              
+      dernier_envoi = millis();
+    }
 
     delay(5);
 
-    }
-}
+  }
+

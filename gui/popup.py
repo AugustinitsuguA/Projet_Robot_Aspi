@@ -1,3 +1,5 @@
+from os import link
+
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget,QSlider,
     QHBoxLayout, QVBoxLayout, QPushButton,QGridLayout,
@@ -13,8 +15,9 @@ ESP32_IP_DRONE = "192.168.4.2"
 PORT_DRONE = 1234
 
 class Popup_donnees(QWidget):
-    def __init__(self):
+    def __init__(self, link):
         super().__init__()
+        self.link = link
         self.setWindowTitle("Monter")
         layout = QVBoxLayout()
         self.txtdonee = QLabel("nombre de marches :")
@@ -50,21 +53,19 @@ class Popup_donnees(QWidget):
         self.setLayout(layout)
 
     def lancer(self):
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
         mot1 = self.vitesse.text()
         taille_esc = self.donnee.text()
         delai_monter = self.temps_monter.text()
         delai_descente = self.temps_descente.text()
         vitesse_monter = self.plat_monter.text()
         vitesse_descente = self.plat_descente.text()
-        s.sendall(f"monte_escalier;{mot1};{taille_esc};{delai_monter};{delai_descente};{vitesse_monter};{vitesse_descente}\n".encode())  # envoie commande
-        s.close()
+        ligne = f"monte_escalier;{mot1};{taille_esc};{delai_monter};{delai_descente};{vitesse_monter};{vitesse_descente}\n"
+        self.link.write(ligne.encode())
 
 class Popup_tourne(QWidget):
-    def __init__(self):
+    def __init__(self, link):
         super().__init__()
+        self.link = link
         self.setWindowTitle("Tourner")
         layout = QVBoxLayout()
         self.txtdonee = QLabel("nombre de tours de roue :")
@@ -77,16 +78,13 @@ class Popup_tourne(QWidget):
         self.setLayout(layout)
 
     def lancer_tourne(self):
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
         nbTour = self.donnee.text()
-        s.sendall(f"tourne;{nbTour};\n".encode())  # envoie commande
-        s.close()
+        self.link.write(f"tourne;{nbTour}\n".encode())
 
 class Popup_avance_controlee(QWidget):
-    def __init__(self):
+    def __init__(self, link):
         super().__init__()
+        self.link = link
         self.setWindowTitle("Avance Contrôlée")
         layout = QVBoxLayout()
         self.txtdonee = QLabel("vitesse 1 G :")
@@ -117,20 +115,18 @@ class Popup_avance_controlee(QWidget):
         # ajouter temps de l avance contrôlée
 
     def lancer_avance_controlee(self):
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
         vitesse1 = self.donnee.text()
         vitesse2 = self.donnee2.text()
         vitesse1D = self.donneeD.text()
         vitesse2D = self.donnee2D.text()
         temps = self.donnee3.text()  
-        s.sendall(f"avance_controlee;{vitesse1};{vitesse2};{vitesse1D};{vitesse2D};{temps};\n".encode())  # envoie commande
-        s.close()
+        self.link.write(f"avance_controlee;{vitesse1};{vitesse2};{vitesse1D};{vitesse2D};{temps};\n".encode())  # envoie commande
+        
 
 class Popup_plateforme(QWidget):
-    def __init__(self):
+    def __init__(self, link):
         super().__init__()
+        self.link = link
         self.setWindowTitle("Plateforme")
         layout = QVBoxLayout()
         self.txtdonee = QLabel("angle (<90 monte! ; >90 descend) :")
@@ -148,14 +144,10 @@ class Popup_plateforme(QWidget):
         self.setLayout(layout)
 
     def lancer_plat(self):
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
         angle = self.donnee.text()
         duree = self.donnee2.text()
-     
-        s.sendall(f"platforme_monter;{angle};{duree};\n".encode())  # envoie commande
-        s.close()
+        self.link.write(f"platforme_monter;{angle};{duree};\n".encode())  # envoie commande
+
 
 
 
@@ -163,8 +155,9 @@ class Popup_plateforme(QWidget):
 # popup Robot Aspi -----------------------------------------------------------------------------
 
 class Popup_direction_aspi(QWidget):
-    def __init__(self) :
+    def __init__(self, link):
         super().__init__()
+        self.link = link
         self.setStyleSheet(style.STYLE)
         self.setWindowTitle("Diriger le robot aspirateur")
         layout = QVBoxLayout()
