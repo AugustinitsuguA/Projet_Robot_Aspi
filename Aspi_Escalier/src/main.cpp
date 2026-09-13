@@ -40,6 +40,8 @@ uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
 #define MOTOR_G_IN1 12
 #define MOTOR_G_IN2 13
 
+#define PIN_COURANT 1
+
 
 /*
 différents états du robot : 

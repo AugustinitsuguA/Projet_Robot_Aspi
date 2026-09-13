@@ -318,7 +318,7 @@ class MainWindow(QMainWindow):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
-        s.sendall(f"etat_base".encode())  # envoie commande
+        s.sendall(f"etat_base\n".encode())  # envoie commande
         s.close()
 
     # dit à l'esp32 de réinitialiser les valeurs --------------
@@ -326,7 +326,7 @@ class MainWindow(QMainWindow):
         global PORT,ESP32_IP
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
-        s.sendall(f"init_valeurs".encode())  # envoie commande
+        s.sendall(f"init_valeurs\n".encode())  # envoie commande
         s.close()
 
     def tourne (self) :  
@@ -341,7 +341,7 @@ class MainWindow(QMainWindow):
         s.connect((ESP32_IP, PORT))
         mot1 = self.s_curseur1.value()
         mot2 = self.s_curseur2.value()
-        s.sendall(f"m1:{mot1};m2:{mot2};".encode())  # envoie commande
+        s.sendall(f"m1:{mot1};m2:{mot2};\n".encode())  # envoie commande
         s.close()
 
     # faire monter le robot en lui envoyant la taille de l'escalier et la vitesse de montée
@@ -383,7 +383,7 @@ class MainWindow(QMainWindow):
 
 
 
-    # afficher les infos ICM dans le but de faire dees graphiques sur MatLab
+    # afficher les infos ICM dans le but de faire des graphiques sur MatLab
 
     def afficher_icm (self) :  
         global PORT,ESP32_IP

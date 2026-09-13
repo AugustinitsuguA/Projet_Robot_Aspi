@@ -59,7 +59,7 @@ class Popup_donnees(QWidget):
         delai_descente = self.temps_descente.text()
         vitesse_monter = self.plat_monter.text()
         vitesse_descente = self.plat_descente.text()
-        s.sendall(f"monte_escalier;{mot1};{taille_esc};{delai_monter};{delai_descente};{vitesse_monter};{vitesse_descente}".encode())  # envoie commande
+        s.sendall(f"monte_escalier;{mot1};{taille_esc};{delai_monter};{delai_descente};{vitesse_monter};{vitesse_descente}\n".encode())  # envoie commande
         s.close()
 
 class Popup_tourne(QWidget):
@@ -81,7 +81,7 @@ class Popup_tourne(QWidget):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((ESP32_IP, PORT))
         nbTour = self.donnee.text()
-        s.sendall(f"tourne;{nbTour};".encode())  # envoie commande
+        s.sendall(f"tourne;{nbTour};\n".encode())  # envoie commande
         s.close()
 
 class Popup_avance_controlee(QWidget):
