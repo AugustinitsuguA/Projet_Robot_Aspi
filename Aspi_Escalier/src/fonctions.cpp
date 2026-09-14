@@ -150,6 +150,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   moteur(40,40);
 }
 
+// fait bouger la plateforme à une certaine vitesse pendant un certain temps
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps){
   Serial.println("plateforme");
   Serial.print(vitesse);
@@ -165,18 +166,11 @@ void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int tem
   servo_platforme.write(90);
 }
 
-
-// fonction pour stopper les fonctions
+// fonction pour arreter les fonctions
 int arret(WiFiClient &client){
-
-  // s'il y a une nouvelle requette du gui, ca stop les fonctions.
-  // c'est pour ca que ca ne stop pas la socket persistante car 
-  // la requete a deja été acceptée 
-  WiFiClient requestClient = server.available();
-  if (requestClient) {
-    String msg = requestClient.readStringUntil('\n');
+  if (client.available()) {
+    String msg = client.readStringUntil('\n');
     msg.trim();
-    requestClient.stop();
     if (msg == "stop") {
       return 1;
     }
@@ -385,8 +379,10 @@ void envoie_donnees(WiFiClient &client,  int etat, int marche, sensors_event_t &
 }
 
 void monte_plateforme(){
+
   
 }
+
 // compter les nombre de tours de roue quand avance 
 void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &etat, WiFiClient client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
 
@@ -523,4 +519,9 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
 
 }
 
-
+void envoyer_icm(WiFiClient &client) {
+  icm.getEvent(&accel, &gyro, &temp, &mag);
+  client.print("ICM;");
+  client.print(gyro.gyro.y);
+  client.println(";");
+}

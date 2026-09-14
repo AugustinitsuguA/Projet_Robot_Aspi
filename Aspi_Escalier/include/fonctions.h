@@ -8,6 +8,12 @@
 extern Adafruit_ICM20948 icm;
 extern WiFiServer server;
 extern Servo servo_platforme;
+extern sensors_event_t accel;
+extern sensors_event_t gyro;
+extern sensors_event_t temp;
+extern sensors_event_t mag;
+
+extern Servo servo_platforme;
 
 
 void moteur(int pwm1 , int pwm2);
@@ -20,5 +26,6 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
 int arret(WiFiClient &client);
 void envoie_donnees(WiFiClient &client, int etat, int marche, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps);
+void envoyer_icm(WiFiClient &client);
 
 #endif

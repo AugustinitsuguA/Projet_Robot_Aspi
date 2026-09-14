@@ -27,6 +27,10 @@ WiFiServer server(1234);   // serveur TCP
 // test pour pour savoir 
 
 Adafruit_ICM20948 icm;
+sensors_event_t accel;
+sensors_event_t gyro;
+sensors_event_t temp;
+sensors_event_t mag;
 uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
 // For SPI mode, we need a CS pin
 #define ICM_CS 10
@@ -177,119 +181,8 @@ void setup() {
   Serial.println();
 }
 
-void traiter_commande(WiFiClient &client, String msg) {
-  // juste pour tester un bouton du gui et que l'icm marche
-  if (msg == "info_etat") {
-    info_etat(client, accel, gyro, temp, mag);
-  }
-
-  // réinitialiser les valeurs de comptage 
-  if (msg == "init_valeurs") {
-    Serial.println("valeurs reinitialisées");
-    nb_tr_avance = 0;
-    nb_tr_gauche = 0;
-    nb_tr_droite = 0;
-
-  }
-
-  // monte les escaliers
-  //118
-  if (msg.substring(0,14) == "monte_escalier") { //modif
-    int pos1 = msg.indexOf(";");
-    //Serial.println(pos1);
-    int pos2 = msg.indexOf(";",pos1+1);
-    int pos3 = msg.indexOf(";",pos2+1);
-    int pos4 = msg.indexOf(";",pos3+1);
-    int pos5 = msg.indexOf(";",pos4+1);
-    int pos6 = msg.indexOf(";",pos5+1);
-    int pos7 = msg.indexOf(";",pos6+1);
-
-    String chaine1 = msg.substring(0,pos1);
-    String chaine2 = msg.substring(pos1+1,pos2);
-    String chaine3 = msg.substring(pos2+1,pos3);
-    String chaine4 = msg.substring(pos3+1,pos4);
-    String chaine5 = msg.substring(pos4+1,pos5);
-    String chaine6 = msg.substring(pos5+1,pos6);
-    String chaine7 = msg.substring(pos6+1,pos7);
-    int taille_esc = msg.substring(pos2+1,pos3).toInt();
-    int delai_monter = chaine4.toInt();
-    int delai_descente = chaine5.toInt();
-    int vitesse_monter = chaine6.toInt();
-    int vitesse_descente = chaine7.toInt();
-    monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag, delai_monter, delai_descente, vitesse_monter, vitesse_descente);
-  }
-
-
-  if (msg.substring(0,6) == "tourne") { 
-    int pos1 = msg.indexOf(";");
-    //Serial.println(pos1);
-    int pos2 = msg.indexOf(";",pos1+1);
-    
-    int chaine1 = msg.substring(pos1+1,pos2).toInt();
-    tourne(client, chaine1, accel , gyro , temp , mag);
-  }
-
-  if (msg.substring(0,16) == "platforme_monter") {
-    int pos1 = msg.indexOf(";"); 
-    int pos2 = msg.indexOf(";",pos1+1);
-    int angle = msg.substring(pos1+1,pos2).toInt();
-    int duree = msg.substring(pos2+1,-1).toInt();
-    Serial.println("Monter la plateforme");
-    Serial.print(angle);Serial.println("°");
-    plateforme(client, servo_platforme, angle, duree);
-    //Serial.print(angle);
-    //servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
-  } 
-
-  if (msg.substring(0,16) == "avance_controlee") {
-    int pos1 = msg.indexOf(";"); 
-    int pos2 = msg.indexOf(";",pos1+1);
-    int pos3 = msg.indexOf(";",pos2+1);
-    int pos4 = msg.indexOf(";",pos3+1);
-    int pos5 = msg.indexOf(";",pos4+1);
-    int vitesse1 = msg.substring(pos1+1,pos2).toInt();
-    int vitesse2 = msg.substring(pos2+1,pos3).toInt();
-    int vitesse1D = msg.substring(pos3+1,pos4).toInt();
-    int vitesse2D = msg.substring(pos4+1,pos5).toInt();
-    int temps = msg.substring(pos5+1,-1).toInt();
-    Serial.println("Avance contrôlée");
-    avance_controlee(client, vitesse1, vitesse2, vitesse1D, vitesse2D, temps, accel , gyro , temp , mag);
-
-  } 
-
-    
-
-  // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
-  // ------- copier l'output et le coller dans un txt
-  if (msg == "afficher_icm") {
-    afficher_icm(client, accel , gyro , temp , mag);
-  }
-
-  
-
-// sert à envoyer les données pour controler les moteurs
-if (msg.substring(0,6) == "moteur") { // découpe la chaine de caractere envoyée par le gui de python
-    int pos1 = msg.indexOf(";");
-    int pos2 = msg.indexOf(";", pos1+1);
-    int pwm1 = msg.substring(pos1+1, pos2).toInt();
-    int pwm2 = msg.substring(pos2+1).toInt();
-    moteur(pwm1, pwm2);
-    Serial.print("Moteurs controlés : ");
-    Serial.print(pwm1);
-    Serial.print(", ");
-    Serial.println(pwm2);
-
-  }
-}
-
+void loop() {
     //  /* Get a new normalized sensor event */
-  sensors_event_t accel;
-  sensors_event_t gyro;
-  sensors_event_t mag;
-  sensors_event_t temp;
- 
-  Serial.println("debut loop");
-  
   //int nb_tr_droite;
   float accel_x;
   float accel_y;
@@ -313,7 +206,7 @@ if (msg.substring(0,6) == "moteur") { // découpe la chaine de caractere envoyé
   WiFiClient client;
   unsigned long dernier_envoi = 0;
 
-  void loop() {
+  while (1) {
     if (!client || !client.connected()) {
       client = server.available();   
       return;
@@ -321,7 +214,108 @@ if (msg.substring(0,6) == "moteur") { // découpe la chaine de caractere envoyé
     if (client.available()) {
       String msg = client.readStringUntil('\n');
       msg.trim();
-      traiter_commande(client, msg);   
+      // juste pour tester un bouton du gui et que l'icm marche
+      if (msg == "info_etat") {
+        info_etat(client, accel, gyro, temp, mag);
+      }
+
+      // réinitialiser les valeurs de comptage 
+      if (msg == "init_valeurs") {
+        Serial.println("valeurs reinitialisées");
+        nb_tr_avance = 0;
+        nb_tr_gauche = 0;
+        nb_tr_droite = 0;
+
+      }
+
+      // monte les escaliers
+      //118
+      if (msg.substring(0,14) == "monte_escalier") { //modif
+        int pos1 = msg.indexOf(";");
+        //Serial.println(pos1);
+        int pos2 = msg.indexOf(";",pos1+1);
+        int pos3 = msg.indexOf(";",pos2+1);
+        int pos4 = msg.indexOf(";",pos3+1);
+        int pos5 = msg.indexOf(";",pos4+1);
+        int pos6 = msg.indexOf(";",pos5+1);
+        int pos7 = msg.indexOf(";",pos6+1);
+
+        String chaine1 = msg.substring(0,pos1);
+        String chaine2 = msg.substring(pos1+1,pos2);
+        String chaine3 = msg.substring(pos2+1,pos3);
+        String chaine4 = msg.substring(pos3+1,pos4);
+        String chaine5 = msg.substring(pos4+1,pos5);
+        String chaine6 = msg.substring(pos5+1,pos6);
+        String chaine7 = msg.substring(pos6+1,pos7);
+        int taille_esc = msg.substring(pos2+1,pos3).toInt();
+        int delai_monter = chaine4.toInt();
+        int delai_descente = chaine5.toInt();
+        int vitesse_monter = chaine6.toInt();
+        int vitesse_descente = chaine7.toInt();
+        monte(client, taille_esc, chaine2.toInt(), accel , gyro , temp , mag, delai_monter, delai_descente, vitesse_monter, vitesse_descente);
+      }
+
+
+      if (msg.substring(0,6) == "tourne") { 
+        int pos1 = msg.indexOf(";");
+        //Serial.println(pos1);
+        int pos2 = msg.indexOf(";",pos1+1);
+        
+        int chaine1 = msg.substring(pos1+1,pos2).toInt();
+        tourne(client, chaine1, accel , gyro , temp , mag);
+      }
+
+      if (msg.substring(0,16) == "platforme_monter") {
+        int pos1 = msg.indexOf(";"); 
+        int pos2 = msg.indexOf(";",pos1+1);
+        int angle = msg.substring(pos1+1,pos2).toInt();
+        int duree = msg.substring(pos2+1,-1).toInt();
+        Serial.println("Monter la plateforme");
+        Serial.print(angle);Serial.println("°");
+        plateforme(client, servo_platforme, angle, duree);
+        //Serial.print(angle);
+        //servo_platforme.write(angle); // Positionne le servo à 180 degrés pour monter la plateforme
+      } 
+
+      if (msg.substring(0,16) == "avance_controlee") {
+        int pos1 = msg.indexOf(";"); 
+        int pos2 = msg.indexOf(";",pos1+1);
+        int pos3 = msg.indexOf(";",pos2+1);
+        int pos4 = msg.indexOf(";",pos3+1);
+        int pos5 = msg.indexOf(";",pos4+1);
+        int vitesse1 = msg.substring(pos1+1,pos2).toInt();
+        int vitesse2 = msg.substring(pos2+1,pos3).toInt();
+        int vitesse1D = msg.substring(pos3+1,pos4).toInt();
+        int vitesse2D = msg.substring(pos4+1,pos5).toInt();
+        int temps = msg.substring(pos5+1,-1).toInt();
+        Serial.println("Avance contrôlée");
+        avance_controlee(client, vitesse1, vitesse2, vitesse1D, vitesse2D, temps, accel , gyro , temp , mag);
+
+      } 
+
+        
+
+      // ------- afficher les données de l'ICM dans le but de les enregistrer en txt
+      // ------- copier l'output et le coller dans un txt
+      if (msg == "afficher_icm") {
+        afficher_icm(client, accel , gyro , temp , mag);
+      }
+
+      
+
+    // sert à envoyer les données pour controler les moteurs
+    if (msg.substring(0,6) == "moteur") { // découpe la chaine de caractere envoyée par le gui de python
+        int pos1 = msg.indexOf(";");
+        int pos2 = msg.indexOf(";", pos1+1);
+        int pwm1 = msg.substring(pos1+1, pos2).toInt();
+        int pwm2 = msg.substring(pos2+1).toInt();
+        moteur(pwm1, pwm2);
+        Serial.print("Moteurs controlés : ");
+        Serial.print(pwm1);
+        Serial.print(", ");
+        Serial.println(pwm2);
+
+      }   
     }
 
     if (millis() - dernier_envoi > 50) {
@@ -332,4 +326,4 @@ if (msg.substring(0,6) == "moteur") { // découpe la chaine de caractere envoyé
     delay(5);
 
   }
-
+}
