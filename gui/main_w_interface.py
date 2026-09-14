@@ -187,9 +187,11 @@ class MainWindow(QMainWindow):
 
         self.link = QTcpSocket(self)
         self.link.readyRead.connect(self.recevoir_flux)
+
         self.link.errorOccurred.connect(self.on_link_error)
         self.link.connected.connect(lambda: self.b_nb_tour_g_val.setText("Connecté"))
         self.link.disconnected.connect(lambda: self.b_nb_tour_g_val.setText("Déconnecté"))
+
         self.link.connectToHost(ESP32_IP, PORT)
 
         
