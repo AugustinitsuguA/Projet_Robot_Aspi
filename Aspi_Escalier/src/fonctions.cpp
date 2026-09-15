@@ -96,7 +96,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
 
   while (nb_marche < taille_esc-1){
     
-    int delay_freq = 50; //ms
+    int delay_freq = 50; 
 
     moteur(vitesse , vitesse);
 
@@ -139,6 +139,8 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       moteur(40,40);
       return;
     }
+
+    // a tester // client.print("ICM");client.print(";");client.print(gy);client.print(";"); - - - - - - - -
 
     delay(delay_freq); //nouveau
   }
