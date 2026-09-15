@@ -173,7 +173,7 @@ int arret(WiFiClient &client){
   if (client.available()) {
     String msg = client.readStringUntil('\n');
     msg.trim();
-    if (msg == "stop") {
+    if (msg == "moteur;0;0") {
       return 1;
     }
   }
@@ -256,7 +256,7 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
       delay(temps_1);
 
       // si le robot commence à pencher vers l'avant, on ralentit pour éviter le choc
-      if (gyro_y < - 0.2){ // tester plusieurs valeurs
+      if (gyro_y < - 0.1){ // tester plusieurs valeurs
         moteur(vitesse_2,vitesse_2D);
 
         // tant qu'il n'y a pas eu le choc
@@ -325,7 +325,16 @@ void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro
   client.print(gyro_y);client.print(";");
   client.print(gyro_z);client.println(";");
 
-  envoie_donnees(client, 0, 0, accel, gyro, temp, mag);
+  Serial.print(accel_x);client.print(";");
+  Serial.print(accel_y);client.print(";");
+  Serial.print(accel_z);client.print(";");
+  Serial.print(mag_x);client.print(";");
+  Serial.print(mag_y);client.print(";");
+  Serial.print(mag_z);client.print(";");
+  Serial.print(gyro_x);client.print(";");
+  Serial.print(gyro_y);client.print(";");
+  Serial.print(gyro_z);client.println(";");
+
 
 }
 

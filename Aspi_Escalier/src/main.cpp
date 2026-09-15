@@ -8,7 +8,7 @@
 #include "../include/fonctions.h"
 
 
-Madgwick filter;
+Madgwick filter; 
 Servo servo_platforme;
 
 
@@ -32,6 +32,30 @@ sensors_event_t gyro;
 sensors_event_t temp;
 sensors_event_t mag;
 uint16_t measurement_delay_us = 65535; // Delay between measurements for testing
+//int nb_tr_droite;
+
+float accel_x;
+float accel_y;
+float accel_z;
+float mag_x;
+float mag_y;
+float mag_z;
+float gyro_x;
+float gyro_y;
+float gyro_z;
+int y_up;
+int y_up_p;
+int nb_tr_avance = 0;
+int nb_tr_gauche = 0;
+int nb_tr_droite = 0;
+int nb_marche = 0;
+
+
+// l'interface py envoit des valeurs à l'esp32 via WIFI
+// en fonction du premier mot reçu, l'esp effectue une action ou donne des infos au gui
+WiFiClient client;
+unsigned long dernier_envoi = 0;
+
 // For SPI mode, we need a CS pin
 #define ICM_CS 10
 // For software-SPI mode we need SCK/MOSI/MISO pins
@@ -181,32 +205,10 @@ void setup() {
   Serial.println();
 }
 
-void loop() {
-    //  /* Get a new normalized sensor event */
-  //int nb_tr_droite;
-  float accel_x;
-  float accel_y;
-  float accel_z;
-  float mag_x;
-  float mag_y;
-  float mag_z;
-  float gyro_x;
-  float gyro_y;
-  float gyro_z;
-  int y_up;
-  int y_up_p;
-  int nb_tr_avance = 0;
-  int nb_tr_gauche = 0;
-  int nb_tr_droite = 0;
-  int nb_marche = 0;
 
 
-  // l'interface py envoit des valeurs à l'esp32 via WIFI
-  // en fonction du premier mot reçu, l'esp effectue une action ou donne des infos au gui
-  WiFiClient client;
-  unsigned long dernier_envoi = 0;
 
-  while (1) {
+  void loop() {
     if (!client || !client.connected()) {
       client = server.available();   
       return;
@@ -326,4 +328,3 @@ void loop() {
     delay(5);
 
   }
-}
