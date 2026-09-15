@@ -4,11 +4,7 @@
 
 
 void setup() {
-// euzhfhufezh_ufziuhufzziuiuzfiufuhifsdu
 
-
-
-//egh
 }
 
 void loop() {

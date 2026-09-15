@@ -1,276 +1,279 @@
-<mxfile host="app.diagrams.net">
-  <diagram name="Page-1" id="hSEO23cBoO-CVVMctCnX">
-    <mxGraphModel dx="3157" dy="1295" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
-      <root>
-        <mxCell id="0" />
-        <mxCell id="1" parent="0" />
-        <mxCell id="4j4ATMddArKhsB1g-8PH-42" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="" vertex="1">
-          <mxGeometry height="130" width="240" x="440" y="70" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-40" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="" vertex="1">
-          <mxGeometry height="160" width="550" x="-230" y="50" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-3" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-5">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="240" y="320" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-4" connectable="0" parent="4j4ATMddArKhsB1g-8PH-3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="oui" vertex="1">
-          <mxGeometry relative="1" x="-0.1984" y="-1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-1" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Un bouton est cliqué ?" vertex="1">
-          <mxGeometry height="60" width="140" x="170" y="100" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-6" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-7">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="240" y="390" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-5" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;ol&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Ouverture du popup&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;L&#39;utilisatuer renseigne les valeurs des paramètres nécessaire à l&#39;action choisie&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Il valide pour lancer l&#39;action&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="100" width="240" x="120" y="230" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-8" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;entryX=0;entryY=1;entryDx=0;entryDy=0;" target="4j4ATMddArKhsB1g-8PH-9">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="430" y="270" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-7" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Le PC envoie au robot monte-escalier le message correspondant à l&#39;action choisie sous la forme&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;type&lt;/b&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param1&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param2&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param3&lt;/span&gt;...&lt;/div&gt;" vertex="1">
-          <mxGeometry height="100" width="200" x="140" y="390" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-10" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-12">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="530" />
-              <mxPoint x="725" y="530" />
-            </Array>
-            <mxPoint x="500" y="520" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-14" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-16">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="550" y="530" />
-              <mxPoint x="390" y="530" />
-            </Array>
-            <mxPoint x="390" y="580" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-15" connectable="0" parent="4j4ATMddArKhsB1g-8PH-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="non" vertex="1">
-          <mxGeometry relative="1" x="0.2691" y="1" as="geometry">
-            <mxPoint x="41" y="-1" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-80" connectable="0" parent="4j4ATMddArKhsB1g-8PH-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="oui" vertex="1">
-          <mxGeometry relative="1" x="-0.2852" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-9" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Un message est reçu?" vertex="1">
-          <mxGeometry height="60" width="140" x="480" y="110" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-17" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-25">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="390" y="731.6666666666666" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-23" connectable="0" parent="4j4ATMddArKhsB1g-8PH-17" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="oui" vertex="1">
-          <mxGeometry relative="1" x="-0.4127" y="2" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-16" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="plus de 50 ms se sont écoulées sans message reçu?" vertex="1">
-          <mxGeometry height="60" width="180" x="300" y="580" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-20" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-22">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="-130" y="260" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-21" connectable="0" parent="4j4ATMddArKhsB1g-8PH-20" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="oui" vertex="1">
-          <mxGeometry relative="1" x="-0.2433" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-19" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Un message est reçu?" vertex="1">
-          <mxGeometry height="60" width="140" x="-200" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-28" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-27">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-22" parent="1" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;/ol&gt;" vertex="1">
-          <mxGeometry height="60" width="290" x="-275" y="235" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-26" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" target="4j4ATMddArKhsB1g-8PH-19">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="100" y="740" />
-              <mxPoint x="100" y="200" />
-              <mxPoint x="-95" y="200" />
-            </Array>
-            <mxPoint x="130" y="780" as="sourcePoint" />
-            <mxPoint x="10" y="200" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-25" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Le robot envoie au PC le message comportant la vitesse angulaire selon Y sous la forme :&amp;nbsp;&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;ICM&lt;/b&gt;;&lt;font color=&quot;#97d077&quot;&gt;valeaur_de_gyroY&lt;/font&gt;;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="80" width="240" x="270" y="700" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-30" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-29">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-32" connectable="0" parent="4j4ATMddArKhsB1g-8PH-30" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=18;" value="&lt;font style=&quot;color: rgb(255, 102, 102);&quot;&gt;ICM&lt;/font&gt;" vertex="1">
-          <mxGeometry relative="1" x="-0.0455" as="geometry">
-            <mxPoint x="-5" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-33" edge="1" parent="1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-31">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="-210" y="410" />
-              <mxPoint x="-70" y="410" />
-            </Array>
-            <mxPoint x="-210" y="389.9999999999998" as="sourcePoint" />
-            <mxPoint x="-30" y="504.9999999999998" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-38" connectable="0" parent="4j4ATMddArKhsB1g-8PH-33" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=18;fontColor=#FF6666;" value="ETAT" vertex="1">
-          <mxGeometry relative="1" x="0.0111" y="1" as="geometry">
-            <mxPoint x="-59" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-27" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Le type est :" vertex="1">
-          <mxGeometry height="30" width="120" x="-270" y="330" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-29" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Mise à jour du graphique affichant la vitesse angulaire selon Y. Le graphique affiche les 100 dernières valeurs." vertex="1">
-          <mxGeometry height="70" width="230" x="-550" y="460" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-58" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-57" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-31" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Mise à jour des labels affichant les données" vertex="1">
-          <mxGeometry height="40" width="200" x="-170" y="440" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-51" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="190" width="290" x="580" y="580" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-12" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;li&gt;En fonction de l&#39;action lue, le programme appelle la fonction correspondante.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;" vertex="1">
-          <mxGeometry height="90" width="290" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-44" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="moteur" vertex="1">
-          <mxGeometry height="20" width="290" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-47" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="monte" vertex="1">
-          <mxGeometry height="20" width="290" y="110" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-48" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="plateforme" vertex="1">
-          <mxGeometry height="20" width="290" y="130" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-49" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="290" y="150" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-50" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="290" y="170" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-13" edge="1" parent="4j4ATMddArKhsB1g-8PH-51" source="4j4ATMddArKhsB1g-8PH-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;innerLoopWaypoints=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="4j4ATMddArKhsB1g-8PH-12">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-52" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Robot monte-escalier" vertex="1">
-          <mxGeometry height="30" width="140" x="480" y="80" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-53" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="PC" vertex="1">
-          <mxGeometry height="30" width="140" x="-20" y="60" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-54" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" value="" vertex="1">
-          <mxGeometry height="130" width="240" x="920" y="70" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-71" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-55" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-64">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-81" connectable="0" parent="4j4ATMddArKhsB1g-8PH-71" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="oui" vertex="1">
-          <mxGeometry relative="1" x="0.0892" y="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-55" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Un message est reçu?" vertex="1">
-          <mxGeometry height="60" width="140" x="960" y="120" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-56" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="Drone" vertex="1">
-          <mxGeometry height="30" width="140" x="960" y="80" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-60" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-59" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-57" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="En fonction d&#39;où est le robot dans le programme, le script contenant l&#39;interface gère donne l&#39;ordre aux robots de réaliser l&#39;action qui suit" vertex="1">
-          <mxGeometry height="70" width="230" x="-185" y="510" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-61" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" target="4j4ATMddArKhsB1g-8PH-9">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="220" y="670" />
-              <mxPoint x="220" y="510" />
-              <mxPoint x="515.06" y="510" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-62" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-59" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" target="4j4ATMddArKhsB1g-8PH-55">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="220" y="670" />
-              <mxPoint x="220" y="510" />
-              <mxPoint x="995.06" y="510" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-59" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Le PC envoie au robot monte-escalier le message correspondant à l&#39;action choisie sous la forme&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;type&lt;/b&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param1&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param2&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param3&lt;/span&gt;...&lt;/div&gt;" vertex="1">
-          <mxGeometry height="100" width="200" x="-170" y="620" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-63" connectable="0" parent="1" style="group" value="" vertex="1">
-          <mxGeometry height="190" width="290" x="885" y="580" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-64" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;li&gt;En fonction de l&#39;action lue, le programme appelle la fonction correspondante.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;" vertex="1">
-          <mxGeometry height="90" width="290" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-65" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="nettoie" vertex="1">
-          <mxGeometry height="20" width="290" y="90" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-66" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="290" y="110" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-67" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="290" y="130" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-68" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="290" y="150" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-69" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
-          <mxGeometry height="20" width="290" y="170" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-70" edge="1" parent="4j4ATMddArKhsB1g-8PH-63" source="4j4ATMddArKhsB1g-8PH-64" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;innerLoopWaypoints=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="4j4ATMddArKhsB1g-8PH-64">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-76" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-73" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" target="4j4ATMddArKhsB1g-8PH-19">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="100" y="875" />
-              <mxPoint x="100" y="200" />
-              <mxPoint x="-95" y="200" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-73" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Le robot envoie au PC l&#39;état dans lequel il est (action qui vient de réaliser) :&amp;nbsp;&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;ETAT&lt;/b&gt;;RME;&lt;font color=&quot;#97d077&quot;&gt;etat&lt;/font&gt;;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="70" width="240" x="605" y="840" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-74" parent="1" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="Le robot envoie au PC l&#39;état dans lequel il est (action qui vient de réaliser) :&amp;nbsp;&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;ETAT&lt;/b&gt;;DRONE;&lt;font color=&quot;#97d077&quot;&gt;etat&lt;/font&gt;;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="70" width="240" x="910" y="840" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-75" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-69" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startSize=11;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-74" value="">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="4j4ATMddArKhsB1g-8PH-79" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-73">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-      </root>
-    </mxGraphModel>
-  </diagram>
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="hSEO23cBoO-CVVMctCnX">
+        <mxGraphModel dx="2183" dy="866" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-42" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="440" y="70" width="240" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-40" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="-230" y="50" width="550" height="160" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-1" target="4j4ATMddArKhsB1g-8PH-5" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="240" y="320" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-4" value="oui" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="4j4ATMddArKhsB1g-8PH-3" connectable="0" vertex="1">
+                    <mxGeometry x="-0.1984" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-1" value="Un bouton est cliqué ?" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="100" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-5" target="4j4ATMddArKhsB1g-8PH-7" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="240" y="390" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-5" value="&lt;ol&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Ouverture du popup&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;L&#39;utilisatuer renseigne les valeurs des paramètres nécessaire à l&#39;action choisie&lt;/li&gt;&lt;li style=&quot;text-align: left;&quot;&gt;Il valide pour lancer l&#39;action&lt;/li&gt;&lt;/ol&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="120" y="230" width="240" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;entryX=0;entryY=1;entryDx=0;entryDy=0;" parent="1" source="4j4ATMddArKhsB1g-8PH-7" target="4j4ATMddArKhsB1g-8PH-9" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="430" y="270" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-7" value="Le PC envoie au robot monte-escalier le message correspondant à l&#39;action choisie sous la forme&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;type&lt;/b&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param1&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param2&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param3&lt;/span&gt;...&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="140" y="390" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-9" target="4j4ATMddArKhsB1g-8PH-12" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="550" y="530"/>
+                            <mxPoint x="725" y="530"/>
+                        </Array>
+                        <mxPoint x="500" y="520" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-9" target="4j4ATMddArKhsB1g-8PH-16" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="550" y="530"/>
+                            <mxPoint x="390" y="530"/>
+                        </Array>
+                        <mxPoint x="390" y="580" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-15" value="non" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="4j4ATMddArKhsB1g-8PH-14" connectable="0" vertex="1">
+                    <mxGeometry x="0.2691" y="1" relative="1" as="geometry">
+                        <mxPoint x="41" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-80" value="oui" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="4j4ATMddArKhsB1g-8PH-14" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2852" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-9" value="Un message est reçu?" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="110" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-16" target="4j4ATMddArKhsB1g-8PH-25" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="390" y="731.6666666666666" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-23" value="oui" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="4j4ATMddArKhsB1g-8PH-17" connectable="0" vertex="1">
+                    <mxGeometry x="-0.4127" y="2" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-16" value="plus de 50 ms se sont écoulées sans message reçu?" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="300" y="580" width="180" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-19" target="4j4ATMddArKhsB1g-8PH-22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-130" y="260" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-21" value="oui" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="4j4ATMddArKhsB1g-8PH-20" connectable="0" vertex="1">
+                    <mxGeometry x="-0.2433" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-19" value="Un message est reçu?" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="-200" y="90" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-22" target="4j4ATMddArKhsB1g-8PH-27" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-22" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;/ol&gt;" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-275" y="235" width="290" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;entryX=0.75;entryY=1;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="4j4ATMddArKhsB1g-8PH-25" target="4j4ATMddArKhsB1g-8PH-19" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="100" y="740"/>
+                            <mxPoint x="100" y="200"/>
+                            <mxPoint x="-95" y="200"/>
+                        </Array>
+                        <mxPoint x="130" y="780" as="sourcePoint"/>
+                        <mxPoint x="10" y="200" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-25" value="Le robot envoie au PC le message comportant la vitesse angulaire selon Y sous la forme :&amp;nbsp;&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;ICM&lt;/b&gt;;&lt;font color=&quot;#97d077&quot;&gt;valeaur_de_gyroY&lt;/font&gt;;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="270" y="700" width="240" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-27" target="4j4ATMddArKhsB1g-8PH-29" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-32" value="&lt;font style=&quot;color: rgb(255, 102, 102);&quot;&gt;ICM&lt;/font&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=18;" parent="4j4ATMddArKhsB1g-8PH-30" connectable="0" vertex="1">
+                    <mxGeometry x="-0.0455" relative="1" as="geometry">
+                        <mxPoint x="-5" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" target="4j4ATMddArKhsB1g-8PH-31" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="-210" y="410"/>
+                            <mxPoint x="-70" y="410"/>
+                        </Array>
+                        <mxPoint x="-210" y="389.9999999999998" as="sourcePoint"/>
+                        <mxPoint x="-30" y="504.9999999999998" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-38" value="ETAT" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=18;fontColor=#FF6666;" parent="4j4ATMddArKhsB1g-8PH-33" connectable="0" vertex="1">
+                    <mxGeometry x="0.0111" y="1" relative="1" as="geometry">
+                        <mxPoint x="-59" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-27" value="Le type est :" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="-270" y="330" width="120" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-29" value="Mise à jour du graphique affichant la vitesse angulaire selon Y. Le graphique affiche les 100 dernières valeurs." style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-550" y="460" width="230" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-58" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-31" target="4j4ATMddArKhsB1g-8PH-57" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-31" value="Mise à jour des labels affichant les données" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-170" y="440" width="200" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-51" value="" style="group" parent="1" connectable="0" vertex="1">
+                    <mxGeometry x="580" y="580" width="290" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-12" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;li&gt;En fonction de l&#39;action lue, le programme appelle la fonction correspondante.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="4j4ATMddArKhsB1g-8PH-51" vertex="1">
+                    <mxGeometry width="290" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-44" value="moteur" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-51" vertex="1">
+                    <mxGeometry y="90" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-47" value="monte" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-51" vertex="1">
+                    <mxGeometry y="110" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-48" value="plateforme" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-51" vertex="1">
+                    <mxGeometry y="130" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-49" value="" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-51" vertex="1">
+                    <mxGeometry y="150" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-50" value="" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-51" vertex="1">
+                    <mxGeometry y="170" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;innerLoopWaypoints=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="4j4ATMddArKhsB1g-8PH-51" source="4j4ATMddArKhsB1g-8PH-12" target="4j4ATMddArKhsB1g-8PH-12" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-52" value="Robot monte-escalier" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="480" y="80" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-53" value="PC" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="-20" y="60" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-54" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="1" vertex="1">
+                    <mxGeometry x="920" y="70" width="240" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-71" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-55" target="4j4ATMddArKhsB1g-8PH-64" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-81" value="oui" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="4j4ATMddArKhsB1g-8PH-71" connectable="0" vertex="1">
+                    <mxGeometry x="0.0892" y="1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-55" value="Un message est reçu?" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="120" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-56" value="Drone" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="80" width="140" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-60" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-57" target="4j4ATMddArKhsB1g-8PH-59" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-57" value="En fonction d&#39;où est le robot dans le programme, le script contenant l&#39;interface gère donne l&#39;ordre aux robots de réaliser l&#39;action qui suit" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-185" y="510" width="230" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-61" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" parent="1" source="4j4ATMddArKhsB1g-8PH-59" target="4j4ATMddArKhsB1g-8PH-9" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="220" y="670"/>
+                            <mxPoint x="220" y="510"/>
+                            <mxPoint x="515.06" y="510"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-62" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.25;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" parent="1" source="4j4ATMddArKhsB1g-8PH-59" target="4j4ATMddArKhsB1g-8PH-55" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="220" y="670"/>
+                            <mxPoint x="220" y="510"/>
+                            <mxPoint x="995.06" y="510"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-59" value="Le PC envoie au robot monte-escalier le message correspondant à l&#39;action choisie sous la forme&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;type&lt;/b&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param1&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param2&lt;/span&gt;;&lt;span style=&quot;color: rgb(151, 208, 119);&quot;&gt;param3&lt;/span&gt;...&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="-170" y="620" width="200" height="100" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-63" value="" style="group" parent="1" connectable="0" vertex="1">
+                    <mxGeometry x="885" y="580" width="290" height="190" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-64" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;li&gt;En fonction de l&#39;action lue, le programme appelle la fonction correspondante.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="4j4ATMddArKhsB1g-8PH-63" vertex="1">
+                    <mxGeometry width="290" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-65" value="nettoie" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-63" vertex="1">
+                    <mxGeometry y="90" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-66" value="" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-63" vertex="1">
+                    <mxGeometry y="110" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-67" value="" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-63" vertex="1">
+                    <mxGeometry y="130" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-68" value="" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-63" vertex="1">
+                    <mxGeometry y="150" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-69" value="" style="whiteSpace=wrap;html=1;" parent="4j4ATMddArKhsB1g-8PH-63" vertex="1">
+                    <mxGeometry y="170" width="290" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-70" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;innerLoopWaypoints=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="4j4ATMddArKhsB1g-8PH-63" source="4j4ATMddArKhsB1g-8PH-64" target="4j4ATMddArKhsB1g-8PH-64" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-76" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.75;entryY=1;entryDx=0;entryDy=0;dashed=1;dashPattern=8 8;" parent="1" source="4j4ATMddArKhsB1g-8PH-73" target="4j4ATMddArKhsB1g-8PH-19" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="100" y="875"/>
+                            <mxPoint x="100" y="200"/>
+                            <mxPoint x="-95" y="200"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-73" value="Le robot envoie au PC l&#39;état dans lequel il est (action qui vient de réaliser) :&amp;nbsp;&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;ETAT&lt;/b&gt;;RME;&lt;font color=&quot;#97d077&quot;&gt;etat&lt;/font&gt;;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="605" y="840" width="240" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-74" value="Le robot envoie au PC l&#39;état dans lequel il est (action qui vient de réaliser) :&amp;nbsp;&lt;div&gt;&lt;b style=&quot;color: rgb(255, 102, 102);&quot;&gt;ETAT&lt;/b&gt;;DRONE;&lt;font color=&quot;#97d077&quot;&gt;etat&lt;/font&gt;;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;/div&gt;" style="whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" parent="1" vertex="1">
+                    <mxGeometry x="910" y="840" width="240" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-75" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startSize=11;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-69" target="4j4ATMddArKhsB1g-8PH-74" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="4j4ATMddArKhsB1g-8PH-79" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" parent="1" source="4j4ATMddArKhsB1g-8PH-50" target="4j4ATMddArKhsB1g-8PH-73" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="2" value="bonjour&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+                    <mxGeometry x="1320" y="423" width="60" height="40" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
 </mxfile>
