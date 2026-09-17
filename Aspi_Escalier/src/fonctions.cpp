@@ -243,9 +243,9 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
 
       Serial.print(gyro_y);client.println(";");
 
-      client.print(gyro_y);client.print(";");
-      client.print(0);client.print(";");
-      client.print(0);client.println(";");
+      client.print("ICM;");
+      client.print(gyro.gyro.y);
+      client.println(";");
 
       if (arret(client)) {
         moteur(0,0);
@@ -263,12 +263,15 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
         while (1){
 
           icm.getEvent(&accel, &gyro, &temp, &mag);
-          gyro_x = gyro.gyro.x ;
+          
+          client.print("ICM;");
+          client.print(gyro.gyro.y);
+          client.println(";");
 
-          if (gyro_x > 0.42){
+          if (gyro_y > 0.42){
             x_up = 1;
           }
-          if (gyro_x < 0.38){
+          if (gyro_y < 0.38){
             x_up = 0;
           }
 

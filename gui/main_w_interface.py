@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         # initialisation des listes de données pour le graphique
         self.donnee_x = [0,1]
         self.donnee_y = [0,0]
-        self.max_points = 100
+        self.max_points = 200
 
         self.setStyleSheet(STYLE)       
 
@@ -237,6 +237,10 @@ class MainWindow(QMainWindow):
 
         self.curve.setData(self.donnee_y, self.donnee_x)
 
+    def on_link_error(self, socket_error):
+        print("Erreur de connexion :", socket_error)
+        self.b_nb_tour_g_val.setText("Erreur connexion ESP32")
+
     
 
     def sync(self) :
@@ -334,10 +338,14 @@ class MainWindow(QMainWindow):
 
     def stop_moteurs (self) :
         self.envoyer_commande("moteur", 0, 0)
+        self.s_curseur1.setValue(0)
+        self.s_curseur2.setValue(0)
+
 
     # avoir des infos sur l'état du robot --------------------------
     def info_etat (self) :  
-        self.envoyer_commande("INFO_ETAT")
+        self.envoyer_commande("info_etat")
+        print("info etat")
 
 
 
