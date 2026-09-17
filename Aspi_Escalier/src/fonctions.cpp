@@ -96,7 +96,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
 
   while (nb_marche < taille_esc-1){
     
-    int delay_freq = 50; //ms
+    int delay_freq = 50; 
 
     moteur(vitesse , vitesse);
 
@@ -140,6 +140,8 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       return;
     }
 
+    // a tester // client.print("ICM");client.print(";");client.print(gy);client.print(";"); - - - - - - - -
+
     delay(delay_freq); //nouveau
   }
 
@@ -150,6 +152,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   moteur(40,40);
 }
 
+// fait bouger la plateforme à une certaine vitesse pendant un certain temps
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps){
   Serial.println("plateforme");
   Serial.print(vitesse);
@@ -165,19 +168,12 @@ void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int tem
   servo_platforme.write(90);
 }
 
-
-// fonction pour stopper les fonctions
+// fonction pour arreter les fonctions
 int arret(WiFiClient &client){
-
-  // s'il y a une nouvelle requette du gui, ca stop les fonctions.
-  // c'est pour ca que ca ne stop pas la socket persistante car 
-  // la requete a deja été acceptée 
-  WiFiClient requestClient = server.available();
-  if (requestClient) {
-    String msg = requestClient.readStringUntil('\n');
+  if (client.available()) {
+    String msg = client.readStringUntil('\n');
     msg.trim();
-    requestClient.stop();
-    if (msg == "stop") {
+    if (msg == "moteur;0;0") {
       return 1;
     }
   }
@@ -247,9 +243,9 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
 
       Serial.print(gyro_y);client.println(";");
 
-      client.print(gyro_y);client.print(";");
-      client.print(0);client.print(";");
-      client.print(0);client.println(";");
+      client.print("ICM;");
+      client.print(gyro.gyro.y);
+      client.println(";");
 
       if (arret(client)) {
         moteur(0,0);
@@ -260,19 +256,22 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
       delay(temps_1);
 
       // si le robot commence à pencher vers l'avant, on ralentit pour éviter le choc
-      if (gyro_y < - 0.2){ // tester plusieurs valeurs
+      if (gyro_y < - 0.1){ // tester plusieurs valeurs
         moteur(vitesse_2,vitesse_2D);
 
         // tant qu'il n'y a pas eu le choc
         while (1){
 
           icm.getEvent(&accel, &gyro, &temp, &mag);
-          gyro_x = gyro.gyro.x ;
+          
+          client.print("ICM;");
+          client.print(gyro.gyro.y);
+          client.println(";");
 
-          if (gyro_x > 0.42){
+          if (gyro_y > 0.42){
             x_up = 1;
           }
-          if (gyro_x < 0.38){
+          if (gyro_y < 0.38){
             x_up = 0;
           }
 
@@ -329,7 +328,16 @@ void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro
   client.print(gyro_y);client.print(";");
   client.print(gyro_z);client.println(";");
 
-  envoie_donnees(client, 0, 0, accel, gyro, temp, mag);
+  Serial.print(accel_x);client.print(";");
+  Serial.print(accel_y);client.print(";");
+  Serial.print(accel_z);client.print(";");
+  Serial.print(mag_x);client.print(";");
+  Serial.print(mag_y);client.print(";");
+  Serial.print(mag_z);client.print(";");
+  Serial.print(gyro_x);client.print(";");
+  Serial.print(gyro_y);client.print(";");
+  Serial.print(gyro_z);client.println(";");
+
 
 }
 
@@ -385,8 +393,10 @@ void envoie_donnees(WiFiClient &client,  int etat, int marche, sensors_event_t &
 }
 
 void monte_plateforme(){
+
   
 }
+
 // compter les nombre de tours de roue quand avance 
 void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &etat, WiFiClient client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
 
@@ -523,4 +533,9 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
 
 }
 
-
+void envoyer_icm(WiFiClient &client) {
+  icm.getEvent(&accel, &gyro, &temp, &mag);
+  client.print("ICM;");
+  client.print(gyro.gyro.y);
+  client.println(";");
+}

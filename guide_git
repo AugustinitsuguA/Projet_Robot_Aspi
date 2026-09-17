@@ -12,14 +12,14 @@ git add . // ajouter les modifications dans la "zone de préparation"
 git commit -m " modif " // enregistre les modifications en local  
 git push // Envoyer les commits dans GitHub  
 
-Pour mettre à jour ta branche avec le main potentiellement modifié  
+Pour mettre à jour ta branche avec le main qui a été potentiellement modifié  
 git switch main  
 git pull  
 git switch nom_de_la_branche   
 git merge main  
 
 
-## qaund la modification est terminée
+## quand la modification est terminée
 git switch main  
 git pull  
 git merge // quand on est sûrs de ses modifs et qu'on veut les envoyer sur main  

@@ -38,7 +38,7 @@ class MainWindow(QMainWindow):
         # initialisation des listes de données pour le graphique
         self.donnee_x = [0,1]
         self.donnee_y = [0,0]
-        self.max_points = 100
+        self.max_points = 200
 
         self.setStyleSheet(STYLE)       
 
@@ -66,10 +66,10 @@ class MainWindow(QMainWindow):
         self.b_tourne = QPushButton("tourne")
         self.b_info_etat = QPushButton("info etat")
         self.b_info_etat.setObjectName("test")
-        self.b_afficher_icm = QPushButton("afficher icm")
-        self.b_afficher_icm.setObjectName("affichage")
-        self.b_stop = QPushButton("stopper affichage ICM")
-        self.b_stop.setObjectName("affichage")
+        # self.b_afficher_icm = QPushButton("afficher icm")
+        # self.b_afficher_icm.setObjectName("affichage")
+        # self.b_stop = QPushButton("stopper affichage ICM")
+        # self.b_stop.setObjectName("affichage")
         self.b_init = QPushButton("reinit. les valeurs")
         self.b_envoyer = QPushButton("MOTEURS")
         self.b_avance_controlee = QPushButton("avance contrôlée")
@@ -83,8 +83,8 @@ class MainWindow(QMainWindow):
         self.b_aspi_drone = QPushButton("aspiration")
 
         left_layout.addWidget(self.b_info_etat)
-        left_layout.addWidget(self.b_afficher_icm)
-        left_layout.addWidget(self.b_stop)
+        # left_layout.addWidget(self.b_afficher_icm)
+        # left_layout.addWidget(self.b_stop)
         left_layout.addWidget(self.b_monte)
         left_layout.addWidget(self.b_tourne)
         left_layout.addWidget(self.b_avance_controlee)
@@ -166,8 +166,8 @@ class MainWindow(QMainWindow):
         self.b_avance_controlee.clicked.connect(self.popup_avance_controlee)
         #self.b_descendre_platforme.clicked.connect(self.descendre_platforme)
         self.b_info_etat.clicked.connect(self.info_etat)
-        self.b_afficher_icm.clicked.connect(self.afficher_icm)
-        self.b_stop.clicked.connect(self.stop_icm)
+        # self.b_afficher_icm.clicked.connect(self.afficher_icm)
+        # self.b_stop.clicked.connect(self.stop_icm)
         self.b_monte.clicked.connect(self.monte)
         self.b_tourne.clicked.connect(self.tourne)
         self.b_envoyer.clicked.connect(self.envoyer_msg)
@@ -185,20 +185,14 @@ class MainWindow(QMainWindow):
 
         # socket persistante pour recevoir le flux ICM en continu
 
-        #création d'un socket persisant
-        self.icm_socket = QTcpSocket(self)  
-        self.icm_socket_fonction = QTcpSocket(self) 
-           
-        # quand le on est connecté à l'esp32, la fonction on_icm_socket_connected est appelée
-        # la fonction on_icm_socket_connected envoie la commande "afficher_icm" à l'esp32 pour lui dire de commencer à envoyer les données ICM
-        self.icm_socket.connected.connect(lambda: self.b_nb_tour_g_val.setText("ICM connected"))
-        self.icm_socket.connected.connect(self.socket_connectee)
-        #quand le gui revoit des données, il les lit avec la fonction recevoir_donnees
-        self.icm_socket.readyRead.connect(self.recevoir_donnees) 
-        self.icm_socket.disconnected.connect(lambda: self.b_nb_tour_g_val.setText("ICM disconnected"))
-        self.icm_socket.errorOccurred.connect(self.on_icm_error)
-        self.pending_icm_command = False
+        self.link = QTcpSocket(self)
+        self.link.readyRead.connect(self.recevoir_flux)
 
+        self.link.errorOccurred.connect(self.on_link_error)
+        self.link.connected.connect(lambda: self.b_nb_tour_g_val.setText("Connecté"))
+        self.link.disconnected.connect(lambda: self.b_nb_tour_g_val.setText("Déconnecté"))
+
+        self.link.connectToHost(ESP32_IP, PORT)
 
         
 
@@ -212,27 +206,26 @@ class MainWindow(QMainWindow):
         """
 
     
-    def recevoir_donnees(self):
-        while self.icm_socket.canReadLine():
-            data = self.icm_socket.readLine().data().decode(errors="ignore").strip()
+    def recevoir_flux(self):
+        while self.link.canReadLine():
+            data = self.link.readLine().data().decode(errors="ignore").strip()
             if not data:
                 continue
-            #print("LINE:", data)
+            champs = data.split(";")
+            type_msg = champs[0]
 
-            liste_data = data.split(";")
-            if len(liste_data) >= 1:
-                try:
-                    self.maj_graphique(float(liste_data[0]))
-                except ValueError:
-                    pass
+            if type_msg == "ICM":
+                self.maj_graphique(float(champs[1]))
+            elif type_msg == "ETAT":
+                self.b_nb_tour_val.setText(champs[1])
+                self.b_nb_tour_d_val.setText(champs[2])
+            else:
+                print("Reçu :", data)
 
-    def socket_connectee(self):
-        if self.pending_icm_command:
-            self.icm_socket.write(b"afficher_icm\n")
-            self.pending_icm_command = False
-    
-    def on_icm_error(self, socket_error):
-        print("ICM socket error:", socket_error)
+    def envoyer_commande(self, *champs):
+        ligne = ";".join(str(c) for c in champs) + "\n"
+        self.link.write(ligne.encode())
+
 
     def maj_graphique(self, x):
         self.donnee_x.append(x)
@@ -243,6 +236,10 @@ class MainWindow(QMainWindow):
             self.donnee_y = self.donnee_y[-self.max_points:]       
 
         self.curve.setData(self.donnee_y, self.donnee_x)
+
+    def on_link_error(self, socket_error):
+        print("Erreur de connexion :", socket_error)
+        self.b_nb_tour_g_val.setText("Erreur connexion ESP32")
 
     
 
@@ -271,16 +268,12 @@ class MainWindow(QMainWindow):
             
 
     def monter_platforme(self) :
-        
-        self.popup = Popup_plateforme()
+        self.popup = Popup_plateforme(self.link)
         self.popup.show()
     
     def popup_drone(self) :
-        self.popup = Popup_direction_aspi()
+        self.popup = Popup_direction_aspi(self.link)
         self.popup.show()
-
-
-        
 
     def update_tours(self):
         try:
@@ -323,94 +316,37 @@ class MainWindow(QMainWindow):
 
     # dit à l'esp32 de réinitialiser les valeurs --------------
     def init_valeurs (self) :  
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        s.sendall(f"init_valeurs\n".encode())  # envoie commande
-        s.close()
+        self.envoyer_commande("init_valeurs")
 
     def tourne (self) :  
-        self.popup = Popup_tourne()
+        self.popup = Popup_tourne(self.link)
         self.popup.show()
 
     # envoyer un message à l'esp32 ---------------------------
     def envoyer_msg (self) :
-
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        mot1 = self.s_curseur1.value()
-        mot2 = self.s_curseur2.value()
-        s.sendall(f"m1:{mot1};m2:{mot2};\n".encode())  # envoie commande
-        s.close()
+        self.envoyer_commande("moteur", self.s_curseur1.value(), self.s_curseur2.value())
 
     # faire monter le robot en lui envoyant la taille de l'escalier et la vitesse de montée
     def monte (self) :
-        self.popup = Popup_donnees()
+        self.popup = Popup_donnees(self.link)
         self.popup.show()
 
     def popup_avance_controlee (self) :
-        """
-        global PORT,ESP32_IP
-        if self.icm_socket.state() != QAbstractSocket.SocketState.ConnectedState:
-            self.icm_socket.abort()
-            self.icm_socket.connectToHost(ESP32_IP, PORT)
-        """
-        self.popup = Popup_avance_controlee()
+        self.popup = Popup_avance_controlee(self.link)
         self.popup.show()
 
-    def stop_moteurs (self) :
 
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        s.sendall(f"m1:0;m2:0;\n".encode())  # envoie commande
+    def stop_moteurs (self) :
+        self.envoyer_commande("moteur", 0, 0)
         self.s_curseur1.setValue(0)
         self.s_curseur2.setValue(0)
-        s.close()
+
 
     # avoir des infos sur l'état du robot --------------------------
-
     def info_etat (self) :  
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        s.sendall(f"info_etat\n".encode())  # envoie commande
-        data = s.recv(1024)
-        print("ESP32:", data.decode().strip())
+        self.envoyer_commande("info_etat")
+        print("info etat")
 
-        s.close()
-
-
-
-    # afficher les infos ICM dans le but de faire des graphiques sur MatLab
-
-    def afficher_icm (self) :  
-        global PORT,ESP32_IP
-        if self.icm_socket.state() != QAbstractSocket.SocketState.ConnectedState:
-            self.pending_icm_command = True
-            self.icm_socket.abort()
-            self.icm_socket.connectToHost(ESP32_IP, PORT)
-        else:
-            self.icm_socket.write(b"afficher_icm\n")
-
-
-    # stopper les valeurs icm ------------------------------------------- 
-
-    def stop_icm (self) :  
-        global PORT,ESP32_IP
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((ESP32_IP, PORT))
-        s.sendall(f"stop\n".encode())  # envoie commande
-        s.close()
-
-        # fermer aussi la socket ICM persistante
-        self.icm_socket.disconnectFromHost()
-
-    def socket_connectee(self):
-        if self.pending_icm_command:
-            self.icm_socket.write(b"afficher_icm\n")
-            self.pending_icm_command = False
 
 
 app = QApplication(sys.argv)
