@@ -5,33 +5,34 @@ STYLE = ("""
             border-radius: 8px;
             padding: 8px;
             color: #000000;
-            font-size: 14px;
+            font-size: 20px;
         }
         QPushButton:hover {
-            background-color: #64825A;
+            background-color: #6BDBB3;
         }
         QPushButton#affichage {
-            background-color: #85FF99;
+            background-color: #4798A1;
         }
         QPushButton#affichage:hover {
-            background-color: #5D5B8A;
+            background-color: #6BDBB3;
         }
         QPushButton#test {
-            background-color: #D885FF;
+            background-color: #4798A1;
         }
         QPushButton#test:hover {
-            background-color: #360244;
+            background-color: #6BDBB3;
         }
          
         QMainWindow {
-            background-color: #703D18;
+            background-color: #142E36;
         }
         QLabel {
-            background-color: #000800;
-            color: #FCEED2
+            background-color: #0D121F;
+            color: #FCEED2;
+            font-size: 20px;
         }
         QSlider::groove:vertical {
-            background: #FFD580;
+            background: #185E39;
             width: 8px;
             border-radius: 4px;               
         }     

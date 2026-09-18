@@ -21,8 +21,9 @@ WiFiServer server(1234);   // serveur TCP
 #define SCL 6
 #define SDA 5
 
-// pin servo plateformee
-//#define PLATFORME 0
+// pin capteur ultrason
+#define TRIG_PIN 8
+#define ECHO_PIN 18
 
 // test pour pour savoir 
 
@@ -56,12 +57,6 @@ int nb_marche = 0;
 WiFiClient client;
 unsigned long dernier_envoi = 0;
 
-// For SPI mode, we need a CS pin
-#define ICM_CS 10
-// For software-SPI mode we need SCK/MOSI/MISO pins
-#define ICM_SCK 13
-#define ICM_MISO 12
-#define ICM_MOSI 11
 // pins du driver
 #define MOTOR_D_IN1 10
 #define MOTOR_D_IN2 11
@@ -203,6 +198,9 @@ void setup() {
     break;
   }
   Serial.println();
+
+  pinMode(TRIG_PIN, OUTPUT);
+  pinMode(ECHO_PIN, INPUT);
 }
 
 

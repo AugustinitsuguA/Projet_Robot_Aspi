@@ -10,6 +10,25 @@
 #define MOTOR_G_IN1 12
 #define MOTOR_G_IN2 13
 
+// pin capteur ultrason
+#define TRIG_PIN 8
+#define ECHO_PIN 18
+
+
+float capteur_us(){
+  
+  // Mesure de distance avec le capteur ultrason
+  digitalWrite(TRIG_PIN, LOW);
+  delayMicroseconds(2);
+  digitalWrite(TRIG_PIN, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(TRIG_PIN, LOW);
+
+  long duration = pulseIn(ECHO_PIN, HIGH);
+  float distance = duration * 0.034 / 2; // Convertir la durée en distance (cm)
+
+  return distance;
+}
  
 void moteur(int pwm1 , int pwm2){
   if (pwm1 >= 0) {
@@ -246,6 +265,8 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
       client.print("ICM;");
       client.print(gyro.gyro.y);
       client.println(";");
+      client.print("0");
+      client.println(";");
 
       if (arret(client)) {
         moteur(0,0);
@@ -266,6 +287,8 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
           
           client.print("ICM;");
           client.print(gyro.gyro.y);
+          client.println(";");
+          client.print("0");
           client.println(";");
 
           if (gyro_y > 0.42){
@@ -535,7 +558,10 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
 
 void envoyer_icm(WiFiClient &client) {
   icm.getEvent(&accel, &gyro, &temp, &mag);
+  float distance = capteur_us();
   client.print("ICM;");
   client.print(gyro.gyro.y);
+  client.print(";");
+  client.print(distance);
   client.println(";");
 }
