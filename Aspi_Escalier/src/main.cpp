@@ -6,6 +6,7 @@
 #include <WiFi.h>
 #include <ESP32Servo.h>
 #include "../include/fonctions.h"
+#include <esp_now.h>
 
 
 Madgwick filter; 
@@ -22,8 +23,8 @@ WiFiServer server(1234);   // serveur TCP
 #define SDA 5
 
 // pin capteur ultrason
-#define TRIG_PIN 8
-#define ECHO_PIN 18
+#define TRIG_PIN 32
+#define ECHO_PIN 33
 
 // test pour pour savoir 
 
@@ -50,6 +51,35 @@ int nb_tr_avance = 0;
 int nb_tr_gauche = 0;
 int nb_tr_droite = 0;
 int nb_marche = 0;
+
+
+
+// Adresse MAC du récepteur (à remplacer)
+uint8_t receiverMac[] = {0x00, 0x70, 0x07, 0x2D, 0x24, 0x9C};
+
+typedef struct struct_message {
+  int capteur;
+  float valeur;
+} struct_message;
+
+struct_message donneesRecues;
+
+// Callback appelé après l'envoi
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("Statut envoi: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Succès" : "Échec");
+}
+
+void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
+  memcpy(&donneesRecues, incomingData, sizeof(donneesRecues));
+  Serial.print("Valeur reçue: ");
+  Serial.println(donneesRecues.capteur);
+  Serial.print("Mesure reçue: ");
+  Serial.println(donneesRecues.valeur);
+}
+
+
+
 
 
 // l'interface py envoit des valeurs à l'esp32 via WIFI
@@ -105,9 +135,13 @@ void setup() {
       delay(10);
     }
   }
-  
+
+
+
+
+
     // Connexion WiFi (mode point d'accès)
-  WiFi.mode(WIFI_AP);
+  WiFi.mode(WIFI_AP_STA);
   WiFi.softAP(ssid, password);
   WiFi.setSleep(false);
 
@@ -118,6 +152,30 @@ void setup() {
   server.begin();
   //server_icm.begin();
   Serial.println("Serveur TCP lance");
+
+   if (esp_now_init() != ESP_OK) {
+    Serial.println("Erreur init ESP-NOW");
+    return;
+  }
+
+
+  esp_now_register_send_cb(OnDataSent);
+
+  // Ajout du peer
+  esp_now_peer_info_t peerInfo = {};
+  memcpy(peerInfo.peer_addr, receiverMac, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Erreur ajout peer");
+    return;
+  }
+  else {
+    Serial.println("Peer ajouté avec succès");
+  }
+
+  esp_now_register_recv_cb(OnDataRecv);
 
 
 
@@ -207,6 +265,24 @@ void setup() {
 
 
   void loop() {
+/*
+    donneesRecues.capteur = 42;
+    donneesRecues.valeur = 23.5;
+
+    esp_err_t result = esp_now_send(receiverMac, (uint8_t *)&donneesRecues, sizeof(donneesRecues));
+
+    if (result == ESP_OK) {
+      Serial.println("Envoi réussi");
+    } else {
+      Serial.println("Erreur envoi");
+    }
+
+    Serial.println(donneesRecues.capteur);
+    Serial.println(donneesRecues.valeur);
+
+    delay(2000);
+*/
+
     if (!client || !client.connected()) {
       client = server.available();   
       return;
@@ -214,9 +290,11 @@ void setup() {
     if (client.available()) {
       String msg = client.readStringUntil('\n');
       msg.trim();
-      // juste pour tester un bouton du gui et que l'icm marche
+
+      // bouton test
       if (msg == "info_etat") {
         info_etat(client, accel, gyro, temp, mag);
+
       }
 
       // réinitialiser les valeurs de comptage 

@@ -11,8 +11,8 @@
 #define MOTOR_G_IN2 13
 
 // pin capteur ultrason
-#define TRIG_PIN 8
-#define ECHO_PIN 18
+#define TRIG_PIN 32
+#define ECHO_PIN 33
 
 
 float capteur_us(){
