@@ -1,7 +1,13 @@
+// Adresse Mac = 00:70:07:2D:24:9C
+// Adresse MAC robot escalier = 1C:DB:D4:78:50:04
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <esp_now.h>
 #include "../include/fonctions.h"
+
+// Test comm wifi
+esp_now_peer_info_t peerInfo;
 
 
 // Capteur ultrason
@@ -10,25 +16,42 @@
 
 void setup() {
     Serial.begin(115200);
-
-
-    // Test communication esp NOW
     WiFi.mode(WIFI_STA);
 
     if (esp_now_init() != ESP_OK) {
         Serial.println("Erreur init ESP-NOW");
         return;
     }
+    // Callback
     esp_now_register_recv_cb(OnDataRecv);
+    esp_now_register_send_cb(OnDataSent);
 
-    
+    // Ajout du pair distant (nécessaire pour pouvoir lui envoyer des données)
+    memcpy(peerInfo.peer_addr, peerMAC, 6);
+    peerInfo.channel = 0;
+    peerInfo.encrypt = false;
+
+    if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+        Serial.println("Échec ajout du pair");
+        return;
+    }
+
+
     // Initialisation capteur ultrason
     pinMode(TRIG_PIN, OUTPUT);
     pinMode(ECHO_PIN, INPUT);
 }
 
 void loop() {
+    donneesEnvoyees.capteur = 1;
+    donneesEnvoyees.valeur = 2;
+    esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
 
+    // Test comm wifi
+    Serial.print("Dernière valeur reçue capteur ");
+    Serial.print(donneesRecues.capteur);
+    Serial.print(" : ");
+    Serial.println(donneesRecues.valeur);
 
 
 
@@ -49,8 +72,8 @@ void loop() {
     // Calcul de la distance en cm
     float distance = duration * 0.0343 / 2;
 
-    Serial.print("Distance : ");
-    Serial.print(distance);
-    Serial.println(" cm");
+    //Serial.print("Distance : ");
+    //Serial.print(distance);
+    //Serial.println(" cm");
     //delay(200);
 }
