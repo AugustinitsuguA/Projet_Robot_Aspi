@@ -1,24 +1,39 @@
 #include <Arduino.h>
 #include <WiFi.h>
+#include <esp_now.h>
+#include "../include/fonctions.h"
 
-#define LED_BUILTIN 2
 
+// Capteur ultrason
 #define TRIG_PIN 32
 #define ECHO_PIN 33
 
 void setup() {
-    pinMode(LED_BUILTIN, OUTPUT);
-
     Serial.begin(115200);
 
-    Serial.println("ça marche");
 
+    // Test communication esp NOW
+    WiFi.mode(WIFI_STA);
+
+    if (esp_now_init() != ESP_OK) {
+        Serial.println("Erreur init ESP-NOW");
+        return;
+    }
+    esp_now_register_recv_cb(OnDataRecv);
+
+    
+    // Initialisation capteur ultrason
     pinMode(TRIG_PIN, OUTPUT);
     pinMode(ECHO_PIN, INPUT);
 }
 
 void loop() {
 
+
+
+
+
+    // Test capteur ultrason
     // On s'assure que TRIG est à LOW
     digitalWrite(TRIG_PIN, LOW);
     delayMicroseconds(2);
@@ -37,6 +52,5 @@ void loop() {
     Serial.print("Distance : ");
     Serial.print(distance);
     Serial.println(" cm");
-
-    delay(200);
+    //delay(200);
 }
