@@ -12,9 +12,9 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug",
-            "executable": "C:/Users/ahocq/OneDrive/Documents/PlatformIO/Projects/Projet_Robot_Aspi/Aspi_Escalier/.pio/build/esp32-s3-devkitc-1/firmware.elf",
+            "executable": "C:/Users/yohan/OneDrive/Bureau/Insa cours/MIQ5/Projet/Projet_Robot_Aspi/Aspi_Escalier/.pio/build/esp32-s3-devkitc-1/firmware.elf",
             "projectEnvName": "esp32-s3-devkitc-1",
-            "toolchainBinDir": "C:/Users/ahocq/.platformio/packages/toolchain-xtensa-esp32s3/bin",
+            "toolchainBinDir": "C:/Users/yohan/.platformio/packages/toolchain-xtensa-esp32s3/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "preLaunchTask": {
                 "type": "PlatformIO",
@@ -25,18 +25,18 @@
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (skip Pre-Debug)",
-            "executable": "C:/Users/ahocq/OneDrive/Documents/PlatformIO/Projects/Projet_Robot_Aspi/Aspi_Escalier/.pio/build/esp32-s3-devkitc-1/firmware.elf",
+            "executable": "C:/Users/yohan/OneDrive/Bureau/Insa cours/MIQ5/Projet/Projet_Robot_Aspi/Aspi_Escalier/.pio/build/esp32-s3-devkitc-1/firmware.elf",
             "projectEnvName": "esp32-s3-devkitc-1",
-            "toolchainBinDir": "C:/Users/ahocq/.platformio/packages/toolchain-xtensa-esp32s3/bin",
+            "toolchainBinDir": "C:/Users/yohan/.platformio/packages/toolchain-xtensa-esp32s3/bin",
             "internalConsoleOptions": "openOnSessionStart"
         },
         {
             "type": "platformio-debug",
             "request": "launch",
             "name": "PIO Debug (without uploading)",
-            "executable": "C:/Users/ahocq/OneDrive/Documents/PlatformIO/Projects/Projet_Robot_Aspi/Aspi_Escalier/.pio/build/esp32-s3-devkitc-1/firmware.elf",
+            "executable": "C:/Users/yohan/OneDrive/Bureau/Insa cours/MIQ5/Projet/Projet_Robot_Aspi/Aspi_Escalier/.pio/build/esp32-s3-devkitc-1/firmware.elf",
             "projectEnvName": "esp32-s3-devkitc-1",
-            "toolchainBinDir": "C:/Users/ahocq/.platformio/packages/toolchain-xtensa-esp32s3/bin",
+            "toolchainBinDir": "C:/Users/yohan/.platformio/packages/toolchain-xtensa-esp32s3/bin",
             "internalConsoleOptions": "openOnSessionStart",
             "loadMode": "manual"
         }
