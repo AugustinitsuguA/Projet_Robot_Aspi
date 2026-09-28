@@ -148,7 +148,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
       delay(2700);
       moteur(30 ,30);
       plateforme(client, servo_platforme,vitesse_descente,delai_descente);
-      delay(30000);
+      delay(5000);
       // attendre ordre drone
       plateforme(client, servo_platforme,vitesse_monter,delai_monter);
       delay(3000);
