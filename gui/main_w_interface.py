@@ -43,7 +43,7 @@ class MainWindow(QMainWindow):
         self.setStyleSheet(STYLE)       
 
         self.setWindowTitle("Interface Graphique")
-        self.setGeometry(200, 50, 800, 700)
+        self.setGeometry(50, 50, 1400, 700)
 
         # Widget central
         central_widget = QWidget()
@@ -148,6 +148,8 @@ class MainWindow(QMainWindow):
         # zone de plot 
       
         self.b_nb_tour = QLabel("nombre de marches montées")
+        self.b_distance = QLabel("distance")
+        self.b_distance_val = QLabel("0")
         self.b_nb_tour_val = QLabel(str(nb_marche))
         self.b_nb_tour_d = QLabel("action en cours")
         self.b_nb_tour_d_val = QLabel("")
@@ -155,10 +157,12 @@ class MainWindow(QMainWindow):
         self.b_nb_tour_g_val = QLabel("")
         bottom_layout.addWidget(self.b_nb_tour,0,0)
         bottom_layout.addWidget(self.b_nb_tour_val,0,1)
-        bottom_layout.addWidget(self.b_nb_tour_d,1,0)
-        bottom_layout.addWidget(self.b_nb_tour_d_val,1,1)
-        bottom_layout.addWidget(self.b_nb_tour_g,2,0)
-        bottom_layout.addWidget(self.b_nb_tour_g_val,2,1)
+        bottom_layout.addWidget(self.b_distance,1,0)
+        bottom_layout.addWidget(self.b_distance_val,1,1)
+        bottom_layout.addWidget(self.b_nb_tour_d,2,0)
+        bottom_layout.addWidget(self.b_nb_tour_d_val,2,1)
+        bottom_layout.addWidget(self.b_nb_tour_g,3,0)
+        bottom_layout.addWidget(self.b_nb_tour_g_val,3,1)
 
 
         # affecte une fonction à un bouton
@@ -194,17 +198,6 @@ class MainWindow(QMainWindow):
 
         self.link.connectToHost(ESP32_IP, PORT)
 
-        
-
-        """
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.update_tours)
-        print("démarrage")
-        
-        # a tester
-        # self.timer.start(4000)  # 1000 ms = 1 seconde
-        """
-
     
     def recevoir_flux(self):
         while self.link.canReadLine():
@@ -216,6 +209,7 @@ class MainWindow(QMainWindow):
 
             if type_msg == "ICM":
                 self.maj_graphique(float(champs[1]))
+                self.b_distance_val.setText(str(champs[2]))
             elif type_msg == "ETAT":
                 self.b_nb_tour_val.setText(champs[1])
                 self.b_nb_tour_d_val.setText(champs[2])
