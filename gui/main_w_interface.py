@@ -71,10 +71,11 @@ class MainWindow(QMainWindow):
         # self.b_stop = QPushButton("stopper affichage ICM")
         # self.b_stop.setObjectName("affichage")
         self.b_init = QPushButton("reinit. les valeurs")
-        self.b_envoyer = QPushButton("MOTEURS")
+        self.b_envoyer = QPushButton("moteurs")
         self.b_avance_controlee = QPushButton("avance contrôlée")
         self.b_monte = QPushButton("monter")
         self.b_stop_moteurs = QPushButton("stop moteurs")
+        self.b_blocage_moteurs = QPushButton("moteur blocage")
         self.b_sync = QPushButton("synchro")
         #self.text1 = QLineEdit()
         #self.text2 = QLineEdit()
@@ -92,6 +93,7 @@ class MainWindow(QMainWindow):
         #left_layout.addWidget(self.b_descendre_platforme)
         left_layout.addWidget(self.b_envoyer)
         left_layout.addWidget(self.b_stop_moteurs)
+        left_layout.addWidget(self.b_blocage_moteurs)
         #left_layout.addWidget(self.b_init)
 
         right_layout.addWidget(self.b_drone)
@@ -176,6 +178,7 @@ class MainWindow(QMainWindow):
         self.b_tourne.clicked.connect(self.tourne)
         self.b_envoyer.clicked.connect(self.envoyer_msg)
         self.b_stop_moteurs.clicked.connect(self.stop_moteurs)
+        self.b_blocage_moteurs.clicked.connect(self.blocage_moteurs)
         self.b_init.clicked.connect(self.init_valeurs)
         self.b_sync.clicked.connect(self.sync)
 
@@ -215,6 +218,11 @@ class MainWindow(QMainWindow):
                 self.b_nb_tour_d_val.setText(champs[2])
             else:
                 print("Reçu :", data)
+
+    def blocage_moteurs(self):
+        self.envoyer_commande("moteur", 30, 30)
+        self.s_curseur1.setValue(30)
+        self.s_curseur2.setValue(30)
 
     def envoyer_commande(self, *champs):
         ligne = ";".join(str(c) for c in champs) + "\n"
