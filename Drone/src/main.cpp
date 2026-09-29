@@ -101,13 +101,13 @@ void loop() {
     donneesEnvoyees.capteur = 1;
     donneesEnvoyees.valeur = 2;
     // Envoie des données sur l'adresse MAC en convertissant les données en pointeur de données bruts
-    esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
+    //esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
 
     // Test comm wifi
-    Serial.print("Dernière valeur reçue capteur ");
-    Serial.print(donneesRecues.capteur);
-    Serial.print(" : ");
-    Serial.println(donneesRecues.valeur);
+    //Serial.print("Dernière valeur reçue capteur ");
+    //Serial.print(donneesRecues.capteur);
+    //Serial.print(" : ");
+    //Serial.println(donneesRecues.valeur);
 #pragma endregion
 
 
@@ -128,9 +128,9 @@ void loop() {
     // Calcul de la distance en cm
     float distance = duration * 0.0343 / 2;
 
-    //Serial.print("Distance : ");
-    //Serial.print(distance);
-    //Serial.println(" cm");
-    //delay(200);
+    Serial.print("Distance : ");
+    Serial.print(distance);
+    Serial.println(" cm");
+    delay(100);
 #pragma endregion
 }
