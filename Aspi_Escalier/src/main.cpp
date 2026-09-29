@@ -141,7 +141,7 @@ void setup() {
 
 
     // Connexion WiFi (mode point d'accès)
-  WiFi.mode(WIFI_AP_STA);
+  WiFi.mode(WIFI_AP);
   WiFi.softAP(ssid, password);
   WiFi.setSleep(false);
 
