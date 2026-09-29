@@ -11,23 +11,20 @@
 #define MOTOR_G_IN2 13
 
 // pin capteur ultrason
-#define TRIG_PIN 32
-#define ECHO_PIN 33
+#define TRIG_PIN 3
+#define ECHO_PIN 18
 
 
 float capteur_us(){
-  
-  // Mesure de distance avec le capteur ultrason
   digitalWrite(TRIG_PIN, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG_PIN, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG_PIN, LOW);
 
-  long duration = pulseIn(ECHO_PIN, HIGH);
-  float distance = duration * 0.034 / 2; // Convertir la durée en distance (cm)
-
-  return distance;
+  long duration = pulseIn(ECHO_PIN, HIGH, 30000);  // timeout 30 ms
+  if (duration == 0) return -1;                     // pas d'écho
+  return duration * 0.0343 / 2;
 }
  
 void moteur(int pwm1 , int pwm2){
@@ -564,4 +561,9 @@ void envoyer_icm(WiFiClient &client) {
   client.print(";");
   client.print(distance);
   client.println(";");
+  Serial.print("ICM;");
+  Serial.print(gyro.gyro.y);
+  Serial.print(";");
+  Serial.print(distance);
+  Serial.println(";");
 }
