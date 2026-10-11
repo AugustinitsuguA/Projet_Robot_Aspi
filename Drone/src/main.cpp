@@ -20,8 +20,10 @@
     esp_now_peer_info_t peerInfo;
 
     // Affectation des broches capteur ultrason
-    #define TRIG_G 32
-    #define ECHO_G 33
+    //#define TRIG_G 32
+    //#define ECHO_G 33
+    #define TRIG_G 3
+    #define ECHO_G 18
     #define TRIG_D 26
     #define ECHO_D 25
 
@@ -128,16 +130,16 @@ void loop() {
     // Calcul de la distance en cm
     float distance = duration * 0.0343 / 2;
 
-    //Serial.print("Distance : ");
-    //Serial.print(distance);
-    //Serial.println(" cm");
+    Serial.print("Distance : ");
+    Serial.print(distance);
+    Serial.println(" cm");
     delay(100);
 #pragma endregion
 
 #pragma region test capteur ir
     float volt_ir = analogRead(IR)*3.3/4092;
     float dist_ir = (volt_ir-3.3)/(-0.140);
-    Serial.print("Distance : ");
-    Serial.print(dist_ir);
-    Serial.println(" cm");
+    //Serial.print("Distance : ");
+    //Serial.print(dist_ir);
+    //Serial.println(" cm");
 }
