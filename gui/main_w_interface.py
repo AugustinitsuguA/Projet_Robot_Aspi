@@ -208,13 +208,14 @@ class MainWindow(QMainWindow):
             if not data:
                 continue
             champs = data.split(";")
+            print("Reçu :", champs)
             type_msg = champs[0]
 
             if type_msg == "ICM":
                 self.maj_graphique(float(champs[1]))
                 self.b_distance_val.setText(str(champs[2]))
             elif type_msg == "ETAT":
-                self.b_nb_tour_val.setText(champs[1])
+                self.b_nb_tour_val.setText(champs[2])
                 self.b_nb_tour_d_val.setText(champs[2])
             else:
                 print("Reçu :", data)

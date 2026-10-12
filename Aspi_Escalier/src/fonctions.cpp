@@ -561,6 +561,7 @@ void envoyer_icm(WiFiClient &client) {
   client.print(";");
   client.print(distance);
   client.println(";");
+  
   Serial.print("ICM;");
   Serial.print(gyro.gyro.y);
   Serial.print(";");
