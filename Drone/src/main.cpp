@@ -5,12 +5,15 @@
 #include <WiFi.h>
 #include <esp_now.h>
 #include "../include/fonctions.h"
+#include <cmath>
 
 #pragma region init variables
     // Enum de la machine à état
     enum State {
         OFF,
         INIT,
+        GO_TO_STEP,
+        GO_TO_PLATFORM,
         CLEANING,
         SEARCHING,
         WAITING
@@ -20,10 +23,8 @@
     esp_now_peer_info_t peerInfo;
 
     // Affectation des broches capteur ultrason
-    //#define TRIG_G 32
-    //#define ECHO_G 33
-    #define TRIG_G 3
-    #define ECHO_G 18
+    #define TRIG_G 32
+    #define ECHO_G 33
     #define TRIG_D 26
     #define ECHO_D 25
 
@@ -95,10 +96,64 @@ void setup() {
     pinMode(VENT, OUTPUT);
 #pragma endregion
 
-enum State drone_state = OFF;
+enum State drone_state = INIT;
 }
 
 void loop() {
+
+#pragma region machine à état
+    if (INIT == drone_state) {
+
+    }
+
+    if (WAITING == drone_state){
+        // if ('marche atteinte' == message reçu) {
+        //      drone_state = GO_TO_STEP}  
+    }
+
+    if (GO_TO_STEP == drone_state){
+        // Activer moteurs
+        // if (dist_ir < 5){
+        //      Mot_d = 100
+        //      Mot_g = -100
+        //      Voir temps nécessaire pour faire un quart de tour}
+        // drone_state = CLEANING 
+        // Désactiver moteurs     
+    }
+
+    if (CLEANING == drone_state){
+        // i = 0
+        // Activer moteurs
+        // Activer ventilateur
+        // if (dist_ir < 5){
+        //      Mot_d = 100
+        //      Mot_g = -100
+        //      Voir temps nécessaire pour faire un demi de tour}
+        // i = 1 
+        // if (dist_ir < 5){
+        //      Mot_d = 100
+        //      Mot_g = -100
+        //      Voir temps nécessaire pour faire un demi de tour}
+        // drone_state = SEARCHING
+        // Désactiver ventilateur
+    }
+
+    if (SEARCHING = drone_state){
+        // Activer moteurs
+        // if ('robot_detecte' = message_reçu){
+        //      drone_state = GO_TO_PLATFORM
+        //      Désactiver moteurs}
+    }
+
+    if (GO_TO_PLATFORM = drone_state){
+        // Activer moteurs
+        // if (dist_ir < 3){
+        //      Désactiver moteurs
+        //      ENVOYER message 'plateforme atteinte'
+        //      drone_state = WAITING}
+    }
+#pragma endregion
+
 #pragma region test wifi
     donneesEnvoyees.capteur = 1;
     donneesEnvoyees.valeur = 2;
@@ -138,8 +193,10 @@ void loop() {
 
 #pragma region test capteur ir
     float volt_ir = analogRead(IR)*3.3/4092;
-    float dist_ir = (volt_ir-3.3)/(-0.140);
+    float dist_ir = 3.8868 * std::pow(volt_ir,4) - 31.349 * std::pow(volt_ir,3) + 91.88 * std::pow(volt_ir,2) - 119.89 * volt_ir + 67.636
+    //float dist_ir = (volt_ir-3.3)/(-0.140);
     //Serial.print("Distance : ");
     //Serial.print(dist_ir);
     //Serial.println(" cm");
+#pragma endregion
 }
