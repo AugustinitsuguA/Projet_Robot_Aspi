@@ -265,7 +265,7 @@ void setup() {
 
 
   void loop() {
-/*
+while (1) {
     donneesRecues.capteur = 42;
     donneesRecues.valeur = 23.5;
 
@@ -281,7 +281,7 @@ void setup() {
     Serial.println(donneesRecues.valeur);
 
     delay(2000);
-*/
+  }
 
     if (!client || !client.connected()) {
       client = server.available();   
