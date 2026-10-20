@@ -5,6 +5,7 @@
 #include <Wire.h>
 #include <WiFi.h>
 #include <ESP32Servo.h>
+#include <esp_now.h>
 #include "../include/fonctions.h"
 
 
@@ -17,6 +18,9 @@ const char* password = "12345678";
 
 WiFiServer server(1234);   // serveur TCP
 // WiFiServer server_icm(1234);
+
+static const uint8_t ESP_NOW_BROADCAST_ADDRESS[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+bool espNowReady = false;
 
 #define SCL 6
 #define SDA 5
@@ -55,6 +59,43 @@ int nb_marche = 0;
 // en fonction du premier mot reçu, l'esp effectue une action ou donne des infos au gui
 WiFiClient client;
 unsigned long dernier_envoi = 0;
+
+void envoyer_info_etat_espnow() {
+  if (!espNowReady) {
+    Serial.println("ESP-NOW indisponible : message info_etat non envoye");
+    return;
+  }
+
+  char message[160];
+  int longueur = snprintf(
+    message,
+    sizeof(message),
+    "INFO_ETAT;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f",
+    accel.acceleration.x,
+    accel.acceleration.y,
+    accel.acceleration.z,
+    mag.magnetic.x,
+    mag.magnetic.y,
+    mag.magnetic.z,
+    gyro.gyro.x,
+    gyro.gyro.y,
+    gyro.gyro.z
+  );
+
+  if (longueur < 0 || longueur >= sizeof(message)) {
+    Serial.println("Erreur : message info_etat ESP-NOW trop long");
+    return;
+  }
+
+  esp_err_t resultat = esp_now_send(
+    ESP_NOW_BROADCAST_ADDRESS,
+    reinterpret_cast<const uint8_t *>(message),
+    longueur + 1
+  );
+  if (resultat != ESP_OK) {
+    Serial.printf("Erreur d'envoi ESP-NOW : %d\n", resultat);
+  }
+}
 
 // For SPI mode, we need a CS pin
 #define ICM_CS 10
@@ -115,7 +156,7 @@ void setup() {
   
     // Connexion WiFi (mode point d'accès)
   WiFi.mode(WIFI_AP);
-  WiFi.softAP(ssid, password);
+  WiFi.softAP(ssid, password, 1);
   WiFi.setSleep(false);
 
   Serial.println("\nPoint d'acces WiFi lance !");
@@ -125,6 +166,23 @@ void setup() {
   server.begin();
   //server_icm.begin();
   Serial.println("Serveur TCP lance");
+
+  if (esp_now_init() == ESP_OK) {
+    esp_now_peer_info_t peerInfo = {};
+    memcpy(peerInfo.peer_addr, ESP_NOW_BROADCAST_ADDRESS, sizeof(ESP_NOW_BROADCAST_ADDRESS));
+    peerInfo.channel = 0;
+    peerInfo.ifidx = WIFI_IF_AP;
+    peerInfo.encrypt = false;
+
+    if (esp_now_add_peer(&peerInfo) == ESP_OK) {
+      espNowReady = true;
+      Serial.println("ESP-NOW initialise (broadcast canal 1)");
+    } else {
+      Serial.println("Erreur : impossible d'ajouter le peer ESP-NOW");
+    }
+  } else {
+    Serial.println("Erreur : initialisation ESP-NOW impossible");
+  }
 
 
 
@@ -224,6 +282,7 @@ void setup() {
       // juste pour tester un bouton du gui et que l'icm marche
       if (msg == "info_etat") {
         info_etat(client, accel, gyro, temp, mag);
+        envoyer_info_etat_espnow();
       }
 
       // réinitialiser les valeurs de comptage 

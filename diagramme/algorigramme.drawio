@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram name="Page-1" id="hSEO23cBoO-CVVMctCnX">
-        <mxGraphModel dx="3631" dy="1244" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="3200" dy="1128" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -140,7 +140,7 @@
                 </mxCell>
                 <mxCell id="4j4ATMddArKhsB1g-8PH-38" connectable="0" parent="4j4ATMddArKhsB1g-8PH-33" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=18;fontColor=#FF6666;" value="ETAT" vertex="1">
                     <mxGeometry relative="1" x="0.0111" y="1" as="geometry">
-                        <mxPoint x="-59" as="offset"/>
+                        <mxPoint x="-36" as="offset"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="4j4ATMddArKhsB1g-8PH-27" parent="1" style="whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="Le type est :" vertex="1">
@@ -161,19 +161,19 @@
                 <mxCell id="4j4ATMddArKhsB1g-8PH-12" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;li&gt;En fonction de l&#39;action lue, le programme appelle la fonction correspondante.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;" vertex="1">
                     <mxGeometry height="90" width="290" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-44" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="moteur" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-44" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="gérer les moteurs" vertex="1">
                     <mxGeometry height="20" width="290" y="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-47" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="monte" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-47" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="monter une marche" vertex="1">
                     <mxGeometry height="20" width="290" y="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-48" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="plateforme" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-48" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="se déplacer sur le sol plat" vertex="1">
                     <mxGeometry height="20" width="290" y="130" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-49" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-49" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="gérer la plateforme" vertex="1">
                     <mxGeometry height="20" width="290" y="150" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-50" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-50" parent="4j4ATMddArKhsB1g-8PH-51" style="whiteSpace=wrap;html=1;" value="Envoyer des données au PC" vertex="1">
                     <mxGeometry height="20" width="290" y="170" as="geometry"/>
                 </mxCell>
                 <mxCell id="4j4ATMddArKhsB1g-8PH-13" edge="1" parent="4j4ATMddArKhsB1g-8PH-51" source="4j4ATMddArKhsB1g-8PH-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;innerLoopWaypoints=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="4j4ATMddArKhsB1g-8PH-12">
@@ -211,16 +211,16 @@
                 <mxCell id="4j4ATMddArKhsB1g-8PH-64" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;ol&gt;&lt;li&gt;traitemennt du message en décomposant son contenu&lt;/li&gt;&lt;li&gt;Lecture du type de message&lt;/li&gt;&lt;li&gt;En fonction de l&#39;action lue, le programme appelle la fonction correspondante.&amp;nbsp;&lt;/li&gt;&lt;/ol&gt;" vertex="1">
                     <mxGeometry height="90" width="290" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-65" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-65" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="nettoie" vertex="1">
                     <mxGeometry height="20" width="290" y="90" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-66" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-66" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="détecte plateforme" vertex="1">
                     <mxGeometry height="20" width="290" y="110" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-67" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-67" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="sortir plateforme" vertex="1">
                     <mxGeometry height="20" width="290" y="130" as="geometry"/>
                 </mxCell>
-                <mxCell id="4j4ATMddArKhsB1g-8PH-68" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
+                <mxCell id="4j4ATMddArKhsB1g-8PH-68" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="rentrer plateforme" vertex="1">
                     <mxGeometry height="20" width="290" y="150" as="geometry"/>
                 </mxCell>
                 <mxCell id="4j4ATMddArKhsB1g-8PH-69" parent="4j4ATMddArKhsB1g-8PH-63" style="whiteSpace=wrap;html=1;" value="" vertex="1">
@@ -250,16 +250,16 @@
                 <mxCell id="4j4ATMddArKhsB1g-8PH-79" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;" target="4j4ATMddArKhsB1g-8PH-73">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="ZsoDZtydhLGKMZGomnfm-1" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;">
-                    <mxGeometry relative="1" x="-0.7086" as="geometry">
+                <mxCell id="ZsoDZtydhLGKMZGomnfm-1" edge="1" parent="1" source="4j4ATMddArKhsB1g-8PH-74" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;dashPattern=8 8;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="4j4ATMddArKhsB1g-8PH-19">
+                    <mxGeometry relative="1" x="-0.709" as="geometry">
                         <Array as="points">
-                            <mxPoint x="1030" y="990"/>
-                            <mxPoint x="100" y="990"/>
+                            <mxPoint x="1030" y="940"/>
+                            <mxPoint x="100" y="940"/>
                             <mxPoint x="100" y="200"/>
-                            <mxPoint x="-100" y="200"/>
+                            <mxPoint x="-95" y="200"/>
                         </Array>
                         <mxPoint x="1170" y="1585" as="sourcePoint"/>
-                        <mxPoint x="-100" y="160" as="targetPoint"/>
+                        <mxPoint x="-90" y="180" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
             </root>

@@ -500,7 +500,7 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
       delay(20);
     }
 
-/*
+  /*
     if ((y_up_pG == 1) && (y_upG == 0)) {
       nb_tr_gauche = nb_tr_gauche + 1 ;
       Serial.println("GA ------------");
@@ -510,7 +510,7 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
       nb_tr_droite = nb_tr_droite + 1 ;
       Serial.println("DR -------------");
     }
-*/
+  */
 
     x_up_p = x_up;
     y_up_p = y_up;
@@ -568,3 +568,4 @@ void envoyer_icm(WiFiClient &client) {
   Serial.print(distance);
   Serial.println(";");
 }
+
