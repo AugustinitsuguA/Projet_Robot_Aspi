@@ -23,8 +23,8 @@ WiFiServer server(1234);   // serveur TCP
 #define SDA 5
 
 // pin capteur ultrason
-#define TRIG_PIN 32
-#define ECHO_PIN 33
+#define TRIG_PIN 8
+#define ECHO_PIN 18
 
 // test pour pour savoir 
 
@@ -265,6 +265,7 @@ void setup() {
 
 
   void loop() {
+    /*
 while (1) {
     donneesRecues.capteur = 42;
     donneesRecues.valeur = 23.5;
@@ -282,6 +283,7 @@ while (1) {
 
     delay(2000);
   }
+    */
 
     if (!client || !client.connected()) {
       client = server.available();   
