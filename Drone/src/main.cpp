@@ -42,8 +42,7 @@
     Servo mot_d;
 
     // Affecation broche ventilateur
-    #define VENT_PWM 13
-    #define VENT_EN 34
+    #define VENT_PWM 34
 
     // Variable de machine à état
     State drone_state = INIT;
