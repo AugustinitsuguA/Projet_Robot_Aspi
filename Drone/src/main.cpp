@@ -40,6 +40,9 @@
 
     // Affecation broche ventilateur
     #define VENT 13
+
+    // Variable de machine à état
+    State drone_state = INIT;
 #pragma endregion
 
 
@@ -95,8 +98,6 @@ void setup() {
     // Aspirateur
     pinMode(VENT, OUTPUT);
 #pragma endregion
-
-enum State drone_state = INIT;
 }
 
 void loop() {
@@ -138,14 +139,14 @@ void loop() {
         // Désactiver ventilateur
     }
 
-    if (SEARCHING = drone_state){
+    if (SEARCHING == drone_state){
         // Activer moteurs
         // if ('robot_detecte' = message_reçu){
         //      drone_state = GO_TO_PLATFORM
         //      Désactiver moteurs}
     }
 
-    if (GO_TO_PLATFORM = drone_state){
+    if (GO_TO_PLATFORM == drone_state){
         // Activer moteurs
         // if (dist_ir < 3){
         //      Désactiver moteurs
@@ -158,13 +159,13 @@ void loop() {
     donneesEnvoyees.capteur = 1;
     donneesEnvoyees.valeur = 2;
     // Envoie des données sur l'adresse MAC en convertissant les données en pointeur de données bruts
-    //esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
+    esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
 
     // Test comm wifi
-    //Serial.print("Dernière valeur reçue capteur ");
-    //Serial.print(donneesRecues.capteur);
-    //Serial.print(" : ");
-    //Serial.println(donneesRecues.valeur);
+    Serial.print("Dernière valeur reçue capteur ");
+    Serial.print(donneesRecues.capteur);
+    Serial.print(" : ");
+    Serial.println(donneesRecues.valeur);
 #pragma endregion
 
 
@@ -185,18 +186,19 @@ void loop() {
     // Calcul de la distance en cm
     float distance = duration * 0.0343 / 2;
 
-    Serial.print("Distance : ");
-    Serial.print(distance);
-    Serial.println(" cm");
-    delay(100);
+    //Serial.print("Distance : ");
+    //Serial.print(distance);
+    //Serial.println(" cm");
+    //delay(100);
 #pragma endregion
 
 #pragma region test capteur ir
     float volt_ir = analogRead(IR)*3.3/4092;
-    float dist_ir = 3.8868 * std::pow(volt_ir,4) - 31.349 * std::pow(volt_ir,3) + 91.88 * std::pow(volt_ir,2) - 119.89 * volt_ir + 67.636
+    float dist_ir = 3.8868 * std::pow(volt_ir,4) - 31.349 * std::pow(volt_ir,3) + 91.88 * std::pow(volt_ir,2) - 119.89 * volt_ir + 67.636;
     //float dist_ir = (volt_ir-3.3)/(-0.140);
     //Serial.print("Distance : ");
     //Serial.print(dist_ir);
-    //Serial.println(" cm");
+    //Serial.print(" cm / Tension : ");
+    //Serial.println(volt_ir);
 #pragma endregion
 }
