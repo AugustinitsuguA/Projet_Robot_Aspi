@@ -233,7 +233,7 @@ void setup() {
       // bouton test
       if (msg == "info_etat") {
         info_etat(client, accel, gyro, temp, mag);
-        envoyerDonnees(67, 56);
+        envoyerDonnees("test");
 
       }
 

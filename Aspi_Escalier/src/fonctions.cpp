@@ -66,9 +66,9 @@ void setupESPNow() {
 
 }
 
-void envoyerDonnees(int capteur, float valeur) {
+void envoyerDonnees(String msg) {
   struct_message message;
-  message.msg = "DRN_RGN_RM_PTF";
+  message.msg = msg;
   esp_err_t result = esp_now_send(receiverMac, (uint8_t *)&message, sizeof(message));
 
   if (result == ESP_OK) {
