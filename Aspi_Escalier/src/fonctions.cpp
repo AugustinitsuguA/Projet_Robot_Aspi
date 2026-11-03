@@ -3,6 +3,7 @@
 #include <Adafruit_ICM20948.h>
 #include <WiFi.h>
 #include <ESP32Servo.h>
+#include <esp_now.h>
 
 // pins du driver
 #define MOTOR_D_IN1 10
@@ -11,9 +12,71 @@
 #define MOTOR_G_IN2 13
 
 // pin capteur ultrason
-#define TRIG_PIN 32
-#define ECHO_PIN 33
+#define TRIG_PIN 3
+#define ECHO_PIN 18
 
+// Adresse MAC du récepteur (à remplacer)
+uint8_t receiverMac[] = {0x00, 0x70, 0x07, 0x2D, 0x24, 0x9C};
+
+typedef struct struct_message {
+  String msg;
+  
+} struct_message;
+
+struct_message donneesRecues;
+
+// Callback appelé après l'envoi
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("Statut envoi: ");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Succès" : "Échec");
+}
+
+void OnDataRecv(const uint8_t *mac, const uint8_t *incomingData, int len) {
+  memcpy(&donneesRecues, incomingData, sizeof(donneesRecues));
+  Serial.print("Valeur reçue: ");
+  Serial.println(donneesRecues.msg);
+  
+}
+
+void setupESPNow() {
+  
+   if (esp_now_init() != ESP_OK) {
+    Serial.println("Erreur init ESP-NOW");
+    return;
+  }
+
+
+  esp_now_register_send_cb(OnDataSent);
+
+  // Ajout du peer
+  esp_now_peer_info_t peerInfo = {};
+  memcpy(peerInfo.peer_addr, receiverMac, 6);
+  peerInfo.channel = 0;
+  peerInfo.encrypt = false;
+
+  if (esp_now_add_peer(&peerInfo) != ESP_OK) {
+    Serial.println("Erreur ajout peer");
+    return;
+  }
+  else {
+    Serial.println("Peer ajouté avec succès");
+  }
+
+  esp_now_register_recv_cb(OnDataRecv);
+
+}
+
+void envoyerDonnees(int capteur, float valeur) {
+  struct_message message;
+  message.msg = "DRN_RGN_RM_PTF";
+  esp_err_t result = esp_now_send(receiverMac, (uint8_t *)&message, sizeof(message));
+
+  if (result == ESP_OK) {
+    Serial.println("Données envoyées avec succès");
+  } else {
+    Serial.println("Erreur envoi données");
+  }
+}
 
 float capteur_us(){
   
@@ -558,10 +621,10 @@ void nb_avance (int &nb_tr_gauche, int &nb_tr_droite, int &nb_tr_avance, int &et
 
 void envoyer_icm(WiFiClient &client) {
   icm.getEvent(&accel, &gyro, &temp, &mag);
-  float distance = capteur_us();
+  // float distance = capteur_us();
   client.print("ICM;");
   client.print(gyro.gyro.y);
   client.print(";");
-  client.print(distance);
+  client.print(1);
   client.println(";");
 }
