@@ -232,6 +232,7 @@ void monte(WiFiClient &client,int taille_esc, int vitesse, sensors_event_t &acce
   tourne(client, 2, accel, gyro, temp, mag);
   */
   moteur(40,40);
+  envoyerDonnees("ARRET");
 }
 
 // fait bouger la plateforme à une certaine vitesse pendant un certain temps
@@ -248,6 +249,14 @@ void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int tem
   }
   // arret de la plateforme
   servo_platforme.write(90);
+
+  // Envoie des infos au drone
+  if (vitesse > 90) {
+    envoyerDonnees("PTF_DC");
+  }
+  if (vitesse < 90) {
+    envoyerDonnees("PTF_MT");
+  }
 }
 
 // fonction pour arreter les fonctions
@@ -319,77 +328,75 @@ void avance_controlee(WiFiClient &client, int vitesse_1, int vitesse_2, int vite
   int x_up = 0;
   int x_up_p = 0;
 
+
+  icm.getEvent(&accel, &gyro, &temp, &mag);
+  gyro_y = gyro.gyro.y ;
+
+  Serial.print(gyro_y);client.println(";");
+
+  client.print("ICM;");
+  client.print(gyro.gyro.y);
+  client.println(";");
+  client.print("0");
+  client.println(";");
+
+  if (arret(client)) {
+    moteur(0,0);
+    return;
+  }
+
+  moteur(vitesse_1,vitesse_1D);
+  delay(temps_1);
+
+  // si le robot commence à pencher vers l'avant, on ralentit pour éviter le choc
+  if (gyro_y < - 0.1){ // tester plusieurs valeurs
+    moteur(vitesse_2,vitesse_2D);
+
+    // tant qu'il n'y a pas eu le choc
     while (1){
+
       icm.getEvent(&accel, &gyro, &temp, &mag);
-      gyro_y = gyro.gyro.y ;
-
-      Serial.print(gyro_y);client.println(";");
-
+      
       client.print("ICM;");
       client.print(gyro.gyro.y);
       client.println(";");
       client.print("0");
       client.println(";");
 
+      if (gyro_y > 0.42){
+        x_up = 1;
+      }
+      if (gyro_y < 0.38){
+        x_up = 0;
+      }
+
+      if ((x_up == 0) && (x_up_p == 1)) {
+        Serial.println("nb_tour + 1 _______");
+        delay(20);
+        break;
+      }
+
       if (arret(client)) {
         moteur(0,0);
         return;
       }
 
-      moteur(vitesse_1,vitesse_1D);
-      delay(temps_1);
+      x_up_p = x_up;
 
-      // si le robot commence à pencher vers l'avant, on ralentit pour éviter le choc
-      if (gyro_y < - 0.1){ // tester plusieurs valeurs
-        moteur(vitesse_2,vitesse_2D);
-
-        // tant qu'il n'y a pas eu le choc
-        while (1){
-
-          icm.getEvent(&accel, &gyro, &temp, &mag);
-          
-          client.print("ICM;");
-          client.print(gyro.gyro.y);
-          client.println(";");
-          client.print("0");
-          client.println(";");
-
-          if (gyro_y > 0.42){
-            x_up = 1;
-          }
-          if (gyro_y < 0.38){
-            x_up = 0;
-          }
-
-          if ((x_up == 0) && (x_up_p == 1)) {
-            Serial.println("nb_tour + 1 _______");
-            delay(20);
-            break;
-          }
-
-          if (arret(client)) {
-            moteur(0,0);
-            return;
-          }
-
-          x_up_p = x_up;
-
-          delay(50);
-        }
-
-        // on attend pour que le robot se remette en place
-        delay(2000);
-        moteur(0,0);
-
-        if (arret(client)) {
-          moteur(0,0);
-          return;
-        }
-        
-        delay(2000);
-        break;
-      }
+      delay(50);
     }
+
+    // on attend pour que le robot se remette en place
+    delay(2000);
+    moteur(0,0);
+
+    if (arret(client)) {
+      moteur(0,0);
+      return;
+    }
+        
+      
+  }
 }
 
 void info_etat(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
@@ -468,6 +475,28 @@ void afficher_icm(WiFiClient &client, sensors_event_t &accel, sensors_event_t &g
   }
 }
 
+void go(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag, int nb_marche, String dir, int vitesse_monter, int plat_descente, int temps_descente, int plat_monter, int temps_monter, int vitesse1, int vitesse2, int vitesse1D, int vitesse2D, int temps){
+  Serial.println("GO");
+  Serial.print(nb_marche);Serial.print(";");
+  Serial.print(dir);Serial.print(";");
+  Serial.print(vitesse_monter);Serial.print(";");
+  Serial.print(plat_descente);Serial.print(";");
+  Serial.print(temps_descente);Serial.print(";");
+  Serial.print(plat_monter);Serial.print(";");
+  Serial.print(temps_monter);Serial.print(";");
+  Serial.print(vitesse1);Serial.print(";");
+  Serial.print(vitesse2);Serial.print(";");
+  Serial.print(vitesse1D);Serial.print(";");
+  Serial.print(vitesse2D);Serial.print(";");
+  Serial.print(temps);Serial.println(";");
+
+  client.print("ICM;");
+  client.print(gyro.gyro.y);
+  client.print(";");
+  client.print(222);
+  client.println(";");
+  delay(1500);
+}
 
 void envoie_donnees(WiFiClient &client,  int etat, int marche, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag){
   

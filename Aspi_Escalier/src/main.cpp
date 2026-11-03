@@ -333,7 +333,42 @@ void setup() {
         Serial.print(", ");
         Serial.println(pwm2);
 
-      }   
+      }
+
+    // sert à lancer le système final
+    if (msg.substring(0,14) == "lancer_systeme") { // découpe la chaine de caractere envoyée par le gui de python
+        int pos1 = msg.indexOf(";");
+        int pos2 = msg.indexOf(";", pos1+1);
+        int pos3 = msg.indexOf(";", pos2+1);
+        int pos4 = msg.indexOf(";", pos3+1);
+        int pos5 = msg.indexOf(";", pos4+1);
+        int pos6 = msg.indexOf(";", pos5+1);
+        int pos7 = msg.indexOf(";", pos6+1);
+        int pos8 = msg.indexOf(";", pos7+1);
+        int pos9 = msg.indexOf(";", pos8+1);
+        int pos10 = msg.indexOf(";", pos9+1);
+        int pos11 = msg.indexOf(";", pos10+1);
+        int pos12 = msg.indexOf(";", pos11+1);
+        
+        int nb_marche = msg.substring(pos1+1, pos2).toInt();
+        int nb_gr = msg.substring(pos2+1, pos3).toInt();
+        String dir = msg.substring(pos3+1, pos4);
+        int vitesse_monter = msg.substring(pos4+1, pos5).toInt();
+        int plat_descente = msg.substring(pos5+1, pos6).toInt();
+        int temps_descente = msg.substring(pos6+1, pos7).toInt();
+        int plat_monter = msg.substring(pos7+1, pos8).toInt();
+        int temps_monter = msg.substring(pos8+1, pos9).toInt();
+        int vitesse1 = msg.substring(pos9+1, pos10).toInt();
+        int vitesse2 = msg.substring(pos10+1, pos11).toInt();
+        int vitesse1D = msg.substring(pos11+1, pos12).toInt();
+        int vitesse2D = msg.substring(pos12+1, -1).toInt();
+        int temps = msg.substring(pos12+1, -1).toInt();
+        Serial.println("Lancement du système");
+        go(client, accel , gyro , temp , mag, nb_marche, dir, vitesse_monter, plat_descente, temps_descente, plat_monter, temps_monter, vitesse1, vitesse2, vitesse1D, vitesse2D, temps);
+        
+     }
+      
+      
     }
 
     if (millis() - dernier_envoi > 50) {

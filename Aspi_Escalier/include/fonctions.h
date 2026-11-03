@@ -27,7 +27,8 @@ int arret(WiFiClient &client);
 void envoie_donnees(WiFiClient &client, int etat, int marche, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps);
 void envoyer_icm(WiFiClient &client);
-void envoyerDonnees(int capteur, float valeur);
+void envoyerDonnees(String msg);
 void setupESPNow();
+void go(WiFiClient &client, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag, int nb_marche, String dir, int vitesse_monter, int plat_descente, int temps_descente, int plat_monter, int temps_monter, int vitesse1, int vitesse2, int vitesse1D, int vitesse2D, int temps);
 
 #endif
