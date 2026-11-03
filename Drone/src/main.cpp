@@ -6,6 +6,7 @@
 #include <esp_now.h>
 #include "../include/fonctions.h"
 #include <cmath>
+#include <ESP32Servo.h>
 
 #pragma region init variables
     // Enum de la machine à état
@@ -23,23 +24,26 @@
     esp_now_peer_info_t peerInfo;
 
     // Affectation des broches capteur ultrason
-    #define TRIG_G 32
-    #define ECHO_G 33
-    #define TRIG_D 26
-    #define ECHO_D 25
+    #define TRIG1 32
+    #define ECHO1 33
+    #define TRIG2 26
+    #define ECHO2 25
 
     // Affectation broche IR
-    #define IR 35 
+    #define IR 13 
 
     // Affectation broche Pression
-    #define PRES 34
+    #define PRES 35
 
     // Affectation broche Moteurs
     #define MOT_G 22
     #define MOT_D 23
+    Servo mot_g;
+    Servo mot_d;
 
     // Affecation broche ventilateur
-    #define VENT 13
+    #define VENT_PWM 13
+    #define VENT_EN 34
 
     // Variable de machine à état
     State drone_state = INIT;
@@ -48,7 +52,6 @@
 
 void setup() {
     Serial.begin(115200);
-
 
 #pragma region init comm wifi
     // Configuration en mode station pour l'ESP-NOW sans se connecter à un réseau
@@ -76,28 +79,35 @@ void setup() {
 
 #pragma region init pin capteurs
     // Ultrason Gauche
-    pinMode(TRIG_G, OUTPUT);
-    pinMode(ECHO_G, INPUT);
+    pinMode(TRIG1, OUTPUT);
+    pinMode(ECHO1, INPUT);
 
     // Ultrason Droite
-    pinMode(TRIG_D, OUTPUT);
-    pinMode(ECHO_D, INPUT);
+    pinMode(TRIG2, OUTPUT);
+    pinMode(ECHO2, INPUT);
 
     // IR
     pinMode(IR, INPUT);
 
     // Pression
     pinMode(PRES, INPUT);
+#pragma endregion
 
+#pragma region init pin moteurs
     // Moteur Gauche
     pinMode(MOT_G, OUTPUT);
+    mot_g.attach(MOT_G);
 
     // Moteur Droite
     pinMode(MOT_D, OUTPUT);
+    mot_d.attach(MOT_D);
 
     // Aspirateur
-    pinMode(VENT, OUTPUT);
+    pinMode(VENT_PWM, OUTPUT);
+    pinMode(VENT_EN, OUTPUT);
+
 #pragma endregion
+
 }
 
 void loop() {
@@ -156,49 +166,38 @@ void loop() {
 #pragma endregion
 
 #pragma region test wifi
-    donneesEnvoyees.capteur = 1;
-    donneesEnvoyees.valeur = 2;
+    donneesEnvoyees.message = "Test";
     // Envoie des données sur l'adresse MAC en convertissant les données en pointeur de données bruts
-    esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
+    //esp_now_send(peerMAC, (uint8_t *) &donneesEnvoyees, sizeof(donneesEnvoyees));
 
-    // Test comm wifi
-    Serial.print("Dernière valeur reçue capteur ");
-    Serial.print(donneesRecues.capteur);
-    Serial.print(" : ");
-    Serial.println(donneesRecues.valeur);
+    // Test comm
+    //Serial.print("Message : ");
+    //Serial.print(donneesRecues.message);
+    //Serial.println();
 #pragma endregion
-
 
 #pragma region test ultrason
     // Test capteur ultrason
-    // On s'assure que TRIG est à LOW
-    digitalWrite(TRIG_G, LOW);
-    delayMicroseconds(2);
-
-    // Impulsion de 10 µs
-    digitalWrite(TRIG_G, HIGH);
-    delayMicroseconds(10);
-    digitalWrite(TRIG_G, LOW);
-
-    // Mesure de la durée de l'écho
-    long duration = pulseIn(ECHO_G, HIGH);
-
-    // Calcul de la distance en cm
-    float distance = duration * 0.0343 / 2;
-
-    //Serial.print("Distance : ");
-    //Serial.print(distance);
-    //Serial.println(" cm");
-    //delay(100);
+    us_mes(TRIG1, ECHO1);
+    us_mes(TRIG2, ECHO2);
+    delay(1000);
 #pragma endregion
 
 #pragma region test capteur ir
-    float volt_ir = analogRead(IR)*3.3/4092;
-    float dist_ir = 3.8868 * std::pow(volt_ir,4) - 31.349 * std::pow(volt_ir,3) + 91.88 * std::pow(volt_ir,2) - 119.89 * volt_ir + 67.636;
-    //float dist_ir = (volt_ir-3.3)/(-0.140);
-    //Serial.print("Distance : ");
-    //Serial.print(dist_ir);
-    //Serial.print(" cm / Tension : ");
-    //Serial.println(volt_ir);
+    // Test capteur IR
+    //ir_mes(IR);
+    //delay(500);
+#pragma endregion
+
+#pragma region test moteurs
+    // Test moteurs
+    //mot_g.writeMicroseconds(1000);
+    //mot_d.writeMicroseconds(1000);
+    //delay(1000);
+    //mot_g.writeMicroseconds(1500);
+    //mot_d.writeMicroseconds(1500);
+    //delay(1000);
+    //mot_g.writeMicroseconds(2000);
+    //mot_d.writeMicroseconds(2000);
 #pragma endregion
 }
