@@ -27,5 +27,7 @@ int arret(WiFiClient &client);
 void envoie_donnees(WiFiClient &client, int etat, int marche, sensors_event_t &accel, sensors_event_t &gyro,sensors_event_t &temp,sensors_event_t &mag);
 void plateforme(WiFiClient &client, Servo &servo_platforme, int vitesse, int temps);
 void envoyer_icm(WiFiClient &client);
+void envoyerDonnees(int capteur, float valeur);
+void setupESPNow();
 
 #endif
